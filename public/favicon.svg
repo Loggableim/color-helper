@@ -2,15 +2,10 @@
   <defs>
     <linearGradient id="fg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#06B6D4"/>
-      <stop offset="40%" stop-color="#7C3AED"/>
-      <stop offset="70%" stop-color="#EC4899"/>
+      <stop offset="45%" stop-color="#7C3AED"/>
+      <stop offset="75%" stop-color="#EC4899"/>
       <stop offset="100%" stop-color="#F97316"/>
     </linearGradient>
   </defs>
   <rect x="2" y="2" width="28" height="28" rx="7" fill="url(#fg)"/>
-  <g fill="white" opacity="0.95">
-    <rect x="14.5" y="9" width="3" height="12" rx="1"/>
-    <ellipse cx="16" cy="9" rx="3.5" ry="2.5"/>
-    <path d="M13 24 L16 30 L19 24"/>
-  </g>
 </svg>

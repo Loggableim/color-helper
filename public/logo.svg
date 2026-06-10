@@ -1,32 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
   <defs>
-    <linearGradient id="logog" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#06B6D4"/>
-      <stop offset="40%" stop-color="#7C3AED"/>
-      <stop offset="70%" stop-color="#EC4899"/>
+      <stop offset="45%" stop-color="#7C3AED"/>
+      <stop offset="75%" stop-color="#EC4899"/>
       <stop offset="100%" stop-color="#F97316"/>
     </linearGradient>
-    <linearGradient id="logog2" x1="100%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#7C3AED"/>
-      <stop offset="100%" stop-color="#06B6D4"/>
-    </linearGradient>
   </defs>
-  <!-- Subtle background ring -->
-  <rect x="4" y="4" width="72" height="72" rx="18" fill="url(#logog)" opacity="0.08"/>
-  <!-- Main rounded square with gradient -->
-  <rect x="12" y="12" width="56" height="56" rx="14" fill="url(#logog)"/>
-  <!-- Inner white cutout for eyedropper -->
-  <!-- Eyedropper body - minimalist -->
-  <g fill="white" opacity="0.95">
-    <!-- Handle -->
-    <rect x="37" y="26" width="6" height="24" rx="2"/>
-    <!-- Bulb -->
-    <ellipse cx="40" cy="26" rx="7" ry="5"/>
-    <!-- Tip -->
-    <path d="M35 50 L40 60 L45 50" stroke-linejoin="round"/>
-    <rect x="35" y="48" width="10" height="4" rx="1"/>
+  <!-- Soft outer glow -->
+  <rect x="3" y="3" width="74" height="74" rx="19" fill="url(#lg)" opacity="0.06"/>
+  <!-- Rounded square base -->
+  <rect x="7" y="7" width="66" height="66" rx="17" fill="url(#lg)"/>
+  <!-- White inset surface -->
+  <rect x="13" y="13" width="54" height="54" rx="13" fill="white"/>
+  <!-- Inner gradient surface -->
+  <rect x="15" y="15" width="50" height="50" rx="12" fill="url(#lg)" opacity="0.92"/>
+  <!-- Minimalist eyedropper icon (white) -->
+  <g fill="white">
+    <rect x="38" y="28" width="4" height="18" rx="2"/>
+    <ellipse cx="40" cy="28" rx="5.5" ry="4"/>
+    <path d="M36 46 L40 55 L44 46" stroke="white" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
   </g>
-  <!-- Color swatch dots at bottom right -->
-  <circle cx="56" cy="56" r="5" fill="white" opacity="0.3"/>
-  <circle cx="56" cy="56" r="5" fill="url(#logog2)" opacity="0.6" clip-path="inset(0 0 50% 0)"/>
+  <!-- Subtle color dot accent -->
+  <circle cx="53" cy="52" r="4.5" fill="white" opacity="0.35"/>
+  <circle cx="53" cy="52" r="4.5" fill="url(#lg)" clip-path="inset(0 0 50% 0)"/>
 </svg>
