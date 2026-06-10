@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ToolLayout from '../../components/ToolLayout.astro';
-import { colors, getColorBySlug, getRelatedColors } from '../../data/colors';
+import { colors, getRelatedColors } from '../../data/colors';
 import type { ColorData } from '../../data/colors';
 import { generateTintsAndShades, generateComplementaryPalette, generateAnalogousPalette, rgbToHsl } from '../../utils/color';
 import FAQ from '../../components/FAQ.astro';
@@ -76,36 +76,6 @@ const webAppSchema = {
   "operatingSystem": "All"
 };
 
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": `What color is ${color.name}?`,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": `${color.name} is represented by the hex code ${color.hex} and has RGB values of rgb(${color.r}, ${color.g}, ${color.b}). It falls under the ${color.category} category and is commonly used in web design for ${color.useCases.slice(0, 3).join(', ')}.`
-      }
-    },
-    {
-      "@type": "Question",
-      "name": `How to use ${color.name} in web design?`,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": `${color.name} (${color.hex}) works well for ${color.useCases.slice(0, 2).join(' and ')}. ${color.description} Consider pairing it with complementary colors for contrast or analogous colors for harmony.`
-      }
-    },
-    {
-      "@type": "Question",
-      "name": `What colors go with ${color.name}?`,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": `Colors that go well with ${color.name} include ${color.related.slice(0, 5).join(', ')}. Its complementary color is ${complementary.colors[1]} and analogous colors include ${analogous.colors[0]} and ${analogous.colors[2]}.`
-      }
-    }
-  ]
-};
 ---
 
 <BaseLayout {title} {description} {canonical} {breadcrumbs}>
@@ -270,7 +240,6 @@ const faqSchema = {
   </ToolLayout>
 
   <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </BaseLayout>
 
 <style is:global>

@@ -21,6 +21,7 @@
   --color-bg-alt: #F1F5F9;
   --color-bg-card: #ffffff;
   --color-text: #0F172A;
+  --color-text-primary: var(--color-text);
   --color-text-secondary: #64748B;
   --color-text-muted: #94A3B8;
   --color-text-dim: #cbd5e1;
@@ -56,6 +57,7 @@
   --radius-lg: 14px;
   --radius-xl: 18px;
   --radius-2xl: 24px;
+  --radius-full: 999px;
 
   /* ---- Sizing ---- */
   --max-width: 1200px;
