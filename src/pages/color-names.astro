@@ -1,0 +1,422 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../components/ToolLayout.astro';
+import { colors, colorCategories } from '../data/colors';
+import type { ColorData } from '../data/colors';
+import FAQ from '../components/FAQ.astro';
+
+const title = 'Color Names — CSS Named Colors';
+const description = 'Browse all 148 CSS named colors with HEX codes, RGB values, and categories. Use our searchable table to find the perfect color for your web design projects.';
+const canonical = 'https://color-helper.com/color-names/';
+const breadcrumbs = [{ label: 'Color Names' }];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout {title} {description} {breadcrumbs}>
+    <!-- Search / Filter -->
+    <div class="filter-bar">
+      <input type="text" id="color-search" class="filter-input" placeholder="Search colors by name, hex, or category..." />
+      <select id="category-filter" class="filter-select">
+        <option value="">All Categories</option>
+        {colorCategories.map(cat => (
+          <option value={cat}>{cat}</option>
+        ))}
+      </select>
+    </div>
+
+    <!-- Color Table -->
+    <section class="color-table-section">
+      <div class="table-scroll">
+        <table class="color-table" id="color-table">
+          <thead>
+            <tr>
+              <th>Swatch</th>
+              <th>Name</th>
+              <th>HEX Code</th>
+              <th>RGB</th>
+              <th>Category</th>
+              <th>Copy</th>
+            </tr>
+          </thead>
+          <tbody>
+            {colorCategories.map(category => (
+              <>
+                <tr class="category-header-row">
+                  <td colspan="6" class="category-header">{category}</td>
+                </tr>
+                {colors
+                  .filter(c => c.category === category)
+                  .map(color => (
+                    <tr class="color-row" data-name={color.name.toLowerCase()} data-hex={color.hex} data-category={color.category}>
+                      <td>
+                        <span class="swatch-dot" style="background-color: {color.hex};" title={color.hex}></span>
+                      </td>
+                      <td>
+                        <a href={`/colors/${color.slug}/`} class="color-name-link">{color.name}</a>
+                      </td>
+                      <td>
+                        <code class="hex-code">{color.hex}</code>
+                      </td>
+                      <td>
+                        <span class="rgb-text">{color.r}, {color.g}, {color.b}</span>
+                      </td>
+                      <td>
+                        <span class="category-badge">{color.category}</span>
+                      </td>
+                      <td>
+                        <button class="copy-btn" data-hex={color.hex} title="Copy {color.hex}">📋</button>
+                      </td>
+                    </tr>
+                  ))}
+              </>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- No results message -->
+    <p id="no-results" class="no-results" style="display: none;">No colors found matching your search.</p>
+
+    <!-- SEO Content -->
+    <section class="seo-content">
+      <h2>Complete Guide to CSS Named Colors</h2>
+      <p>CSS named colors are predefined color keywords that can be used in stylesheets without needing hex codes or RGB values. There are 148 named colors in the CSS Color Module Level 4 specification, ranging from common colors like "red" and "blue" to more obscure names like "blanchedalmond" and "rebeccapurple". These named colors provide a convenient way to reference colors in your CSS code with readable, semantic names.</p>
+      <p>The most widely used CSS named colors include the 17 original HTML colors: aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, purple, red, silver, teal, white, yellow, and of course orange (added later). Modern CSS supports all 148 named colors, making it easy to write readable stylesheets without memorizing hex codes for common colors.</p>
+      <p>Each named color has a corresponding hex code, RGB value, and category grouping. The colors are organized into categories like Red, Pink, Purple, Blue, Cyan, Teal, Green, Lime, Yellow, Orange, Brown, White, Gray, and Black. This categorization helps you quickly find colors with similar hues when building your color palette.</p>
+      <p>While named colors are convenient, they have limitations. The selection is fixed — you cannot create custom named colors — and some names like "lightgray" and "lightgrey" are synonyms that resolve to the same hex value. For precise color control, most professional designers use hex codes, but named colors remain an excellent starting point for prototyping and learning CSS.</p>
+    </section>
+
+    <!-- Related Tools -->
+    <section class="related-tools">
+      <h2>Related Tools</h2>
+      <ul>
+        <li><a href="/hex-color-codes/">HEX Color Codes</a> — Learn how hex codes work</li>
+        <li><a href="/hex-to-rgb/">HEX to RGB Converter</a> — Convert hex codes to RGB values</li>
+        <li><a href="/color-converter/">Color Converter</a> — Convert between HEX, RGB, and HSL</li>
+        <li><a href="/color-picker/">Color Picker</a> — Pick and save colors interactively</li>
+      </ul>
+    </section>
+
+    <FAQ
+      items={[
+        {
+          question: 'What are CSS color names?',
+          answer: 'CSS color names are predefined color keywords that you can use in your stylesheets instead of hex codes or RGB values. Examples include "red", "blue", "green", "coral", "rebeccapurple", and many more. They make CSS code more readable and are supported in all modern browsers.'
+        },
+        {
+          question: 'How many named colors are there?',
+          answer: 'There are 148 named colors in the CSS Color Module Level 4 specification. This includes the original 16 HTML colors plus many additional colors added over time. The last addition was "rebeccapurple" in 2014, named in memory of Rebecca Meyer, the daughter of CSS pioneer Eric Meyer.'
+        },
+        {
+          question: 'Can I use named colors in production?',
+          answer: 'Yes, CSS named colors are fully supported in all modern browsers and are safe to use in production. However, for brand colors and precise design requirements, most teams use hex codes (like #FF5733) because named colors offer a limited palette. Named colors are excellent for prototyping, documentation, and educational purposes.'
+        },
+        {
+          question: 'Are CSS color names case-sensitive?',
+          answer: 'No, CSS color names are case-insensitive. "Red", "RED", and "red" all resolve to the same color. However, the conventional style is to use lowercase for CSS property values, so "color: red;" is the most common format.'
+        },
+        {
+          question: 'What is the difference between "gray" and "grey"?',
+          answer: 'Both spellings — "gray" (American) and "grey" (British) — are valid CSS color names and refer to the exact same color with hex code #808080. CSS also supports both spellings for "darkgray"/"darkgrey", "lightgray"/"lightgrey", and "slategray"/"slategrey". They are exact synonyms in the CSS specification.'
+        }
+      ]}
+    />
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+</BaseLayout>
+
+<script>
+  // Client-side search and copy functionality
+  const searchInput = document.getElementById('color-search');
+  const categoryFilter = document.getElementById('category-filter');
+  const colorRows = document.querySelectorAll('.color-row');
+  const noResults = document.getElementById('no-results');
+
+  function filterColors() {
+    const query = (searchInput.value || '').toLowerCase().trim();
+    const category = categoryFilter.value || '';
+    let visibleCount = 0;
+
+    // First pass: determine which rows are visible
+    colorRows.forEach(row => {
+      const name = row.getAttribute('data-name') || '';
+      const hex = row.getAttribute('data-hex') || '';
+      const cat = row.getAttribute('data-category') || '';
+      const matchesSearch = !query ||
+        name.includes(query) ||
+        hex.includes(query);
+      const matchesCategory = !category || cat === category;
+      const visible = matchesSearch && matchesCategory;
+      row.style.display = visible ? '' : 'none';
+      if (visible) visibleCount++;
+    });
+
+    // Handle category header rows
+    document.querySelectorAll('.category-header-row').forEach(header => {
+      const category = header.querySelector('.category-header')?.textContent || '';
+      const rowsInCategory = document.querySelectorAll(
+        `.color-row[data-category="${category}"]`
+      );
+      const hasVisible = Array.from(rowsInCategory).some(r => r.style.display !== 'none');
+      header.style.display = hasVisible ? '' : 'none';
+    });
+
+    noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+  }
+
+  if (searchInput) searchInput.addEventListener('input', filterColors);
+  if (categoryFilter) categoryFilter.addEventListener('change', filterColors);
+
+  // Copy to clipboard
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async function() {
+      const hex = this.getAttribute('data-hex');
+      try {
+        await navigator.clipboard.writeText(hex);
+        const originalText = this.textContent;
+        this.textContent = '✓';
+        this.classList.add('copied');
+        setTimeout(() => {
+          this.textContent = originalText;
+          this.classList.remove('copied');
+        }, 1500);
+      } catch {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = hex;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        const originalText = this.textContent;
+        this.textContent = '✓';
+        this.classList.add('copied');
+        setTimeout(() => {
+          this.textContent = originalText;
+          this.classList.remove('copied');
+        }, 1500);
+      }
+    });
+  });
+</script>
+
+<style is:global>
+  .filter-bar {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .filter-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-size: 0.9375rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .filter-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  }
+  .filter-select {
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-size: 0.9375rem;
+    outline: none;
+    cursor: pointer;
+  }
+  .filter-select:focus {
+    border-color: var(--color-primary);
+  }
+
+  .color-table-section {
+    margin-bottom: 2rem;
+  }
+  .table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  .color-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+  .color-table th {
+    background: var(--color-bg-alt);
+    padding: 0.625rem 0.875rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-text-muted);
+    border-bottom: 2px solid var(--color-border);
+    white-space: nowrap;
+  }
+  .color-table td {
+    padding: 0.5rem 0.875rem;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: middle;
+  }
+  .color-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .category-header-row td {
+    padding: 0;
+  }
+  .category-header {
+    background: var(--color-bg-alt);
+    font-weight: 700;
+    font-size: 0.8125rem;
+    color: var(--color-text);
+    padding: 0.5rem 0.875rem !important;
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .color-row:hover {
+    background: var(--color-bg-alt);
+  }
+
+  .swatch-dot {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    vertical-align: middle;
+  }
+
+  .color-name-link {
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .color-name-link:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .hex-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8125rem;
+    color: var(--color-text);
+    background: var(--color-bg-alt);
+    padding: 0.1875rem 0.4375rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .rgb-text {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .category-badge {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.1875rem 0.5rem;
+    border-radius: var(--radius-full);
+    background: var(--color-bg-alt);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+  }
+
+  .copy-btn {
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .copy-btn:hover {
+    background: var(--color-bg-alt);
+    border-color: var(--color-primary);
+  }
+  .copy-btn.copied {
+    border-color: #22c55e;
+    background: rgba(34, 197, 94, 0.1);
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 2rem;
+    color: var(--color-text-muted);
+    font-size: 1rem;
+  }
+
+  .seo-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .seo-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .seo-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+
+  .related-tools {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .related-tools h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .related-tools ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .related-tools li {
+    padding: 0.375rem 0;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  .related-tools a {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .related-tools a:hover {
+    text-decoration: underline;
+  }
+</style>

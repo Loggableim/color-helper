@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolLayout from '../../components/ToolLayout.astro';
+import { colors, colorCategories } from '../../data/colors';
+import type { ColorData } from '../../data/colors';
+
+export async function getStaticPaths() {
+  return [];
+}
+
+const title = 'Colors';
+const description = 'Browse all CSS named colors with HEX codes, RGB values, and detailed information.';
+const canonical = 'https://color-helper.com/colors/';
+const breadcrumbs = [{ label: 'Colors' }];
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout {title} {description} {breadcrumbs}>
+    <section class="seo-content">
+      <h2>All Colors</h2>
+      <p>Browse our complete collection of CSS named colors. Click on any color to view detailed information including HEX, RGB, HSL values, color schemes, and accessibility recommendations.</p>
+      <div class="category-grid">
+        {colorCategories.map(category => {
+          const categoryColors = colors.filter((c: ColorData) => c.category === category);
+          return (
+            <div class="category-group">
+              <h3>{category}</h3>
+              <div class="color-mini-grid">
+                {categoryColors.map((color: ColorData) => (
+                  <a href={`/colors/${color.slug}/`} class="color-mini-card" title={color.name}>
+                    <span class="color-mini-swatch" style="background-color: {color.hex};"></span>
+                    <span class="color-mini-name">{color.name}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  </ToolLayout>
+</BaseLayout>
+
+<style is:global>
+  .seo-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .seo-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .seo-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  .category-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .category-group h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-text);
+  }
+  .color-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.5rem;
+  }
+  .color-mini-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    text-decoration: none;
+    padding: 0.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    transition: border-color 0.2s;
+  }
+  .color-mini-card:hover {
+    border-color: var(--color-primary);
+  }
+  .color-mini-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+  }
+  .color-mini-name {
+    font-size: 0.625rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    line-height: 1.1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    white-space: nowrap;
+  }
+</style>

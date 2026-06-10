@@ -1,0 +1,408 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../components/ToolLayout.astro';
+import { colors } from '../data/colors';
+import FAQ from '../components/FAQ.astro';
+
+const title = 'HEX Color Codes — Complete Guide';
+const description = 'Learn what HEX color codes are, how they work, and how to read them. Browse our table of important colors with hex codes, and convert between color formats easily.';
+const canonical = 'https://color-helper.com/hex-color-codes/';
+const breadcrumbs = [{ label: 'HEX Color Codes' }];
+
+// Featured colors for the reference table
+const featuredColors = [
+  { name: 'Black', hex: '#000000', rgb: '0, 0, 0' },
+  { name: 'White', hex: '#ffffff', rgb: '255, 255, 255' },
+  { name: 'Red', hex: '#ff0000', rgb: '255, 0, 0' },
+  { name: 'Green', hex: '#00ff00', rgb: '0, 255, 0' },
+  { name: 'Blue', hex: '#0000ff', rgb: '0, 0, 255' },
+  { name: 'Yellow', hex: '#ffff00', rgb: '255, 255, 0' },
+  { name: 'Cyan', hex: '#00ffff', rgb: '0, 255, 255' },
+  { name: 'Magenta', hex: '#ff00ff', rgb: '255, 0, 255' },
+  { name: 'Orange', hex: '#ffa500', rgb: '255, 165, 0' },
+  { name: 'Purple', hex: '#800080', rgb: '128, 0, 128' },
+  { name: 'Pink', hex: '#ffc0cb', rgb: '255, 192, 203' },
+  { name: 'Brown', hex: '#a52a2a', rgb: '165, 42, 42' },
+  { name: 'Gray', hex: '#808080', rgb: '128, 128, 128' },
+  { name: 'Navy', hex: '#000080', rgb: '0, 0, 128' },
+  { name: 'Teal', hex: '#008080', rgb: '0, 128, 128' },
+  { name: 'Maroon', hex: '#800000', rgb: '128, 0, 0' },
+  { name: 'Lime', hex: '#00ff00', rgb: '0, 255, 0' },
+  { name: 'Gold', hex: '#ffd700', rgb: '255, 215, 0' },
+  { name: 'Silver', hex: '#c0c0c0', rgb: '192, 192, 192' },
+  { name: 'Coral', hex: '#ff7f50', rgb: '255, 127, 80' },
+  { name: 'Indigo', hex: '#4b0082', rgb: '75, 0, 130' },
+  { name: 'Crimson', hex: '#dc143c', rgb: '220, 20, 60' },
+  { name: 'Turquoise', hex: '#40e0d0', rgb: '64, 224, 208' },
+  { name: 'Salmon', hex: '#fa8072', rgb: '250, 128, 114' },
+];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout {title} {description} {breadcrumbs}>
+    <!-- Hero explanation -->
+    <section class="seo-content">
+      <h2>What Are HEX Color Codes?</h2>
+      <p>A HEX color code is a six-digit hexadecimal number used in HTML, CSS, and design software to represent colors. The format is <code>#RRGGBB</code>, where <code>RR</code> is the red component, <code>GG</code> is the green component, and <code>BB</code> is the blue component. Each pair ranges from <code>00</code> (0 in decimal) to <code>FF</code> (255 in decimal), giving a total of 16,777,216 possible colors.</p>
+
+      <h3>How to Read HEX Color Codes</h3>
+      <p>Reading hex codes is easier than it looks. The hash symbol (#) indicates that what follows is a hex color value. The six characters after the hash are divided into three pairs. The first pair (RR) controls how much red is in the color, the second pair (GG) controls green, and the third pair (BB) controls blue. For example, <code>#FF0000</code> means maximum red (FF), no green (00), and no blue (00) — which produces pure red.</p>
+      <p>Each hexadecimal digit can be 0-9 or A-F, where A=10, B=11, C=12, D=13, E=14, and F=15. To read a value like "FF" (the maximum for any channel), multiply the first digit (F=15) by 16 and add the second digit (F=15): (15 × 16) + 15 = 255. That's why RGB values range from 0 to 255.</p>
+
+      <h3>3-Digit vs 6-Digit HEX Codes</h3>
+      <p>CSS also supports 3-digit shorthand hex codes like <code>#F3A</code>, which expands to <code>#FF33AA</code>. Each digit is doubled to create the full six-digit code. This is only possible when each pair of digits is a repeat (like FF, 33, AA). The 3-digit format saves space but offers fewer color options since you cannot represent all 16.7 million colors with only 12 bits (4 bits per channel).</p>
+    </section>
+
+    <!-- Reference Table -->
+    <section class="hex-table-section">
+      <h2>Important Colors and Their HEX Codes</h2>
+      <div class="table-scroll">
+        <table class="hex-table">
+          <thead>
+            <tr>
+              <th>Swatch</th>
+              <th>Color Name</th>
+              <th>HEX Code</th>
+              <th>RGB</th>
+              <th>Tools</th>
+            </tr>
+          </thead>
+          <tbody>
+            {featuredColors.map(color => (
+              <tr>
+                <td>
+                  <span class="swatch-dot" style="background-color: {color.hex};"></span>
+                </td>
+                <td>
+                  <a href={`/colors/${color.name.toLowerCase().replace(/\s+/g, '')}/`} class="color-name-link">{color.name}</a>
+                </td>
+                <td>
+                  <code class="hex-code">{color.hex}</code>
+                </td>
+                <td>
+                  <span class="rgb-text">{color.rgb}</span>
+                </td>
+                <td>
+                  <div class="tool-links-inline">
+                    <a href={`/hex-to-rgb/?hex=${encodeURIComponent(color.hex)}`} class="tool-link-sm">Convert</a>
+                    <a href={`/color-converter/?hex=${encodeURIComponent(color.hex)}`} class="tool-link-sm">Details</a>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- How HEX Notation Works (visual explanation) -->
+    <section class="seo-content">
+      <h2>Understanding the HEX Notation</h2>
+      <p>The hex color system is based on the additive RGB color model, which is the same model used by computer screens. Each pixel on your display is made up of three sub-pixels: one red, one green, and one blue. By varying the intensity of each sub-pixel, your monitor can display millions of different colors.</p>
+      <p>In hex notation, each color channel is represented by two hexadecimal digits, which gives 256 possible values per channel (16 × 16 = 256). This matches the 8-bit per channel standard used in most image formats and displays. The total color space is 256 × 256 × 256 = 16,777,216 colors, which is more than the human eye can distinguish.</p>
+      <p>For example, the hex code <code>#FF5733</code> breaks down as follows: Red = FF (255, maximum intensity), Green = 57 (87), Blue = 33 (51). The result is a vibrant orange-red color. By adjusting these three values, you can create any color visible on a standard RGB display.</p>
+
+      <h3>Common HEX Color Patterns</h3>
+      <p>Here are some patterns to help you read hex codes at a glance:</p>
+      <ul class="pattern-list">
+        <li><strong>Grayscale:</strong> When R=G=B, the color is gray. <code>#000000</code> is black, <code>#808080</code> is medium gray, <code>#FFFFFF</code> is white.</li>
+        <li><strong>Primary colors:</strong> <code>#FF0000</code> (red), <code>#00FF00</code> (green), <code>#0000FF</code> (blue) — only one channel is at maximum.</li>
+        <li><strong>Pastel colors:</strong> High values across all channels with one slightly higher, e.g., <code>#FFB6C1</code> (light pink).</li>
+        <li><strong>Dark colors:</strong> Low values across channels, e.g., <code>#2F4F4F</code> (dark slate gray).</li>
+      </ul>
+    </section>
+
+    <!-- Quick Converter Links -->
+    <section class="quick-convert">
+      <h2>Try Our Color Converters</h2>
+      <div class="convert-cards">
+        <a href="/hex-to-rgb/" class="convert-card">
+          <strong>HEX to RGB</strong>
+          <span>Convert hex codes to RGB values instantly</span>
+        </a>
+        <a href="/color-converter/" class="convert-card">
+          <strong>Color Converter</strong>
+          <span>Convert between HEX, RGB, and HSL</span>
+        </a>
+        <a href="/rgb-to-hex/" class="convert-card">
+          <strong>RGB to HEX</strong>
+          <span>Convert RGB values to hex codes</span>
+        </a>
+        <a href="/color-picker/" class="convert-card">
+          <strong>Color Picker</strong>
+          <span>Pick and explore colors interactively</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Related Tools -->
+    <section class="related-tools">
+      <h2>Related Resources</h2>
+      <ul>
+        <li><a href="/color-names/">CSS Named Colors</a> — Browse all 148 CSS color names with hex codes</li>
+        <li><a href="/color-converter/">Color Converter</a> — Convert between HEX, RGB, and HSL formats</li>
+        <li><a href="/hex-to-rgb/">HEX to RGB Converter</a> — Instantly convert any hex color code</li>
+        <li><a href="/color-palette-generator/">Color Palette Generator</a> — Create color schemes from any hex code</li>
+      </ul>
+    </section>
+
+    <FAQ
+      items={[
+        {
+          question: 'What is a hex code?',
+          answer: 'A hex code (short for hexadecimal code) is a six-digit representation of a color using the base-16 numbering system. It is written as a hash symbol (#) followed by six hexadecimal digits (0-9 and A-F), structured as #RRGGBB where RR is red, GG is green, and BB is blue.'
+        },
+        {
+          question: 'How to read hex colors?',
+          answer: 'Hex colors are read in three pairs: the first two digits represent red, the middle two represent green, and the last two represent blue. Each pair ranges from 00 (zero intensity) to FF (maximum intensity). For example, #FF0000 is pure red because red is maxed out (FF) while green and blue are at zero (00).'
+        },
+        {
+          question: 'What is the difference between 3-digit and 6-digit hex?',
+          answer: 'A 3-digit hex code like #F3A is a shorthand notation that expands to #FF33AA. Each digit is doubled to get the full 6-digit code. The 3-digit format is more compact but limited — it only works when each color channel has a repeated digit (like FF, 33, AA), giving only 4,096 possible colors instead of 16,777,216.'
+        },
+        {
+          question: 'Are hex codes case-sensitive?',
+          answer: 'No, hex codes are case-insensitive. #FF5733, #ff5733, and #Ff5733 all represent the same color. However, the most common convention is to use uppercase letters (A-F) for readability, though lowercase is also widely used in modern CSS.'
+        },
+        {
+          question: 'How many hex colors are there?',
+          answer: 'There are 16,777,216 possible hex colors (256 × 256 × 256), which is the full sRGB color space available on most modern displays. This gives you every possible combination of red, green, and blue values from #000000 (black) to #FFFFFF (white).'
+        }
+      ]}
+    />
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+</BaseLayout>
+
+<style is:global>
+  .seo-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1.5rem 0;
+  }
+  .seo-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+    color: var(--color-text-primary);
+  }
+  .seo-content h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    margin-top: 1.5rem;
+    color: var(--color-text-primary);
+  }
+  .seo-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  .seo-content code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    background: var(--color-bg-alt);
+    padding: 0.125rem 0.375rem;
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+  }
+
+  .pattern-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+  .pattern-list li {
+    padding: 0.5rem 0;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .pattern-list li:last-child {
+    border-bottom: none;
+  }
+  .pattern-list code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8125rem;
+    background: var(--color-bg-alt);
+    padding: 0.125rem 0.375rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .hex-table-section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .hex-table-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  .hex-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+  .hex-table th {
+    background: var(--color-bg-alt);
+    padding: 0.625rem 0.875rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-text-muted);
+    border-bottom: 2px solid var(--color-border);
+    white-space: nowrap;
+  }
+  .hex-table td {
+    padding: 0.5rem 0.875rem;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: middle;
+  }
+  .hex-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .hex-table tbody tr:hover {
+    background: var(--color-bg-alt);
+  }
+
+  .swatch-dot {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    vertical-align: middle;
+  }
+
+  .color-name-link {
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .color-name-link:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .hex-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8125rem;
+    color: var(--color-text);
+    background: var(--color-bg-alt);
+    padding: 0.1875rem 0.4375rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .rgb-text {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .tool-links-inline {
+    display: flex;
+    gap: 0.375rem;
+  }
+  .tool-link-sm {
+    font-size: 0.75rem;
+    padding: 0.1875rem 0.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .tool-link-sm:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .quick-convert {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .quick-convert h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .convert-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.75rem;
+  }
+  .convert-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .convert-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+  }
+  .convert-card strong {
+    font-size: 0.9375rem;
+    color: var(--color-text);
+  }
+  .convert-card span {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+  }
+
+  .related-tools {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .related-tools h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .related-tools ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .related-tools li {
+    padding: 0.375rem 0;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  .related-tools a {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .related-tools a:hover {
+    text-decoration: underline;
+  }
+</style>

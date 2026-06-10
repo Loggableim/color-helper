@@ -1,0 +1,567 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolLayout from '../../components/ToolLayout.astro';
+import { colors, getColorBySlug, getRelatedColors } from '../../data/colors';
+import type { ColorData } from '../../data/colors';
+import { generateTintsAndShades, generateComplementaryPalette, generateAnalogousPalette, rgbToHsl } from '../../utils/color';
+import FAQ from '../../components/FAQ.astro';
+
+export async function getStaticPaths() {
+  return colors.map((color: ColorData) => ({
+    params: { slug: color.slug },
+    props: { color },
+  }));
+}
+
+export interface Props {
+  color: ColorData;
+}
+
+const { color } = Astro.props;
+
+const title = `${color.name} Color`;
+const description = `Learn about ${color.name} (${color.hex}): its uses in web design, HEX/RGB/HSL values, complementary and analogous color schemes, tints and shades, and accessibility contrast recommendations.`;
+const canonical = `https://color-helper.com/colors/${color.slug}/`;
+const breadcrumbs = [
+  { label: 'Colors', href: '/color-names/' },
+  { label: color.name },
+];
+
+// Color values
+const hsl = rgbToHsl(color.r, color.g, color.b);
+const hslStr = `${hsl.h}°, ${hsl.s}%, ${hsl.l}%`;
+
+// Palettes
+const tintsShades = generateTintsAndShades(color.hex, 9);
+const complementary = generateComplementaryPalette(color.hex);
+const analogous = generateAnalogousPalette(color.hex);
+
+// Related colors
+const relatedColors = getRelatedColors(color);
+
+// Contrast check helpers
+function getRelativeLuminance(r: number, g: number, b: number): number {
+  const srgb = [r / 255, g / 255, b / 255].map(c =>
+    c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
+  );
+  return 0.2126 * srgb[0] + 0.7152 * srgb[1] + 0.0722 * srgb[2];
+}
+
+function getContrastRatio(hex1: string, hex2: string): number {
+  const h1 = hex1.replace('#', '');
+  const h2 = hex2.replace('#', '');
+  const r1 = parseInt(h1.substring(0, 2), 16);
+  const g1 = parseInt(h1.substring(2, 4), 16);
+  const b1 = parseInt(h1.substring(4, 6), 16);
+  const r2 = parseInt(h2.substring(0, 2), 16);
+  const g2 = parseInt(h2.substring(2, 4), 16);
+  const b2 = parseInt(h2.substring(4, 6), 16);
+  const l1 = getRelativeLuminance(r1, g1, b1);
+  const l2 = getRelativeLuminance(r2, g2, b2);
+  const lighter = Math.max(l1, l2);
+  const darker = Math.min(l1, l2);
+  return Math.round((lighter + 0.05) / (darker + 0.05) * 100) / 100;
+}
+
+const contrastBlack = getContrastRatio('#000000', color.hex);
+const contrastWhite = getContrastRatio('#ffffff', color.hex);
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": `What color is ${color.name}?`,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": `${color.name} is represented by the hex code ${color.hex} and has RGB values of rgb(${color.r}, ${color.g}, ${color.b}). It falls under the ${color.category} category and is commonly used in web design for ${color.useCases.slice(0, 3).join(', ')}.`
+      }
+    },
+    {
+      "@type": "Question",
+      "name": `How to use ${color.name} in web design?`,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": `${color.name} (${color.hex}) works well for ${color.useCases.slice(0, 2).join(' and ')}. ${color.description} Consider pairing it with complementary colors for contrast or analogous colors for harmony.`
+      }
+    },
+    {
+      "@type": "Question",
+      "name": `What colors go with ${color.name}?`,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": `Colors that go well with ${color.name} include ${color.related.slice(0, 5).join(', ')}. Its complementary color is ${complementary.colors[1]} and analogous colors include ${analogous.colors[0]} and ${analogous.colors[2]}.`
+      }
+    }
+  ]
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout {title} {description} {breadcrumbs}>
+    <!-- Color Swatch -->
+    <div class="color-hero">
+      <div class="color-swatch" style="background-color: {color.hex};">
+        <span class="color-hex-label">{color.hex}</span>
+      </div>
+    </div>
+
+    <!-- Color Values -->
+    <section class="color-values">
+      <div class="value-card">
+        <span class="value-label">HEX</span>
+        <code class="value-code">{color.hex}</code>
+      </div>
+      <div class="value-card">
+        <span class="value-label">RGB</span>
+        <code class="value-code">rgb({color.r}, {color.g}, {color.b})</code>
+      </div>
+      <div class="value-card">
+        <span class="value-label">HSL</span>
+        <code class="value-code">{hslStr}</code>
+      </div>
+    </section>
+
+    <!-- Description -->
+    <section class="seo-content">
+      <h2>About {color.name} Color</h2>
+      <p>{color.description}</p>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="use-cases">
+      <h2>Use Cases for {color.name}</h2>
+      <div class="use-cases-grid">
+        {color.useCases.map(useCase => (
+          <span class="use-case-tag">{useCase}</span>
+        ))}
+      </div>
+    </section>
+
+    <!-- Tints & Shades -->
+    <section class="palette-section">
+      <h2>Shades &amp; Tints of {color.name}</h2>
+      <div class="palette-swatches">
+        {tintsShades.colors.map(c => (
+          <div class="palette-swatch" title={c} style="background-color: {c};">
+            <span class="palette-swatch-label">{c}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Complementary Palette -->
+    <section class="palette-section">
+      <h2>Complementary Color</h2>
+      <div class="palette-swatches palette-compact">
+        {complementary.colors.map(c => (
+          <div class="palette-swatch" title={c} style="background-color: {c};">
+            <span class="palette-swatch-label">{c}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Analogous Palette -->
+    <section class="palette-section">
+      <h2>Analogous Colors</h2>
+      <div class="palette-swatches">
+        {analogous.colors.map(c => (
+          <div class="palette-swatch" title={c} style="background-color: {c};">
+            <span class="palette-swatch-label">{c}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- CSS Snippet -->
+    <section class="css-snippet-section">
+      <h2>CSS Code</h2>
+      <pre class="css-snippet"><code>.{color.slug}-color &#123;
+  color: {color.hex};
+&#125;</code></pre>
+    </section>
+
+    <!-- Contrast Recommendations -->
+    <section class="contrast-section">
+      <h2>Contrast Recommendations</h2>
+      <div class="contrast-cards">
+        <div class="contrast-card contrast-card-black">
+          <div class="contrast-preview" style="background-color: {color.hex}; color: #000000;">
+            Black text on {color.name}
+          </div>
+          <div class="contrast-info">
+            <span class="contrast-ratio">Ratio: {contrastBlack}:1</span>
+            <span class="contrast-pass {contrastBlack >= 4.5 ? 'pass' : 'fail'}">
+              {contrastBlack >= 4.5 ? '✓ Passes AA' : '✗ Fails AA'}
+            </span>
+            <span class="contrast-pass {contrastBlack >= 7 ? 'pass' : 'fail'}">
+              {contrastBlack >= 7 ? '✓ Passes AAA' : '✗ Fails AAA'}
+            </span>
+          </div>
+        </div>
+        <div class="contrast-card contrast-card-white">
+          <div class="contrast-preview" style="background-color: {color.hex}; color: #ffffff;">
+            White text on {color.name}
+          </div>
+          <div class="contrast-info">
+            <span class="contrast-ratio">Ratio: {contrastWhite}:1</span>
+            <span class="contrast-pass {contrastWhite >= 4.5 ? 'pass' : 'fail'}">
+              {contrastWhite >= 4.5 ? '✓ Passes AA' : '✗ Fails AA'}
+            </span>
+            <span class="contrast-pass {contrastWhite >= 7 ? 'pass' : 'fail'}">
+              {contrastWhite >= 7 ? '✓ Passes AAA' : '✗ Fails AAA'}
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Colors -->
+    <section class="related-colors">
+      <h2>Related Colors</h2>
+      <div class="related-colors-grid">
+        {relatedColors.map(rel => (
+          <a href={`/colors/${rel.slug}/`} class="related-color-card">
+            <div class="related-color-swatch" style="background-color: {rel.hex};"></div>
+            <span class="related-color-name">{rel.name}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Related Tools -->
+    <section class="related-tools">
+      <h2>Related Tools</h2>
+      <ul>
+        <li><a href="/color-picker/">Color Picker</a> — Pick and save colors interactively</li>
+        <li><a href="/color-palette-generator/">Palette Generator</a> — Create harmonious color schemes</li>
+        <li><a href="/contrast-checker/">Contrast Checker</a> — Check WCAG accessibility ratios</li>
+      </ul>
+    </section>
+
+    <FAQ
+      items={[
+        {
+          question: `What color is ${color.name}?`,
+          answer: `${color.name} is represented by the hex code ${color.hex} and has RGB values of rgb(${color.r}, ${color.g}, ${color.b}). It falls under the ${color.category} category.`
+        },
+        {
+          question: `How to use ${color.name} in web design?`,
+          answer: `${color.name} works well for ${color.useCases.slice(0, 3).join(', ')}. ${color.description} Use it as a primary color, accent, or background depending on your design needs.`
+        },
+        {
+          question: `What colors go with ${color.name}?`,
+          answer: `Colors that pair well with ${color.name} include ${color.related.slice(0, 5).join(', ')}. For a complementary scheme, try ${complementary.colors[1]}. For an analogous scheme, use ${analogous.colors[0]} and ${analogous.colors[2]}.`
+        }
+      ]}
+    />
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</BaseLayout>
+
+<style is:global>
+  .color-hero {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  .color-swatch {
+    width: 200px;
+    height: 200px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 0.75rem;
+    border: 2px solid var(--color-border);
+    box-shadow: var(--shadow-md);
+  }
+  .color-hex-label {
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.5px;
+  }
+
+  .color-values {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  .value-card {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1.25rem;
+    text-align: center;
+    min-width: 140px;
+  }
+  .value-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-text-muted);
+    margin-bottom: 0.25rem;
+  }
+  .value-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9375rem;
+    color: var(--color-text);
+  }
+
+  .seo-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .seo-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .seo-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+
+  .use-cases {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1rem 0 2rem;
+  }
+  .use-cases h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .use-cases-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .use-case-tag {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    padding: 0.375rem 0.875rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+  }
+
+  .palette-section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1.5rem 0;
+  }
+  .palette-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .palette-swatches {
+    display: flex;
+    gap: 0.25rem;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+  }
+  .palette-swatches.palette-compact {
+    max-width: 400px;
+  }
+  .palette-swatch {
+    flex: 1;
+    height: 64px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 0.25rem;
+    position: relative;
+    transition: flex 0.2s;
+  }
+  .palette-swatch:hover {
+    flex: 2;
+  }
+  .palette-swatch-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.625rem;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    padding: 0.125rem 0.375rem;
+    border-radius: 3px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .palette-swatch:hover .palette-swatch-label {
+    opacity: 1;
+  }
+
+  .css-snippet-section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1.5rem 0;
+  }
+  .css-snippet-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .css-snippet {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    color: var(--color-text);
+    line-height: 1.6;
+  }
+
+  .contrast-section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1.5rem 0;
+  }
+  .contrast-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .contrast-cards {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .contrast-card {
+    flex: 1;
+    min-width: 240px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .contrast-preview {
+    padding: 2rem 1.5rem;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .contrast-info {
+    padding: 0.75rem 1rem;
+    background: var(--color-bg-alt);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .contrast-ratio {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .contrast-pass {
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .contrast-pass.pass {
+    color: #22c55e;
+  }
+  .contrast-pass.fail {
+    color: #ef4444;
+  }
+
+  .related-colors {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .related-colors h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .related-colors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.75rem;
+  }
+  .related-color-card {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .related-color-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+  }
+  .related-color-swatch {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+  }
+  .related-color-name {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .related-tools {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .related-tools h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .related-tools ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .related-tools li {
+    padding: 0.375rem 0;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  .related-tools a {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .related-tools a:hover {
+    text-decoration: underline;
+  }
+</style>

@@ -1,0 +1,814 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../layouts/ToolLayout.astro';
+
+// SEO & Metadata
+const title = 'Brand Color Palette Generator – Create Harmonious Brand Colors';
+const description = 'Generate a complete brand color palette from a single base color. Get primary, secondary, accent, background, and text colors with built-in accessibility contrast checks. Export as CSS variables.';
+const canonical = 'https://color.adrianbien.de/tools/brand-color-palette-generator/';
+
+// FAQ structured data
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a brand color palette generator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A brand color palette generator helps you create a cohesive set of colors for your brand identity from one base color. It automatically generates complementary primary, secondary, accent, background, and text colors."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I use the brand color palette generator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Simply enter a hex color code for your base color. The tool will generate a full palette, check contrast ratios for accessibility, and let you export the palette as CSS custom properties."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What accessibility checks are performed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The tool checks WCAG 2.1 contrast ratios between text and background colors, ensuring your brand palette meets AA (4.5:1) or AAA (7:1) standards for readability."
+      }
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  noindex={false}
+>
+  <ToolLayout
+    title="Brand Color Palette Generator"
+    subtitle="Generate a complete, accessible brand color palette from a single base color"
+  >
+    <!-- Hero / Intro -->
+    <section class="tool-intro">
+      <p>
+        Create a harmonious brand color palette in seconds. Pick a base color and we'll generate
+        <strong>primary</strong>, <strong>secondary</strong>, <strong>accent</strong>,
+        <strong>background</strong>, and <strong>text</strong> colors — all with built-in
+        <strong>accessibility contrast checks</strong>.
+      </p>
+    </section>
+
+    <!-- Tool UI -->
+    <section class="tool-ui" id="brand-palette-app">
+      <!-- Color Input -->
+      <div class="input-group">
+        <label for="base-color">Base Color</label>
+        <div class="color-picker-row">
+          <input
+            type="color"
+            id="base-color"
+            class="color-input"
+            value="#3B82F6"
+            data-bind="baseColor"
+          />
+          <input
+            type="text"
+            id="base-color-hex"
+            class="hex-input"
+            value="#3B82F6"
+            maxlength="7"
+            placeholder="#RRGGBB"
+            data-bind="baseColor"
+          />
+        </div>
+      </div>
+
+      <!-- Generated Palette -->
+      <div class="palette-preview" id="palette-preview">
+        <div class="color-swatch" data-color="primary">
+          <div class="swatch" style="background: var(--color-primary);"></div>
+          <div class="swatch-label">
+            <span class="label-name">Primary</span>
+            <span class="label-hex" id="hex-primary">#3B82F6</span>
+          </div>
+        </div>
+        <div class="color-swatch" data-color="secondary">
+          <div class="swatch" style="background: var(--color-secondary);"></div>
+          <div class="swatch-label">
+            <span class="label-name">Secondary</span>
+            <span class="label-hex" id="hex-secondary">#10B981</span>
+          </div>
+        </div>
+        <div class="color-swatch" data-color="accent">
+          <div class="swatch" style="background: var(--color-accent);"></div>
+          <div class="swatch-label">
+            <span class="label-name">Accent</span>
+            <span class="label-hex" id="hex-accent">#F59E0B</span>
+          </div>
+        </div>
+        <div class="color-swatch" data-color="background">
+          <div class="swatch" style="background: var(--color-background);"></div>
+          <div class="swatch-label">
+            <span class="label-name">Background</span>
+            <span class="label-hex" id="hex-background">#F8FAFC</span>
+          </div>
+        </div>
+        <div class="color-swatch" data-color="text">
+          <div class="swatch" style="background: var(--color-text);"></div>
+          <div class="swatch-label">
+            <span class="label-name">Text</span>
+            <span class="label-hex" id="hex-text">#0F172A</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessibility Results -->
+      <div class="accessibility-section" id="a11y-results">
+        <h3>Accessibility Check <span class="badge badge-wcag">WCAG 2.1</span></h3>
+        <div class="contrast-grid" id="contrast-grid">
+          <div class="contrast-row" data-pair="text-on-background">
+            <span class="pair-label">Text on Background</span>
+            <span class="pair-ratio" id="ratio-text-bg">12.1:1</span>
+            <span class="pair-badge badge-aaa">AAA</span>
+          </div>
+          <div class="contrast-row" data-pair="text-on-primary">
+            <span class="pair-label">Text on Primary</span>
+            <span class="pair-ratio" id="ratio-text-primary">6.2:1</span>
+            <span class="pair-badge badge-aa">AA</span>
+          </div>
+          <div class="contrast-row" data-pair="text-on-secondary">
+            <span class="pair-label">Text on Secondary</span>
+            <span class="pair-ratio" id="ratio-text-secondary">5.8:1</span>
+            <span class="pair-badge badge-aa">AA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CSS Variables Export -->
+      <div class="export-section">
+        <h3>Export as CSS Variables</h3>
+        <div class="export-actions">
+          <button class="btn btn-secondary" id="copy-css" title="Copy CSS variables to clipboard">
+            📋 Copy CSS
+          </button>
+          <button class="btn btn-secondary" id="download-css" title="Download CSS file">
+            ⬇ Download CSS
+          </button>
+        </div>
+        <pre class="export-preview" id="css-export"><code>:root {
+  --color-primary: #3B82F6;
+  --color-secondary: #10B981;
+  --color-accent: #F59E0B;
+  --color-background: #F8FAFC;
+  --color-text: #0F172A;
+}</code></pre>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>What is a brand color palette generator?</summary>
+          <p>A brand color palette generator helps you create a cohesive set of colors for your brand identity from one base color. It automatically generates complementary primary, secondary, accent, background, and text colors.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do I use the brand color palette generator?</summary>
+          <p>Simply enter a hex color code for your base color. The tool will generate a full palette, check contrast ratios for accessibility, and let you export the palette as CSS custom properties.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What accessibility checks are performed?</summary>
+          <p>The tool checks WCAG 2.1 contrast ratios between text and background colors, ensuring your brand palette meets AA (4.5:1) or AAA (7:1) standards for readability.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I export the palette?</summary>
+          <p>Yes! You can copy the CSS variables to your clipboard or download them as a <code>.css</code> file for easy integration into your project.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What colors are generated from the base color?</summary>
+          <p>The tool generates five colors: <strong>Primary</strong> (your brand's main color), <strong>Secondary</strong> (a complementary supporting color), <strong>Accent</strong> (for highlights and calls to action), <strong>Background</strong> (a light neutral for page backgrounds), and <strong>Text</strong> (a dark color optimized for readability).</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+
+    <!-- Client-side logic -->
+    <script>
+      /**
+       * Brand Color Palette Generator – Client-side Logic
+       *
+       * Generates a 5-color brand palette from a base hex color.
+       * Performs WCAG 2.1 contrast ratio calculations.
+       * Supports clipboard copy and CSS file download.
+       */
+
+      (() => {
+        'use strict';
+
+        // ─── DOM refs ─────────────────────────────────────────
+        const baseColorInput = document.getElementById('base-color');
+        const baseColorHex   = document.getElementById('base-color-hex');
+        const palettePreview = document.getElementById('palette-preview');
+        const a11ySection    = document.getElementById('a11y-results');
+
+        const hexLabels = {
+          primary:    document.getElementById('hex-primary'),
+          secondary:  document.getElementById('hex-secondary'),
+          accent:     document.getElementById('hex-accent'),
+          background: document.getElementById('hex-background'),
+          text:       document.getElementById('hex-text'),
+        };
+
+        const ratioEls = {
+          'text-bg':        document.getElementById('ratio-text-bg'),
+          'text-primary':   document.getElementById('ratio-text-primary'),
+          'text-secondary': document.getElementById('ratio-text-secondary'),
+        };
+
+        const badgeEls = {
+          'text-bg':        document.querySelector('[data-pair="text-on-background"] .pair-badge'),
+          'text-primary':   document.querySelector('[data-pair="text-on-primary"] .pair-badge'),
+          'text-secondary': document.querySelector('[data-pair="text-on-secondary"] .pair-badge'),
+        };
+
+        const cssExportPre = document.getElementById('css-export');
+        const copyBtn      = document.getElementById('copy-css');
+        const downloadBtn  = document.getElementById('download-css');
+
+        // ─── Color utilities ──────────────────────────────────
+        /** Parse hex (#RRGGBB) to {r,g,b} 0-255 */
+        function hexToRgb(hex) {
+          const clean = hex.replace(/^#/, '');
+          if (clean.length !== 6) return null;
+          const num = parseInt(clean, 16);
+          if (isNaN(num)) return null;
+          return {
+            r: (num >> 16) & 0xff,
+            g: (num >> 8) & 0xff,
+            b: num & 0xff,
+          };
+        }
+
+        /** Linearize sRGB component */
+        function linearize(c) {
+          const v = c / 255;
+          return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+        }
+
+        /** Relative luminance (WCAG) */
+        function luminance(r, g, b) {
+          return 0.2126 * linearize(r) + 0.7152 * linearize(g) + 0.0722 * linearize(b);
+        }
+
+        /** Contrast ratio between two hex colors */
+        function contrastRatio(hex1, hex2) {
+          const c1 = hexToRgb(hex1);
+          const c2 = hexToRgb(hex2);
+          if (!c1 || !c2) return 0;
+          const l1 = luminance(c1.r, c1.g, c1.b);
+          const l2 = luminance(c2.r, c2.g, c2.b);
+          const lighter = Math.max(l1, l2);
+          const darker  = Math.min(l1, l2);
+          return (lighter + 0.05) / (darker + 0.05);
+        }
+
+        /** WCAG rating from ratio */
+        function wcagRating(ratio) {
+          if (ratio >= 7)  return 'AAA';
+          if (ratio >= 4.5) return 'AA';
+          if (ratio >= 3)  return 'AA Large';
+          return 'Fail';
+        }
+
+        /** Format ratio to string */
+        function formatRatio(ratio) {
+          return ratio.toFixed(1) + ':1';
+        }
+
+        /** Clamp a value between 0-255 */
+        function clamp(v) {
+          return Math.max(0, Math.min(255, Math.round(v)));
+        }
+
+        /** RGB object to hex string */
+        function rgbToHex(r, g, b) {
+          return '#' + [r, g, b].map(c => clamp(c).toString(16).padStart(2, '0')).join('');
+        }
+
+        // ─── Palette generation ──────────────────────────────
+        /**
+         * Generate a 5-color brand palette from a base color.
+         *
+         * Strategy:
+         *  - Primary   = base color (as-is)
+         *  - Secondary = hue rotated +120°, slightly desaturated
+         *  - Accent    = hue rotated -30°, more saturated, lighter
+         *  - Background = light tint (high lightness, low saturation)
+         *  - Text      = near-black with a hint of the base hue
+         */
+        function generatePalette(baseHex) {
+          const rgb = hexToRgb(baseHex);
+          if (!rgb) return null;
+
+          // Helper: RGB → HSL (simplified)
+          function rgbToHsl(r, g, b) {
+            r /= 255; g /= 255; b /= 255;
+            const mx = Math.max(r, g, b);
+            const mn = Math.min(r, g, b);
+            const d = mx - mn;
+            let h = 0, s = 0, l = (mx + mn) / 2;
+            if (d !== 0) {
+              s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+              if      (mx === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+              else if (mx === g) h = ((b - r) / d + 2) / 6;
+              else               h = ((r - g) / d + 4) / 6;
+            }
+            return { h: h % 1, s, l };
+          }
+
+          // Helper: HSL → RGB → hex
+          function hslToHex(h, s, l) {
+            h = ((h % 1) + 1) % 1;
+            const c = (1 - Math.abs(2 * l - 1)) * s;
+            const x = c * (1 - Math.abs((h * 6) % 2 - 1));
+            const m = l - c / 2;
+            let r, g, b;
+            const hi = Math.floor(h * 6);
+            switch (hi) {
+              case 0: r = c; g = x; b = 0; break;
+              case 1: r = x; g = c; b = 0; break;
+              case 2: r = 0; g = c; b = x; break;
+              case 3: r = 0; g = x; b = c; break;
+              case 4: r = x; g = 0; b = c; break;
+              default: r = c; g = 0; b = x; break;
+            }
+            return rgbToHex((r + m) * 255, (g + m) * 255, (b + m) * 255);
+          }
+
+          const base = rgbToHsl(rgb.r, rgb.g, rgb.b);
+
+          // Generate palette
+          const primary   = baseHex;
+          const secondary = hslToHex(base.h + 120/360, Math.max(0.35, base.s - 0.15), Math.min(0.55, base.l + 0.05));
+          const accent    = hslToHex(base.h - 30/360, Math.min(1, base.s + 0.15), Math.min(0.65, base.l + 0.2));
+          const background = hslToHex(base.h, Math.max(0.02, base.s * 0.1), 0.97);
+          const text      = hslToHex(base.h, Math.min(0.15, base.s * 0.4), 0.08);
+
+          return { primary, secondary, accent, background, text };
+        }
+
+        // ─── Update UI ───────────────────────────────────────
+        function updatePalette(hex) {
+          // Validate hex
+          if (!/^#[0-9a-fA-F]{6}$/.test(hex)) return;
+
+          const palette = generatePalette(hex);
+          if (!palette) return;
+
+          // Update swatch backgrounds
+          const swatches = palettePreview.querySelectorAll('.color-swatch');
+          const colorMap = ['primary', 'secondary', 'accent', 'background', 'text'];
+          swatches.forEach((el, i) => {
+            const key = colorMap[i];
+            const swatchDiv = el.querySelector('.swatch');
+            if (swatchDiv) {
+              swatchDiv.style.setProperty('background', palette[key], 'important');
+            }
+          });
+
+          // Update hex labels
+          Object.keys(hexLabels).forEach(key => {
+            if (hexLabels[key]) hexLabels[key].textContent = palette[key];
+          });
+
+          // Update CSS export preview
+          const cssText = `:root {
+  --color-primary: ${palette.primary};
+  --color-secondary: ${palette.secondary};
+  --color-accent: ${palette.accent};
+  --color-background: ${palette.background};
+  --color-text: ${palette.text};
+}`;
+          const codeEl = cssExportPre.querySelector('code');
+          if (codeEl) codeEl.textContent = cssText;
+
+          // Update accessibility checks
+          const pairs = [
+            { key: 'text-bg',        a: palette.text,       b: palette.background },
+            { key: 'text-primary',   a: palette.text,       b: palette.primary },
+            { key: 'text-secondary', a: palette.text,       b: palette.secondary },
+          ];
+
+          pairs.forEach(({ key, a, b }) => {
+            const ratio = contrastRatio(a, b);
+            const rating = wcagRating(ratio);
+            if (ratioEls[key]) ratioEls[key].textContent = formatRatio(ratio);
+            if (badgeEls[key]) {
+              let cls = 'pair-badge ';
+              if (rating === 'AAA')        cls += 'badge-aaa';
+              else if (rating === 'AA')    cls += 'badge-aa';
+              else if (rating === 'AA Large') cls += 'badge-aa-large';
+              else                         cls += 'badge-fail';
+              badgeEls[key].className = cls;
+              badgeEls[key].textContent = rating;
+            }
+          });
+        }
+
+        // ─── Event handlers ──────────────────────────────────
+        function handleColorChange(hex) {
+          if (!/^#[0-9a-fA-F]{6}$/.test(hex)) {
+            // Try to normalize
+            if (/^[0-9a-fA-F]{6}$/.test(hex)) hex = '#' + hex;
+            if (/^#[0-9a-fA-F]{3,4}$/.test(hex)) return; // shorthand not supported
+            if (!/^#[0-9a-fA-F]{6}$/.test(hex)) return;
+          }
+          baseColorInput.value = hex;
+          baseColorHex.value = hex;
+          updatePalette(hex);
+        }
+
+        baseColorInput.addEventListener('input', () => {
+          handleColorChange(baseColorInput.value);
+        });
+
+        baseColorHex.addEventListener('input', () => {
+          const val = baseColorHex.value;
+          if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+            handleColorChange(val);
+          }
+        });
+
+        baseColorHex.addEventListener('blur', () => {
+          let val = baseColorHex.value.trim();
+          if (!/^#/.test(val)) val = '#' + val;
+          if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+            handleColorChange(val);
+          } else {
+            // Revert
+            baseColorHex.value = baseColorInput.value;
+          }
+        });
+
+        // Copy CSS
+        copyBtn.addEventListener('click', async () => {
+          const code = cssExportPre.querySelector('code');
+          if (!code) return;
+          try {
+            await navigator.clipboard.writeText(code.textContent);
+            copyBtn.textContent = '✅ Copied!';
+            setTimeout(() => { copyBtn.textContent = '📋 Copy CSS'; }, 2000);
+          } catch {
+            // Fallback
+            const range = document.createRange();
+            range.selectNodeContents(code);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+            document.execCommand('copy');
+            sel.removeAllRanges();
+            copyBtn.textContent = '✅ Copied!';
+            setTimeout(() => { copyBtn.textContent = '📋 Copy CSS'; }, 2000);
+          }
+        });
+
+        // Download CSS
+        downloadBtn.addEventListener('click', () => {
+          const code = cssExportPre.querySelector('code');
+          if (!code) return;
+          const blob = new Blob([code.textContent], { type: 'text/css' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'brand-palette.css';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        });
+
+        // ─── Init ────────────────────────────────────────────
+        handleColorChange(baseColorInput.value);
+      })();
+    </script>
+
+    <!-- Styles -->
+    <style>
+      .tool-intro p {
+        max-width: 700px;
+        margin: 0 auto 2rem;
+        text-align: center;
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: var(--color-text, #374151);
+      }
+
+      .tool-ui {
+        max-width: 800px;
+        margin: 0 auto 3rem;
+      }
+
+      .input-group {
+        margin-bottom: 2.5rem;
+        text-align: center;
+      }
+
+      .input-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+      }
+
+      .color-picker-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+      }
+
+      .color-input {
+        width: 56px;
+        height: 56px;
+        border: 2px solid var(--color-border, #e5e7eb);
+        border-radius: 8px;
+        cursor: pointer;
+        padding: 2px;
+        background: none;
+      }
+
+      .color-input::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+
+      .color-input::-webkit-color-swatch {
+        border: none;
+        border-radius: 6px;
+      }
+
+      .hex-input {
+        width: 120px;
+        padding: 0.75rem 1rem;
+        border: 2px solid var(--color-border, #e5e7eb);
+        border-radius: 8px;
+        font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+        font-size: 1rem;
+        text-align: center;
+        background: var(--color-surface, #fff);
+        color: var(--color-text, #111);
+      }
+
+      .hex-input:focus {
+        outline: none;
+        border-color: var(--color-primary, #3B82F6);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+      }
+
+      /* Palette preview grid */
+      .palette-preview {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .color-swatch {
+        display: flex;
+        flex-direction: column;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        background: var(--color-surface, #fff);
+        border: 1px solid var(--color-border, #e5e7eb);
+      }
+
+      .color-swatch .swatch {
+        height: 100px;
+        transition: background 0.2s ease;
+      }
+
+      .swatch-label {
+        padding: 0.65rem 0.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+      }
+
+      .label-name {
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--color-text, #111);
+      }
+
+      .label-hex {
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.8rem;
+        color: var(--color-text-muted, #6b7280);
+      }
+
+      /* Accessibility section */
+      .accessibility-section {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: var(--color-surface, #fff);
+        border: 1px solid var(--color-border, #e5e7eb);
+        border-radius: 12px;
+      }
+
+      .accessibility-section h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0 0 1rem;
+        font-size: 1.1rem;
+      }
+
+      .badge-wcag {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 4px;
+        background: #6366f1;
+        color: #fff;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+
+      .contrast-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .contrast-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.5rem 0.75rem;
+        background: var(--color-bg-muted, #f9fafb);
+        border-radius: 6px;
+      }
+
+      .pair-label {
+        flex: 1;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .pair-ratio {
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.9rem;
+        color: var(--color-text-muted, #6b7280);
+        min-width: 5em;
+        text-align: right;
+      }
+
+      .pair-badge {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+        font-weight: 700;
+        min-width: 3em;
+        text-align: center;
+      }
+
+      .badge-aaa { background: #059669; color: #fff; }
+      .badge-aa  { background: #2563eb; color: #fff; }
+      .badge-aa-large { background: #ca8a04; color: #fff; }
+      .badge-fail { background: #dc2626; color: #fff; }
+
+      /* Export section */
+      .export-section {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: var(--color-surface, #fff);
+        border: 1px solid var(--color-border, #e5e7eb);
+        border-radius: 12px;
+      }
+
+      .export-section h3 {
+        margin: 0 0 1rem;
+        font-size: 1.1rem;
+      }
+
+      .export-actions {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        border: 1px solid var(--color-border, #e5e7eb);
+        background: var(--color-surface, #fff);
+        color: var(--color-text, #111);
+        transition: all 0.15s ease;
+      }
+
+      .btn:hover {
+        background: var(--color-bg-muted, #f3f4f6);
+        border-color: var(--color-text-muted, #9ca3af);
+      }
+
+      .btn:active {
+        transform: translateY(1px);
+      }
+
+      .export-preview {
+        margin: 0;
+        padding: 1rem 1.25rem;
+        background: #1e293b;
+        border-radius: 8px;
+        overflow-x: auto;
+      }
+
+      .export-preview code {
+        font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+        font-size: 0.85rem;
+        color: #e2e8f0;
+        line-height: 1.6;
+        white-space: pre;
+      }
+
+      /* FAQ Section */
+      .faq-section {
+        max-width: 700px;
+        margin: 3rem auto 0;
+      }
+
+      .faq-section h2 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+      }
+
+      .faq-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .faq-item {
+        border: 1px solid var(--color-border, #e5e7eb);
+        border-radius: 8px;
+        overflow: hidden;
+        background: var(--color-surface, #fff);
+      }
+
+      .faq-item summary {
+        padding: 1rem 1.25rem;
+        font-weight: 600;
+        cursor: pointer;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq-item summary::after {
+        content: '+';
+        font-size: 1.2rem;
+        color: var(--color-text-muted, #6b7280);
+        transition: transform 0.2s ease;
+      }
+
+      .faq-item[open] summary::after {
+        content: '−';
+      }
+
+      .faq-item p {
+        padding: 0 1.25rem 1rem;
+        margin: 0;
+        line-height: 1.7;
+        color: var(--color-text-muted, #4b5563);
+      }
+
+      @media (max-width: 640px) {
+        .palette-preview {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .contrast-row {
+          flex-wrap: wrap;
+        }
+      }
+    </style>
+  </ToolLayout>
+</BaseLayout>

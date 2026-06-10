@@ -61,7 +61,7 @@ import FAQ from '../components/FAQ.astro';
               <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/>
             </svg>
           </div>
-          <div class="stat-number">8</div>
+          <div class="stat-number">15+</div>
           <div class="stat-label">Free Tools</div>
         </div>
         <div class="stat-card">
@@ -169,6 +169,60 @@ import FAQ from '../components/FAQ.astro';
             gradient="linear-gradient(135deg, #6366f1, #a855f7)"
           />
         </div>
+        <div class="fade-in fade-in-delay-1">
+          <ToolCard
+            title="Color Blindness Simulator"
+            description="Simulate different types of color vision deficiency"
+            href="/color-blindness-simulator/"
+            icon="🧬"
+            gradient="linear-gradient(135deg, #3b82f6, #1d4ed8)"
+          />
+        </div>
+        <div class="fade-in fade-in-delay-2">
+          <ToolCard
+            title="Color Mixer"
+            description="Mix two colors and see the result"
+            href="/color-mixer/"
+            icon="🎯"
+            gradient="linear-gradient(135deg, #f43f5e, #e11d48)"
+          />
+        </div>
+        <div class="fade-in fade-in-delay-3">
+          <ToolCard
+            title="CSS Color Converter"
+            description="Generate CSS color values from any format"
+            href="/css-color-converter/"
+            icon="{ }"
+            gradient="linear-gradient(135deg, #0ea5e9, #0284c7)"
+          />
+        </div>
+        <div class="fade-in fade-in-delay-1">
+          <ToolCard
+            title="Random Color Generator"
+            description="Generate random colors and palettes"
+            href="/random-color-generator/"
+            icon="🎲"
+            gradient="linear-gradient(135deg, #8b5cf6, #7c3aed)"
+          />
+        </div>
+        <div class="fade-in fade-in-delay-2">
+          <ToolCard
+            title="RGBA Converter"
+            description="Convert colors with opacity to RGBA"
+            href="/rgba-converter/"
+            icon="🎨"
+            gradient="linear-gradient(135deg, #22c55e, #16a34a)"
+          />
+        </div>
+        <div class="fade-in fade-in-delay-3">
+          <ToolCard
+            title="Color Names"
+            description="Browse all CSS named colors with swatches"
+            href="/color-names/"
+            icon="📋"
+            gradient="linear-gradient(135deg, #eab308, #ca8a04)"
+          />
+        </div>
       </div>
     </div>
   </section>
@@ -193,6 +247,24 @@ import FAQ from '../components/FAQ.astro';
         <p class="fade-in fade-in-delay-2">
           Professional color work requires precision. Color Helper supports standard color representations — HEX, RGB, and HSL — along with opacity handling and real-time preview. The gradient generator lets you craft multi-stop CSS gradients with immediate visual feedback, and the palette generator outputs colors you can copy and use directly in your code or design files. Every tool is designed to be intuitive, responsive, and free of clutter, so you can focus on your work rather than navigating complex interfaces. No ads, no upsells, no data collection — just dependable color utilities at your fingertips.
         </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Recently Added Section ===== -->
+  <section class="section recently-added">
+    <div class="container">
+      <div class="tools-header fade-in">
+        <h2>Recently Added</h2>
+        <p>Brand new tools just shipped — try them out!</p>
+      </div>
+      <div class="recent-grid fade-in fade-in-delay-1">
+        <a href="/color-blindness-simulator/" class="recent-link">🧬 Color Blindness Simulator</a>
+        <a href="/color-mixer/" class="recent-link">🎯 Color Mixer</a>
+        <a href="/css-color-converter/" class="recent-link">{ } CSS Color Converter</a>
+        <a href="/random-color-generator/" class="recent-link">🎲 Random Color Generator</a>
+        <a href="/rgba-converter/" class="recent-link">🎨 RGBA Converter</a>
+        <a href="/color-names/" class="recent-link">📋 Color Names</a>
       </div>
     </div>
   </section>
@@ -499,6 +571,45 @@ import FAQ from '../components/FAQ.astro';
     line-height: 1.8;
     color: var(--color-text-secondary);
     font-size: 1.05rem;
+  }
+
+  /* ============================================================
+     RECENTLY ADDED
+     ============================================================ */
+  .recently-added {
+    background: var(--color-bg);
+    padding: 4rem 0 5rem;
+  }
+
+  .recent-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .recent-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1rem;
+    border-radius: var(--radius-md);
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: transform 0.25s var(--ease-out-expo), box-shadow 0.25s var(--ease-out-expo), border-color 0.25s var(--ease-out-expo);
+  }
+
+  .recent-link:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
   }
 
   /* ============================================================

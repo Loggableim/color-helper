@@ -1,0 +1,444 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../components/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+
+const title = 'CSS Color Converter';
+const description = 'Convert any CSS color between HEX, RGB, HSL and RGBA formats. Generate ready-to-use CSS variables and copy output with one click.';
+const canonical = 'https://color-helper.com/css-color-converter/';
+const breadcrumbs = [{ label: 'CSS Color Converter' }];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout title="CSS Color Converter" {description} {breadcrumbs}>
+    <div class="tool-wrapper">
+      <div id="css-converter-root">
+        <div class="converter-card">
+          <h2 class="converter-subtitle">CSS Color Converter</h2>
+          <p class="converter-desc">Enter a color value and get instant CSS-ready output in every format.</p>
+
+          <div class="input-group">
+            <label for="color-input" class="input-label">Enter color value</label>
+            <input
+              id="color-input"
+              type="text"
+              class="color-input"
+              placeholder="#ff6600, rgb(255,102,0), hsl(30,100%,50%) …"
+              spellcheck="false"
+              autocomplete="off"
+            />
+            <div id="detect-badge" class="detect-badge">Waiting for input…</div>
+          </div>
+
+          <div id="preview-row" class="preview-row">
+            <div id="color-preview" class="color-preview" style="background-color: #e2e8f0;"></div>
+            <div class="preview-info">
+              <span id="detected-format" class="detected-format">—</span>
+            </div>
+          </div>
+
+          <div id="results" class="results-grid" style="display: none;">
+            <!-- color: #hex -->
+            <div class="result-card">
+              <div class="result-label">color: #hex</div>
+              <div class="result-row">
+                <code id="result-color-hex" class="result-value">—</code>
+                <button class="copy-btn" data-copy="result-color-hex" title="Copy">📋</button>
+              </div>
+            </div>
+
+            <!-- background-color: #hex -->
+            <div class="result-card">
+              <div class="result-label">background-color: #hex</div>
+              <div class="result-row">
+                <code id="result-bg-hex" class="result-value">—</code>
+                <button class="copy-btn" data-copy="result-bg-hex" title="Copy">📋</button>
+              </div>
+            </div>
+
+            <!-- --color-primary: #hex -->
+            <div class="result-card">
+              <div class="result-label">--color-primary: #hex</div>
+              <div class="result-row">
+                <code id="result-cssvar" class="result-value">—</code>
+                <button class="copy-btn" data-copy="result-cssvar" title="Copy">📋</button>
+              </div>
+            </div>
+
+            <!-- rgba(r,g,b) -->
+            <div class="result-card">
+              <div class="result-label">rgba(r,g,b)</div>
+              <div class="result-row">
+                <code id="result-rgba" class="result-value">—</code>
+                <button class="copy-btn" data-copy="result-rgba" title="Copy">📋</button>
+              </div>
+            </div>
+
+            <!-- hsla(h,s,l) -->
+            <div class="result-card">
+              <div class="result-label">hsla(h,s,l)</div>
+              <div class="result-row">
+                <code id="result-hsla" class="result-value">—</code>
+                <button class="copy-btn" data-copy="result-hsla" title="Copy">📋</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="error-msg" class="error-msg" style="display: none;"></div>
+
+          <div class="quick-samples">
+            <span class="quick-label">Try an example:</span>
+            <div class="quick-btns">
+              <button class="quick-btn" data-color="#ff6b6b" style="background:#ff6b6b" title="#ff6b6b"></button>
+              <button class="quick-btn" data-color="#4ecdc4" style="background:#4ecdc4" title="#4ecdc4"></button>
+              <button class="quick-btn" data-color="#6366f1" style="background:#6366f1" title="#6366f1"></button>
+              <button class="quick-btn" data-color="#f59e0b" style="background:#f59e0b" title="#f59e0b"></button>
+              <button class="quick-btn" data-color="#22c55e" style="background:#22c55e" title="#22c55e"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="seo-content">
+      <h2>What Is a CSS Color Converter?</h2>
+      <p>A CSS color converter transforms a single color value into multiple CSS-ready formats so you can use it anywhere in your stylesheets. Instead of manually rewriting <code>#ff6600</code> as <code>rgba(255, 102, 0, 1)</code> or <code>hsla(30, 100%, 50%, 1)</code>, this tool generates all common CSS representations instantly. You get a color declaration, a background-color declaration, a CSS custom property (<code>--color-primary</code>), an RGBA value, and an HSLA value — each with its own copy button.</p>
+      <p>This is especially useful when building design systems or component libraries where the same color appears in multiple CSS contexts. Just enter the color once and copy the exact syntax you need for each use case. The tool also works great for theming: the <code>--color-primary</code> output is ready to paste into a <code>:root</code> block, giving you a consistent base color across your entire project.</p>
+      <p>All conversion happens entirely in your browser — no server round-trips, no data storage. Enter any valid HEX, RGB, or HSL value and the tool auto-detects the format, shows a live preview, and updates every output field in real time.</p>
+    </section>
+
+    <section class="related-tools">
+      <h2>Related Tools</h2>
+      <ul>
+        <li><a href="/color-converter/">Universal Color Converter</a> — Convert between HEX, RGB, and HSL</li>
+        <li><a href="/rgba-converter/">RGBA Converter</a> — Add opacity to any color</li>
+        <li><a href="/color-picker/">Color Picker</a> — Pick and save colors interactively</li>
+      </ul>
+    </section>
+
+    <FAQ
+      items={[
+        {
+          question: 'What CSS color formats can I generate here?',
+          answer: 'You can generate color: #hex, background-color: #hex, --color-primary: #hex (CSS custom property), rgba(r,g,b), and hsla(h,s,l) — all from a single input value. Each format has its own copy button for quick pasting into your stylesheets.'
+        },
+        {
+          question: 'How does the auto-detection work?',
+          answer: 'The converter uses regular expressions to detect whether your input is HEX (starting with #, 3 or 6 hex digits), RGB (rgb() notation or three comma-separated 0–255 numbers), or HSL (hsl() notation or hue,s%,l% values). It then converts your color to all other formats automatically.'
+        },
+        {
+          question: 'Can I use the --color-primary output directly in my project?',
+          answer: 'Yes. The CSS custom property output is generated as a complete declaration like --color-primary: #ff6600;. You can copy it directly into your :root block or any CSS rule. This is especially handy when building design systems with CSS custom properties for theming.'
+        },
+        {
+          question: 'Does this tool support alpha / opacity?',
+          answer: 'The tool outputs rgba() and hsla() with an alpha of 1 by default. For custom opacity values, use our dedicated RGBA Converter which includes an opacity slider for interactive alpha control.'
+        }
+      ]}
+    />
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+</BaseLayout>
+
+<script>
+  (function() {
+    'use strict';
+
+    function normalizeHex(hex) {
+      let h = hex.trim().replace(/^#/, '');
+      if (h.length === 3) h = h.split('').map(c => c + c).join('');
+      return '#' + h.toLowerCase();
+    }
+
+    function isValidHex(hex) {
+      const h = hex.trim().replace(/^#/, '');
+      if (h.length !== 3 && h.length !== 6) return false;
+      return /^[0-9a-fA-F]+$/.test(h);
+    }
+
+    function hexToRgb(hex) {
+      const h = normalizeHex(hex);
+      const val = h.replace('#', '');
+      return {
+        r: parseInt(val.substring(0, 2), 16),
+        g: parseInt(val.substring(2, 4), 16),
+        b: parseInt(val.substring(4, 6), 16),
+      };
+    }
+
+    function rgbToHex(r, g, b) {
+      const clamp = n => Math.min(255, Math.max(0, Math.round(n)));
+      return '#' + [r, g, b].map(c => clamp(c).toString(16).padStart(2, '0')).join('');
+    }
+
+    function rgbToHsl(r, g, b) {
+      const rr = r / 255, gg = g / 255, bb = b / 255;
+      const max = Math.max(rr, gg, bb), min = Math.min(rr, gg, bb);
+      const diff = max - min;
+      let h = 0, s = 0, l = (max + min) / 2;
+      if (diff !== 0) {
+        s = l > 0.5 ? diff / (2 - max - min) : diff / (max + min);
+        switch (max) {
+          case rr: h = ((gg - bb) / diff + (gg < bb ? 6 : 0)) * 60; break;
+          case gg: h = ((bb - rr) / diff + 2) * 60; break;
+          case bb: h = ((rr - gg) / diff + 4) * 60; break;
+        }
+      }
+      return { h: Math.round(h), s: Math.round(s * 100), l: Math.round(l * 100) };
+    }
+
+    function hslToRgb(h, s, l) {
+      const ss = s / 100, ll = l / 100;
+      const c = (1 - Math.abs(2 * ll - 1)) * ss;
+      const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+      const m = ll - c / 2;
+      let r = 0, g = 0, b = 0;
+      if (h < 60) { r = c; g = x; b = 0; }
+      else if (h < 120) { r = x; g = c; b = 0; }
+      else if (h < 180) { r = 0; g = c; b = x; }
+      else if (h < 240) { r = 0; g = x; b = c; }
+      else if (h < 300) { r = x; g = 0; b = c; }
+      else { r = c; g = 0; b = x; }
+      return {
+        r: Math.round((r + m) * 255),
+        g: Math.round((g + m) * 255),
+        b: Math.round((b + m) * 255),
+      };
+    }
+
+    function getLuminance(r, g, b) {
+      const srgb = [r / 255, g / 255, b / 255].map(c =>
+        c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
+      );
+      return 0.2126 * srgb[0] + 0.7152 * srgb[1] + 0.0722 * srgb[2];
+    }
+
+    function isLight(r, g, b) { return getLuminance(r, g, b) > 0.5; }
+
+    async function copyToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        return true;
+      }
+    }
+
+    function detectFormat(input) {
+      const trimmed = input.trim();
+      if (!trimmed) return { format: null, error: null, rgb: null };
+
+      if (/^#?[0-9a-fA-F]{3}$/.test(trimmed) || /^#?[0-9a-fA-F]{6}$/.test(trimmed)) {
+        const hex = trimmed.startsWith('#') ? trimmed : '#' + trimmed;
+        if (isValidHex(hex)) {
+          const rgb = hexToRgb(hex);
+          return { format: 'HEX', error: null, rgb, raw: hex };
+        }
+      }
+
+      let rgbMatch = trimmed.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+      if (!rgbMatch) rgbMatch = trimmed.match(/^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)$/);
+      if (rgbMatch) {
+        const r = parseInt(rgbMatch[1], 10);
+        const g = parseInt(rgbMatch[2], 10);
+        const b = parseInt(rgbMatch[3], 10);
+        if (r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255) {
+          return { format: 'RGB', error: null, rgb: { r, g, b }, raw: `rgb(${r}, ${g}, ${b})` };
+        }
+        return { format: 'RGB', error: 'RGB values must be between 0 and 255.', rgb: null };
+      }
+
+      let hslMatch = trimmed.match(/^hsl\s*\(\s*(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)$/i);
+      if (!hslMatch) hslMatch = trimmed.match(/^hsl\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+      if (!hslMatch) hslMatch = trimmed.match(/^(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%$/);
+      if (!hslMatch) hslMatch = trimmed.match(/^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)$/);
+      if (hslMatch) {
+        const h = parseInt(hslMatch[1], 10);
+        const s = parseInt(hslMatch[2], 10);
+        const l = parseInt(hslMatch[3], 10);
+        if (h >= 0 && h <= 360 && s >= 0 && s <= 100 && l >= 0 && l <= 100) {
+          const rgb = hslToRgb(h, s, l);
+          return { format: 'HSL', error: null, rgb, raw: `hsl(${h}, ${s}%, ${l}%)` };
+        }
+        return { format: 'HSL', error: 'Hue must be 0–360, saturation and lightness 0–100.', rgb: null };
+      }
+
+      return { format: null, error: 'Could not detect color format. Try #ff6600, rgb(255,102,0), or hsl(30,100%,50%).', rgb: null };
+    }
+
+    const inputEl = document.getElementById('color-input');
+    const previewEl = document.getElementById('color-preview');
+    const detectBadge = document.getElementById('detect-badge');
+    const detectedFormat = document.getElementById('detected-format');
+    const resultsEl = document.getElementById('results');
+    const errorMsg = document.getElementById('error-msg');
+
+    const resultColorHex = document.getElementById('result-color-hex');
+    const resultBgHex = document.getElementById('result-bg-hex');
+    const resultCssvar = document.getElementById('result-cssvar');
+    const resultRgba = document.getElementById('result-rgba');
+    const resultHsla = document.getElementById('result-hsla');
+
+    function render(input) {
+      if (!input || input.trim() === '') {
+        resultsEl.style.display = 'none';
+        errorMsg.style.display = 'none';
+        detectBadge.textContent = 'Waiting for input…';
+        detectBadge.className = 'detect-badge';
+        detectedFormat.textContent = '—';
+        previewEl.style.backgroundColor = '#e2e8f0';
+        return;
+      }
+
+      const { format, error, rgb, raw } = detectFormat(input);
+
+      if (error || !rgb) {
+        resultsEl.style.display = 'none';
+        errorMsg.style.display = 'block';
+        errorMsg.textContent = error || 'Invalid color value.';
+        detectBadge.textContent = 'Error';
+        detectBadge.className = 'detect-badge detect-error';
+        detectedFormat.textContent = '—';
+        previewEl.style.backgroundColor = '#e2e8f0';
+        return;
+      }
+
+      errorMsg.style.display = 'none';
+      resultsEl.style.display = 'grid';
+      detectBadge.textContent = format + ' detected';
+      detectBadge.className = 'detect-badge detect-success';
+      detectedFormat.textContent = format;
+
+      const hexColor = rgbToHex(rgb.r, rgb.g, rgb.b);
+      previewEl.style.backgroundColor = hexColor;
+      const light = isLight(rgb.r, rgb.g, rgb.b);
+      previewEl.style.borderColor = light ? '#cbd5e1' : '#334155';
+
+      const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+      const rgbStr = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+      const hslStr = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+      const rgbaStr = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 1)`;
+      const hslaStr = `hsla(${hsl.h}, ${hsl.s}%, ${hsl.l}%, 1)`;
+
+      resultColorHex.textContent = `color: ${hexColor};`;
+      resultBgHex.textContent = `background-color: ${hexColor};`;
+      resultCssvar.textContent = `--color-primary: ${hexColor};`;
+      resultRgba.textContent = rgbaStr;
+      resultHsla.textContent = hslaStr;
+    }
+
+    inputEl.addEventListener('input', function() { render(this.value); });
+
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async function() {
+        const targetId = this.getAttribute('data-copy');
+        const targetEl = document.getElementById(targetId);
+        if (!targetEl) return;
+        const text = targetEl.textContent;
+        if (text === '—' || !text) return;
+
+        const original = this.textContent;
+        await copyToClipboard(text);
+        this.textContent = '✓';
+        this.classList.add('copied');
+        setTimeout(() => {
+          this.textContent = original;
+          this.classList.remove('copied');
+        }, 1200);
+      });
+    });
+
+    document.querySelectorAll('.quick-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const color = this.getAttribute('data-color');
+        if (color) {
+          inputEl.value = color;
+          render(color);
+          inputEl.focus();
+        }
+      });
+    });
+
+    inputEl.value = '#ff6600';
+    render('#ff6600');
+  })();
+</script>
+
+<style is:global>
+  .tool-wrapper { margin-bottom: 1.5rem; }
+  .converter-card {
+    max-width: 540px; margin: 0 auto;
+    background: #ffffff; border: 1px solid var(--color-border, #e2e8f0);
+    border-radius: 14px; padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+  }
+  .converter-subtitle { margin: 0 0 0.25rem 0; font-size: 1.125rem; font-weight: 700; letter-spacing: -0.01em; color: var(--color-text-primary, #1e293b); }
+  .converter-desc { margin: 0 0 1.25rem 0; font-size: 0.8125rem; color: var(--color-text-secondary, #64748b); }
+  .input-group { margin-bottom: 1rem; }
+  .input-label { display: block; font-size: 0.8125rem; font-weight: 600; margin-bottom: 0.375rem; color: var(--color-text-primary, #1e293b); }
+  .color-input {
+    display: block; width: 100%; padding: 0.625rem 0.875rem; font-size: 0.9375rem;
+    font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+    color: var(--color-text-primary, #1e293b); background: #ffffff;
+    border: 1.5px solid var(--color-border, #e2e8f0); border-radius: 10px; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s; letter-spacing: 0.02em; box-sizing: border-box;
+  }
+  .color-input:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12); }
+  .color-input::placeholder { color: #94a3b8; font-size: 0.85rem; }
+  .detect-badge { margin-top: 0.5rem; font-size: 0.75rem; font-weight: 600; color: var(--color-text-secondary, #64748b); display: flex; align-items: center; gap: 0.375rem; }
+  .detect-badge::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #94a3b8; }
+  .detect-success::before { background: #22c55e; }
+  .detect-error::before { background: #ef4444; }
+  .preview-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+  .color-preview { width: 64px; height: 64px; border-radius: 12px; border: 2px solid var(--color-border, #e2e8f0); transition: background-color 0.15s ease, border-color 0.15s ease; flex-shrink: 0; }
+  .preview-info { font-size: 0.8125rem; color: var(--color-text-secondary, #64748b); }
+  .detected-format { font-weight: 700; font-size: 0.9375rem; color: var(--color-text-primary, #1e293b); }
+  .results-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+  .result-card { background: var(--color-bg-alt, #f8fafc); border: 1px solid var(--color-border, #e2e8f0); border-radius: 10px; padding: 0.75rem; }
+  .result-label { font-size: 0.6875rem; font-weight: 600; color: var(--color-text-secondary, #64748b); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.375rem; }
+  .result-row { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+  .result-value { font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace; font-size: 0.875rem; font-weight: 600; color: var(--color-text-primary, #1e293b); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: transparent; padding: 0; }
+  .copy-btn { flex-shrink: 0; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border: none; border-radius: 8px; background: transparent; cursor: pointer; font-size: 0.875rem; transition: background 0.15s, transform 0.1s; color: var(--color-text-secondary, #64748b); }
+  .copy-btn:hover { background: var(--color-border, #e2e8f0); transform: scale(1.05); }
+  .copy-btn.copied { color: #22c55e; background: rgba(34, 197, 94, 0.1); }
+  .error-msg { background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 0.75rem 1rem; color: #dc2626; font-size: 0.8125rem; font-weight: 500; margin-bottom: 1rem; }
+  .quick-samples { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+  .quick-label { font-size: 0.8125rem; font-weight: 600; color: var(--color-text-primary, #1e293b); }
+  .quick-btns { display: flex; gap: 0.5rem; }
+  .quick-btn { width: 36px; height: 36px; border: 2px solid transparent; border-radius: 8px; cursor: pointer; transition: transform 0.12s ease, border-color 0.15s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .quick-btn:hover { transform: scale(1.15); border-color: #6366f1; }
+  .seo-content { max-width: 720px; margin: 0 auto; padding: 2rem 0; }
+  .seo-content h2 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--color-text-primary); }
+  .seo-content p { margin-bottom: 1rem; line-height: 1.7; color: var(--color-text-secondary); font-size: 1.05rem; }
+  .seo-content code { font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace; font-size: 0.9em; background: var(--color-bg-alt, #f1f5f9); padding: 0.125rem 0.375rem; border-radius: 4px; }
+  .related-tools { max-width: 720px; margin: 0 auto; padding: 2rem 0; }
+  .related-tools h2 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--color-text-primary); }
+  .related-tools ul { list-style: none; padding: 0; margin: 0; }
+  .related-tools li { padding: 0.375rem 0; line-height: 1.6; color: var(--color-text-secondary); font-size: 1.05rem; }
+  .related-tools a { color: #6366f1; text-decoration: none; font-weight: 600; }
+  .related-tools a:hover { text-decoration: underline; }
+  @media (max-width: 480px) {
+    .converter-card { padding: 1rem; }
+    .results-grid { grid-template-columns: 1fr; }
+    .preview-row { flex-direction: column; align-items: flex-start; }
+  }
+</style>

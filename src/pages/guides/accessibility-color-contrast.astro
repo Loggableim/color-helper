@@ -1,0 +1,420 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = 'Accessibility Color Contrast Guide — WCAG AA vs AAA';
+const description = 'Learn about WCAG color contrast requirements, the difference between AA and AAA standards, why contrast matters, and how to check your designs using free tools.';
+const canonical = 'https://color-helper.com/guides/accessibility-color-contrast/';
+const breadcrumbs = [
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Accessibility Color Contrast' },
+];
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "description": description,
+  "author": { "@type": "Organization", "name": "Color Helper" },
+  "publisher": { "@type": "Organization", "name": "Color Helper" },
+  "url": canonical,
+  "mainEntityOfPage": canonical,
+  "datePublished": "2025-01-18",
+  "dateModified": "2025-03-01",
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <article class="guide-article">
+    <div class="container">
+      <div class="guide-wrapper">
+        <div class="guide-header">
+          <h1>Accessibility Color Contrast Guide</h1>
+          <div class="guide-meta">
+            <span class="guide-category">Accessibility</span>
+            <span class="guide-reading-time">8 min read</span>
+          </div>
+        </div>
+
+        <div class="guide-toc">
+          <strong>In this guide:</strong>
+          <ol>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#what-is-contrast">What Is Contrast Ratio?</a></li>
+            <li><a href="#wcag-levels">WCAG Levels: AA vs AAA</a></li>
+            <li><a href="#why-contrast-matters">Why Contrast Matters</a></li>
+            <li><a href="#how-to-check">How to Check Contrast</a></li>
+            <li><a href="#tools-to-use">Tools to Use</a></li>
+            <li><a href="#common-mistakes">Common Contrast Mistakes</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ol>
+        </div>
+
+        <section id="introduction">
+          <h2>Introduction</h2>
+          <p>
+            Color contrast is one of the most critical yet overlooked aspects of accessible design. The 
+            difference in luminance between text and its background directly determines how readable that 
+            text is — especially for users with visual impairments, low vision, or color vision deficiencies. 
+            The Web Content Accessibility Guidelines (WCAG) provide a clear, quantitative framework for 
+            measuring and ensuring sufficient contrast.
+          </p>
+          <p>
+            This guide explains what contrast ratio means, breaks down WCAG AA and AAA requirements, 
+            and shows you how to test your designs using free tools like the Color Helper 
+            <a href="/contrast-checker/">Contrast Checker</a>. Whether you are a designer, developer, 
+            or content creator, understanding contrast will help you build products that are usable by 
+            everyone.
+          </p>
+        </section>
+
+        <section id="what-is-contrast">
+          <h2>What Is Contrast Ratio?</h2>
+          <p>
+            Contrast ratio is a numerical measurement of the difference in luminance between two colors — 
+            typically foreground (text) and background. The ratio ranges from 1:1 (identical colors, no 
+            contrast) to 21:1 (black on white, maximum contrast). A higher ratio means greater distinction 
+            between the two colors.
+          </p>
+          <p>
+            The formula, defined by the W3C, calculates relative luminance for each color using the sRGB 
+            color space. It accounts for how the human eye perceives brightness: green appears brighter than 
+            red at the same intensity, and blue appears darker. This is why two color pairs with the same 
+            difference in perceived brightness can have very different contrast ratios.
+          </p>
+          <p>
+            For example, black text on a white background has a ratio of 21:1 — the highest possible. 
+            Dark gray (#333333) on white has a ratio of about 12:1, which still exceeds all WCAG 
+            requirements. Light gray (#999999) on white, however, drops to roughly 3:1 — failing the AA 
+            standard for normal text. Small luminance differences make a big impact on readability.
+          </p>
+        </section>
+
+        <section id="wcag-levels">
+          <h2>WCAG Levels: AA vs AAA</h2>
+          <p>
+            WCAG defines three conformance levels: A (minimum), AA (recommended), and AAA (enhanced). 
+            For color contrast, the key requirements are at the AA and AAA levels. Level A has no specific 
+            contrast requirement for text, but meeting AA is widely considered the baseline for accessible 
+            web design.
+          </p>
+          <p>
+            <strong>WCAG AA (minimum recommended):</strong>
+          </p>
+          <ul>
+            <li>Normal text (under 18px regular or 14px bold): minimum contrast ratio of <strong>4.5:1</strong></li>
+            <li>Large text (at least 18px bold or 24px regular): minimum of <strong>3:1</strong></li>
+            <li>User interface components and graphical objects: minimum of <strong>3:1</strong></li>
+          </ul>
+          <p>
+            <strong>WCAG AAA (enhanced):</strong>
+          </p>
+          <ul>
+            <li>Normal text: minimum contrast ratio of <strong>7:1</strong></li>
+            <li>Large text: minimum of <strong>4.5:1</strong></li>
+          </ul>
+          <p>
+            AA compliance is the legal standard in many jurisdictions, including the European Accessibility 
+            Act and various accessibility laws worldwide. AAA is a higher standard that provides the best 
+            readability for users with low vision. While achieving AAA for all text can be challenging, 
+            it is worth aiming for on body content. Note that AAA does not apply to logos or purely 
+            decorative text.
+          </p>
+        </section>
+
+        <section id="why-contrast-matters">
+          <h2>Why Contrast Matters</h2>
+          <p>
+            Sufficient contrast is essential for readability. Users with low vision, cataracts, glaucoma, 
+            or other visual impairments struggle to read text that does not stand out clearly from its 
+            background. Even users with normal vision benefit from good contrast — it reduces eye strain 
+            and makes content easier to scan, especially on mobile devices in bright sunlight.
+          </p>
+          <p>
+            Color blindness affects approximately 8% of men and 0.5% of women worldwide. The most common 
+            form is deuteranopia (green-blind), where red and green hues become difficult to distinguish. 
+            Low-contrast combinations that rely solely on color differences to convey information — such 
+            as red text on a green background — become illegible for these users. The 
+            <a href="/contrast-checker/">Contrast Checker</a> includes a color blindness simulator to 
+            help you evaluate your color pairs.
+          </p>
+          <p>
+            Beyond health considerations, contrast matters for usability in real-world conditions. A user 
+            reading on a phone outdoors in bright sunlight needs higher contrast than someone reading on a 
+            desktop monitor in a dim room. Designing for WCAG AA ensures your content remains readable 
+            across a wide range of viewing conditions and devices.
+          </p>
+          <p>
+            There are also legal and business reasons to prioritize contrast. Accessibility lawsuits 
+            related to insufficient color contrast are among the most common web accessibility claims. 
+            Ensuring your designs meet AA standards reduces legal risk while expanding your audience — 
+            including the estimated 1 billion people worldwide with some form of disability.
+          </p>
+        </section>
+
+        <section id="how-to-check">
+          <h2>How to Check Contrast</h2>
+          <p>
+            Checking contrast is straightforward with the right tools. Here is the step-by-step process:
+          </p>
+          <ol>
+            <li>
+              <strong>Identify all text and background combinations</strong> in your design. This includes 
+              body text, headings, links, placeholder text, button text, and any icons or interactive 
+              elements.
+            </li>
+            <li>
+              <strong>Record the HEX, RGB, or HSL values</strong> for each foreground and background pair. 
+              Design tools like Figma and Sketch make this easy with the color picker.
+            </li>
+            <li>
+              <strong>Use a contrast checker</strong> to evaluate each pair. Enter the two colors, and the 
+              tool displays the contrast ratio along with pass/fail indicators for AA and AAA.
+            </li>
+            <li>
+              <strong>Adjust colors that fail</strong> by darkening the text, lightening the background, 
+              or increasing saturation. Small adjustments often make the difference between pass and fail.
+            </li>
+            <li>
+              <strong>Document your passing ratios</strong> in your design system or style guide so 
+              everyone on your team uses accessible combinations.
+            </li>
+          </ol>
+          <p>
+            Use our <a href="/contrast-checker/">Contrast Checker</a> to test any color pair instantly. 
+            The tool shows the exact ratio, WCAG pass/fail status, and a live preview of how the text 
+            looks against the background. It also includes a color blindness simulator to ensure your 
+            combinations work for users with color vision deficiencies.
+          </p>
+        </section>
+
+        <section id="tools-to-use">
+          <h2>Tools to Use</h2>
+          <p>Color Helper offers several tools that support accessible color design:</p>
+          <ul>
+            <li>
+              <a href="/contrast-checker/">Contrast Checker</a> — Test any two colors for WCAG AA and 
+              AAA compliance. Includes a color blindness simulator and live preview.
+            </li>
+            <li>
+              <a href="/color-palette-generator/">Color Palette Generator</a> — Create harmonious 
+              palettes and verify they work for accessibility before implementing.
+            </li>
+            <li>
+              <a href="/color-picker/">Color Picker</a> — Fine-tune colors with precision to find 
+              the exact shade that passes contrast requirements.
+            </li>
+            <li>
+              <a href="/color-converter/">Color Converter</a> — Switch between HEX, RGB, and HSL 
+              formats when implementing accessible color values in CSS.
+            </li>
+          </ul>
+          <p>
+            All tools run entirely in your browser. No data is uploaded to any server. You can check 
+            contrast for client projects and sensitive designs with complete privacy.
+          </p>
+        </section>
+
+        <section id="common-mistakes">
+          <h2>Common Contrast Mistakes</h2>
+          <ul>
+            <li>
+              <strong>Using pure gray text on white:</strong> Colors like <code>#999999</code> or 
+              <code>#AAAAAA</code> on white backgrounds are popular for "subtle" text but typically 
+              fail WCAG AA. Use darker grays like <code>#4A5568</code> or <code>#475569</code> 
+              for body text.
+            </li>
+            <li>
+              <strong>Relying only on color to convey information:</strong> Error states, links, and 
+              status indicators should use icons, underlines, or labels in addition to color.
+            </li>
+            <li>
+              <strong>Assuming large text means very large:</strong> WCAG defines "large text" as 
+              18px bold or 24px regular — not just headlines. Check both body and heading sizes.
+            </li>
+            <li>
+              <strong>Forgetting focus states:</strong> Interactive elements need sufficient contrast 
+              in their focus and hover states, not just their default appearance.
+            </li>
+            <li>
+              <strong>Not testing on real screens:</strong> A color pair that passes on a calibrated 
+              monitor may look different on a phone screen. Test on actual devices when possible.
+            </li>
+          </ul>
+        </section>
+
+        <section id="faq" class="guide-faq">
+          <h2>Frequently Asked Questions</h2>
+          <div class="faq-item">
+            <h3>What is the minimum contrast ratio for WCAG AA?</h3>
+            <p>4.5:1 for normal text (under 18px bold or 24px regular), and 3:1 for large text and UI components.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Do I need to meet AAA?</h3>
+            <p>AAA is not required by most legal standards, but it provides the best readability for users with low vision. Aim for AAA on body text where possible. Logos and decorative text are exempt.</p>
+          </div>
+          <div class="faq-item">
+            <h3>How do I check contrast in Figma?</h3>
+            <p>Figma has a built-in contrast checker in the color picker. Alternatively, copy the HEX values from Figma and paste them into the Color Helper Contrast Checker for detailed results.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Does contrast ratio apply to images?</h3>
+            <p>WCAG applies contrast requirements to text and UI components, not to images or photographs. However, any text within images must still meet contrast requirements.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Can I use a dark background with light text?</h3>
+            <p>Yes, dark mode designs work well for accessibility as long as the contrast ratio meets WCAG thresholds. The same 4.5:1 requirement applies to light text on dark backgrounds.</p>
+          </div>
+          <div class="faq-item">
+            <h3>What about placeholder text?</h3>
+            <p>Placeholder text is typically considered "disabled" or "inactive" UI, so the contrast requirement is lower. However, for best usability, ensure placeholder text still meets at least 3:1.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
+
+<style is:global>
+  .guide-article {
+    padding: 2rem 0 4rem;
+  }
+  .guide-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .guide-header {
+    margin-bottom: 2rem;
+  }
+  .guide-header h1 {
+    font-size: 2.25rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .guide-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+  }
+  .guide-category {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+    background: var(--color-primary-subtle);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
+  }
+  .guide-reading-time {
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+  .guide-toc {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .guide-toc strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9375rem;
+  }
+  .guide-toc ol {
+    list-style-position: inside;
+    padding: 0;
+  }
+  .guide-toc li {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    color: var(--color-text-secondary);
+  }
+  .guide-toc li a {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+  .guide-toc li a:hover {
+    text-decoration: underline;
+  }
+  .guide-article section {
+    margin-bottom: 2.5rem;
+  }
+  .guide-article h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    scroll-margin-top: 5rem;
+  }
+  .guide-article h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  .guide-article p {
+    margin-bottom: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  .guide-article ul, .guide-article ol {
+    margin-bottom: 1.125rem;
+    padding-left: 1.5rem;
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+  }
+  .guide-article li {
+    margin-bottom: 0.5rem;
+  }
+  .guide-article a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .guide-article strong {
+    color: var(--color-text);
+  }
+  .guide-article code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--color-primary-subtle);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    color: var(--color-text);
+  }
+  .guide-faq {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    margin-top: 3rem;
+  }
+  .guide-faq h2 {
+    margin-top: 0;
+  }
+  .faq-item {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .faq-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .faq-item h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.375rem 0;
+    color: var(--color-text);
+  }
+  .faq-item p {
+    font-size: 0.9375rem;
+    margin: 0;
+    line-height: 1.7;
+  }
+</style>

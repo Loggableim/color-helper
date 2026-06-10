@@ -1,0 +1,263 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = 'All Color Tools';
+const description = 'Free color tools for designers, developers and creators. Browse all browser-based color utilities — picker, converter, palette generator, contrast checker and more.';
+const canonical = 'https://color-helper.com/tools/';
+const breadcrumbs = [{ label: 'Tools' }];
+
+const categories = [
+  {
+    name: 'Pick',
+    description: 'Select and capture colors from anywhere',
+    tools: [
+      { name: 'Color Picker', href: '/color-picker/', desc: 'Interactive color picker with live preview', icon: '🎨' },
+      { name: 'Image Color Picker', href: '/image-color-picker/', desc: 'Extract colors from images', icon: '🖼️' },
+      { name: 'Random Color', href: '/random-color-generator/', desc: 'Discover random colors instantly', icon: '🎲' },
+    ],
+  },
+  {
+    name: 'Convert',
+    description: 'Convert between color formats and notations',
+    tools: [
+      { name: 'Color Converter', href: '/color-converter/', desc: 'Convert between HEX, RGB and HSL', icon: '🔄' },
+      { name: 'HEX to RGB', href: '/hex-to-rgb/', desc: 'Convert hex codes to RGB values', icon: '#→R' },
+      { name: 'RGB to HEX', href: '/rgb-to-hex/', desc: 'Convert RGB values to hex codes', icon: 'R→#' },
+      { name: 'CSS Converter', href: '/css-color-converter/', desc: 'CSS color format converter', icon: '🎯' },
+      { name: 'RGBA Converter', href: '/rgba-converter/', desc: 'RGBA color conversion tool with opacity', icon: '🔲' },
+    ],
+  },
+  {
+    name: 'Generate',
+    description: 'Create harmonious color schemes and gradients',
+    tools: [
+      { name: 'Palette Generator', href: '/color-palette-generator/', desc: 'Generate complementary color palettes', icon: '🌈' },
+      { name: 'Gradient Generator', href: '/gradient-generator/', desc: 'Create beautiful CSS gradients', icon: '🌊' },
+      { name: 'Brand Palette Generator', href: '/color-palette-generator/', desc: 'Build brand color palettes', icon: '🏷️' },
+      { name: 'Color Mixer', href: '/color-mixer/', desc: 'Mix and blend colors', icon: '🧪' },
+    ],
+  },
+  {
+    name: 'Check',
+    description: 'Ensure accessibility and visual clarity',
+    tools: [
+      { name: 'Contrast Checker', href: '/contrast-checker/', desc: 'Check WCAG contrast ratios', icon: '👁️' },
+      { name: 'Color Blindness Simulator', href: '/color-blindness-simulator/', desc: 'Simulate color vision deficiencies', icon: '🔍' },
+    ],
+  },
+  {
+    name: 'Learn',
+    description: 'Explore color references and terminology',
+    tools: [
+      { name: 'Paint Color Matching', href: '/paint-color-matching/', desc: 'Find matching paint colors', icon: '🎨' },
+      { name: 'Color Names', href: '/color-picker/', desc: 'Browse named CSS colors', icon: '📋' },
+      { name: 'HEX Codes', href: '/hex-to-rgb/', desc: 'Comprehensive HEX code reference', icon: '#' },
+    ],
+  },
+];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Color Tools - Color Helper",
+  "description": description,
+  "url": canonical,
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <div class="hub-page">
+    <div class="container">
+      <div class="hub-header">
+        <h1>All Color Tools</h1>
+        <p class="hub-subtitle">
+          Browse all free browser-based color tools at Color Helper. Pick colors, convert formats, 
+          generate palettes, check accessibility, and learn about color — everything you need in one place.
+        </p>
+      </div>
+
+      {categories.map((cat) => (
+        <section class="tool-category">
+          <div class="category-header">
+            <h2>{cat.name}</h2>
+            <p>{cat.description}</p>
+          </div>
+          <div class="category-grid">
+            {cat.tools.map((tool) => (
+              <a href={tool.href} class="category-card">
+                <div class="cat-card-icon">{tool.icon}</div>
+                <div class="cat-card-body">
+                  <h3>{tool.name}</h3>
+                  <p>{tool.desc}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+
+      <section class="hub-seo-content">
+        <h2>Free Color Tools for Designers and Developers</h2>
+        <p>
+          Color Helper offers a complete suite of browser-based color tools that work entirely on your device. 
+          Whether you need to pick a precise color from a spectrum, convert between HEX and RGB formats, 
+          generate a harmonious palette for your next project, or check that your text meets WCAG accessibility 
+          standards — every tool is fast, private, and free.
+        </p>
+        <p>
+          All tools run client-side in your browser. No images are uploaded to any server. No tracking scripts 
+          collect your data. Your work stays on your machine. This makes Color Helper an ideal companion for 
+          designers who value privacy, developers working with sensitive assets, and accessibility professionals 
+          auditing client projects.
+        </p>
+        <p>
+          The <a href="/color-picker/">Color Picker</a> and <a href="/image-color-picker/">Image Color Picker</a> 
+          let you capture colors interactively or extract them from photos. The 
+          <a href="/color-converter/">Color Converter</a> supports HEX, RGB, and HSL with automatic format 
+          detection. Build <a href="/color-palette-generator/">color palettes</a> using complementary, analogous, 
+          or triadic harmony rules, and use the <a href="/contrast-checker/">Contrast Checker</a> to verify 
+          your designs meet WCAG AA and AAA standards.
+        </p>
+      </section>
+
+      <section class="hub-faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <h3>Are all tools really free?</h3>
+          <p>Yes. Every tool on Color Helper is completely free. No paid tiers, no subscriptions, no hidden features.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Do I need an account?</h3>
+          <p>No account, login, or personal information is required. Just open a tool and start using it.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Which color formats are supported?</h3>
+          <p>HEX, RGB, HSL, and RGBA are supported across all relevant tools. The Color Converter handles all formats in one place.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Do you store my images?</h3>
+          <p>No. Images are processed entirely in your browser. Nothing is ever uploaded to any server.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
+
+<script type="application/ld+json" set:html={JSON.stringify(webAppSchema)}></script>
+
+<style is:global>
+  .hub-page {
+    padding: 2rem 0 4rem;
+  }
+  .hub-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .hub-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .hub-subtitle {
+    max-width: 640px;
+    margin: 0 auto;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+  .tool-category {
+    margin-bottom: 3rem;
+  }
+  .category-header {
+    margin-bottom: 1.25rem;
+  }
+  .category-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+  .category-header p {
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+  }
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.875rem;
+  }
+  .category-card {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 1rem 1.125rem;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: box-shadow 0.25s var(--ease-out-expo), transform 0.25s var(--ease-out-expo);
+  }
+  .category-card:hover {
+    box-shadow: var(--shadow-ring-hover), var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .cat-card-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: var(--color-primary-subtle);
+    border-radius: var(--radius-sm);
+  }
+  .cat-card-body h3 {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    margin-bottom: 0.125rem;
+  }
+  .cat-card-body p {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+  }
+  .hub-seo-content {
+    max-width: 680px;
+    margin: 3rem auto;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .hub-seo-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .hub-seo-content p {
+    margin-bottom: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+  }
+  .hub-seo-content a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .hub-faq {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .hub-faq h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .faq-item {
+    margin-bottom: 1.5rem;
+  }
+  .faq-item h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.375rem;
+  }
+  .faq-item p {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+</style>

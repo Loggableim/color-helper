@@ -1,0 +1,189 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../layouts/ToolLayout.astro';
+
+const title = 'Palette from URL (Coming Soon)';
+const description = 'Extract a color palette directly from a URL. This tool requires a server-side component and is coming in a future release.';
+const canonical = 'https://color.adrianbien.de/tools/palette-from-url/';
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  noindex={true}
+>
+  <ToolLayout
+    title="Palette from URL"
+    subtitle="Coming Soon 🚧"
+  >
+    <section class="coming-soon">
+      <div class="coming-soon-icon">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 16v-4"/>
+          <path d="M12 8h.01"/>
+        </svg>
+      </div>
+
+      <h2>This tool needs a server — and it's on its way!</h2>
+
+      <p>
+        The <strong>Palette from URL</strong> tool will let you paste any website URL and
+        automatically extract a color palette from the page's CSS, images, and design tokens.
+      </p>
+
+      <p>
+        Because this requires fetching and parsing remote pages, it needs a backend server
+        component (e.g., an Astro API endpoint or a separate worker) to handle CORS, fetch
+        the page, and run color extraction algorithms.
+      </p>
+
+      <div class="feature-list">
+        <h3>What's planned:</h3>
+        <ul>
+          <li>🌐 Paste any URL and extract the dominant colors</li>
+          <li>🎨 Detect CSS custom properties and Tailwind theme colors</li>
+          <li>🖼 Analyze favicon and Open Graph images for brand colors</li>
+          <li>📊 Generate a full palette with accessibility checks</li>
+          <li>📋 Export as CSS variables, JSON, or Tailwind config</li>
+        </ul>
+      </div>
+
+      <p class="eta-note">
+        <strong>Estimated release:</strong> TBD — this will ship once the backend infrastructure is in place.
+        Star or watch the repository to stay updated.
+      </p>
+
+      <div class="placeholder-preview">
+        <div class="placeholder-card">
+          <div class="placeholder-input">
+            <span class="placeholder-url">https://example.com</span>
+            <span class="placeholder-btn">Extract Palette →</span>
+          </div>
+          <div class="placeholder-swatches">
+            <span class="placeholder-swatch" style="background: #e5e7eb;"></span>
+            <span class="placeholder-swatch" style="background: #d1d5db;"></span>
+            <span class="placeholder-swatch" style="background: #9ca3af;"></span>
+            <span class="placeholder-swatch" style="background: #6b7280;"></span>
+            <span class="placeholder-swatch" style="background: #374151;"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <style>
+      .coming-soon {
+        max-width: 650px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .coming-soon-icon {
+        margin-bottom: 1.5rem;
+        color: var(--color-text-muted, #9ca3af);
+      }
+
+      .coming-soon h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .coming-soon p {
+        line-height: 1.7;
+        color: var(--color-text-muted, #4b5563);
+        max-width: 550px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .feature-list {
+        text-align: left;
+        margin: 2rem auto;
+        padding: 1.5rem 2rem;
+        background: var(--color-surface, #fff);
+        border: 1px solid var(--color-border, #e5e7eb);
+        border-radius: 12px;
+        max-width: 480px;
+      }
+
+      .feature-list h3 {
+        margin: 0 0 1rem;
+        font-size: 1rem;
+      }
+
+      .feature-list ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .feature-list li {
+        padding: 0.4rem 0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .eta-note {
+        margin-top: 2rem;
+        padding: 1rem;
+        background: #fef3c7;
+        border: 1px solid #f59e0b;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        color: #92400e;
+      }
+
+      .placeholder-preview {
+        margin-top: 2rem;
+      }
+
+      .placeholder-card {
+        padding: 1.5rem;
+        background: var(--color-surface, #fff);
+        border: 1px dashed var(--color-border, #d1d5db);
+        border-radius: 12px;
+      }
+
+      .placeholder-input {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        padding: 0.75rem 1rem;
+        background: var(--color-bg-muted, #f9fafb);
+        border-radius: 8px;
+      }
+
+      .placeholder-url {
+        flex: 1;
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.85rem;
+        color: var(--color-text-muted, #6b7280);
+        text-align: left;
+      }
+
+      .placeholder-btn {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.75rem;
+        background: var(--color-border, #e5e7eb);
+        border-radius: 6px;
+        color: var(--color-text-muted, #6b7280);
+        white-space: nowrap;
+      }
+
+      .placeholder-swatches {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+      }
+
+      .placeholder-swatch {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        border: 2px solid var(--color-border, #e5e7eb);
+      }
+    </style>
+  </ToolLayout>
+</BaseLayout>

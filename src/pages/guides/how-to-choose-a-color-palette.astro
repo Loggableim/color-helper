@@ -1,0 +1,374 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = 'How to Choose a Color Palette';
+const description = 'A practical step-by-step guide to choosing a color palette for your design projects. Learn about base colors, harmonies, accessibility, and tools to use.';
+const canonical = 'https://color-helper.com/guides/how-to-choose-a-color-palette/';
+const breadcrumbs = [
+  { label: 'Guides', href: '/guides/' },
+  { label: 'How to Choose a Color Palette' },
+];
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "description": description,
+  "author": { "@type": "Organization", "name": "Color Helper" },
+  "publisher": { "@type": "Organization", "name": "Color Helper" },
+  "url": canonical,
+  "mainEntityOfPage": canonical,
+  "datePublished": "2025-01-15",
+  "dateModified": "2025-03-01",
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <article class="guide-article">
+    <div class="container">
+      <div class="guide-wrapper">
+        <div class="guide-header">
+          <h1>How to Choose a Color Palette</h1>
+          <div class="guide-meta">
+            <span class="guide-category">Design</span>
+            <span class="guide-reading-time">10 min read</span>
+          </div>
+        </div>
+
+        <div class="guide-toc">
+          <strong>In this guide:</strong>
+          <ol>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#start-with-base">Start with a Base Color</a></li>
+            <li><a href="#use-harmonies">Use Color Harmonies</a></li>
+            <li><a href="#consider-audience">Consider Your Audience</a></li>
+            <li><a href="#test-accessibility">Test Accessibility</a></li>
+            <li><a href="#tools-to-use">Tools to Use</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ol>
+        </div>
+
+        <section id="introduction">
+          <h2>Introduction</h2>
+          <p>
+            Choosing a color palette is one of the most important decisions you will make in any design project. 
+            Colors define the mood, guide the user's eye, and communicate brand values — often without a single 
+            word. A well-chosen palette makes interfaces feel cohesive and professional. A poor one can confuse 
+            users, reduce readability, and undermine trust.
+          </p>
+          <p>
+            Yet picking colors is rarely straightforward. With millions of possible combinations, where do you 
+            even start? This guide walks you through a practical, repeatable process for building color palettes 
+            that look great, work across contexts, and meet accessibility standards.
+          </p>
+          <p>
+            Whether you are designing a website, a mobile app, a presentation, or a brand identity, the principles 
+            here apply. You will learn how to anchor your palette with a base color, apply harmony rules to expand 
+            it, adapt your choices for different audiences, and verify that your palette passes accessibility checks.
+          </p>
+        </section>
+
+        <section id="start-with-base">
+          <h2>1. Start with a Base Color</h2>
+          <p>
+            Every palette needs a foundation. A base color — sometimes called a primary color — sets the tone for 
+            the entire design. It is typically derived from a brand identity, a client's logo, or the emotional 
+            response you want to evoke.
+          </p>
+          <p>
+            If you have no existing brand constraints, start by asking: what feeling should this design convey? 
+            Blue communicates trust and professionalism, which is why it dominates banking and tech. Green 
+            suggests growth, health, and nature. Red conveys energy, urgency, or passion. Purple implies 
+            creativity and luxury. Yellow is optimistic and warm.
+          </p>
+          <p>
+            Once you have settled on a direction, use our <a href="/color-picker/">Color Picker</a> to find 
+            the exact shade that feels right. You can also use the 
+            <a href="/color-palette-generator/">Palette Generator</a> to explore variations around your 
+            chosen color. The key is to pick one anchor color before worrying about the rest of the palette.
+          </p>
+          <p>
+            Your base color will typically be used for primary actions, key navigation elements, and brand 
+            highlights. It should be distinctive enough to stand out but not so intense that it overwhelms 
+            the interface.
+          </p>
+        </section>
+
+        <section id="use-harmonies">
+          <h2>2. Use Color Harmonies</h2>
+          <p>
+            Once you have a base color, you can expand it into a full palette using color harmony rules. 
+            These are time-tested relationships between colors on the color wheel that naturally look pleasing 
+            together. The most common harmony types are:
+          </p>
+          <ul>
+            <li><strong>Complementary:</strong> Colors opposite each other on the color wheel (e.g., blue and orange). Creates high contrast and visual tension. Best for highlighting important elements.</li>
+            <li><strong>Analogous:</strong> Colors adjacent on the wheel (e.g., blue, blue-green, green). Produces a calm, cohesive feel. Ideal for backgrounds and supporting elements.</li>
+            <li><strong>Triadic:</strong> Three evenly spaced colors on the wheel (e.g., red, yellow, blue). Vibrant and balanced. Works well for playful or creative brands.</li>
+            <li><strong>Split-Complementary:</strong> A base color plus the two colors adjacent to its complement. Less tension than pure complementary but still offers contrast.</li>
+            <li><strong>Monochromatic:</strong> Variations in lightness and saturation of a single hue. Clean, elegant, and easy to implement.</li>
+          </ul>
+          <p>
+            You do not need to use all five harmonies in one project. Most interfaces work well with a 
+            combination of two or three: a primary color, a secondary accent, and a neutral or background 
+            color. Our <a href="/color-palette-generator/">Palette Generator</a> can instantly produce 
+            harmonies based on any color you choose, making it easy to experiment.
+          </p>
+          <p>
+            A good rule of thumb: use your primary color for about 60% of the interface (backgrounds, large 
+            areas), a secondary color for about 30% (headings, secondary buttons), and an accent color for 
+            the remaining 10% (calls to action, highlights).
+          </p>
+        </section>
+
+        <section id="consider-audience">
+          <h2>3. Consider Your Audience</h2>
+          <p>
+            Color perception is subjective, but it is also influenced by culture, context, and experience. 
+            A color palette that works for one audience may fall flat — or even offend — another. Before 
+            finalizing your palette, consider who will be using your design.
+          </p>
+          <p>
+            Cultural associations matter. White symbolizes purity in Western cultures but can represent 
+            mourning in parts of Asia. Red is lucky in China but can signal danger in Western contexts. 
+            If your product serves a global audience, research the color connotations in your key markets.
+          </p>
+          <p>
+            Consider age as well. Older users benefit from higher contrast and larger text, which influences 
+            which background and text color combinations you choose. Younger audiences may be more receptive 
+            to bold, saturated palettes, while professional B2B products often benefit from restrained, 
+            muted tones.
+          </p>
+          <p>
+            Industry expectations also play a role. Users expect certain visual cues from different sectors: 
+            clean blues and whites for healthcare, earthy greens for sustainability, vibrant colors for 
+            entertainment. Deviating from these expectations can be effective, but it should be intentional 
+            rather than accidental.
+          </p>
+        </section>
+
+        <section id="test-accessibility">
+          <h2>4. Test Accessibility</h2>
+          <p>
+            Accessibility is not optional. A beautiful palette that cannot be read by a significant portion 
+            of your audience is a failed palette. The Web Content Accessibility Guidelines (WCAG) define 
+            specific contrast ratios that text and interactive elements must meet.
+          </p>
+          <p>
+            The minimum requirement for normal text is a contrast ratio of 4.5:1 (WCAG AA). For large text 
+            (18px bold or 24px regular), the threshold is 3:1. The stricter AAA standard requires 7:1 for 
+            normal text and 4.5:1 for large text. These ratios apply to text against its background, as well 
+            as to interactive elements like icons and form inputs.
+          </p>
+          <p>
+            Use our <a href="/contrast-checker/">Contrast Checker</a> to verify every color combination 
+            in your palette. Enter the foreground and background colors, and the tool instantly tells you 
+            whether they pass AA and AAA thresholds. Adjust until every combination passes at least AA. 
+            For body text, aim for AAA where possible.
+          </p>
+          <p>
+            Beyond contrast, consider color blindness. About 8% of men and 0.5% of women have some form of 
+            color vision deficiency. Do not rely solely on color to convey information — use labels, 
+            patterns, and icons as well. Our Contrast Checker includes a color blindness simulator to help 
+            you evaluate how your palette looks to users with various deficiencies.
+          </p>
+        </section>
+
+        <section id="tools-to-use">
+          <h2>5. Tools to Use</h2>
+          <p>
+            Building a palette is much easier with the right tools. Color Helper provides everything you 
+            need to create, test, and refine color palettes:
+          </p>
+          <ul>
+            <li>
+              <a href="/color-palette-generator/">Color Palette Generator</a> — Pick a base color and 
+              instantly generate complementary, analogous, triadic, and monochromatic palettes.
+            </li>
+            <li>
+              <a href="/color-picker/">Color Picker</a> — Fine-tune individual colors with precision 
+              controls and copy values in any format.
+            </li>
+            <li>
+              <a href="/contrast-checker/">Contrast Checker</a> — Verify every combination in your 
+              palette meets WCAG standards, with a built-in color blindness simulator.
+            </li>
+            <li>
+              <a href="/gradient-generator/">Gradient Generator</a> — Create smooth gradients from your 
+              palette colors for backgrounds and visual accents.
+            </li>
+            <li>
+              <a href="/color-converter/">Color Converter</a> — Convert palette colors between HEX, 
+              RGB, and HSL formats for use in CSS, design tools, and code.
+            </li>
+          </ul>
+          <p>
+            All tools run in your browser with zero server uploads, so you can work with sensitive client 
+            palettes without privacy concerns.
+          </p>
+        </section>
+
+        <section id="faq" class="guide-faq">
+          <h2>Frequently Asked Questions</h2>
+          <div class="faq-item">
+            <h3>How many colors should a palette have?</h3>
+            <p>Most design projects need 3 to 5 colors: a primary color, a secondary color, an accent color, plus one or two neutrals (like a light background and a dark text color). More than 5 colors often leads to visual chaos.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Should I use warm or cool colors?</h3>
+            <p>It depends on your message. Cool colors (blue, green, purple) feel calm and professional. Warm colors (red, orange, yellow) feel energetic and urgent. Many palettes combine both for balance — a cool primary with a warm accent, for example.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Can I use black and white in my palette?</h3>
+            <p>Pure black (#000000) and pure white (#FFFFFF) are rarely the best choices. Off-white backgrounds (#F8FAFC, #F1F5F9) reduce eye strain, and dark gray text (#0F172A, #1E293B) is less harsh than pure black while still passing contrast checks.</p>
+          </div>
+          <div class="faq-item">
+            <h3>How do I pick a color palette for a brand?</h3>
+            <p>Start with the brand's values and target audience. Choose a primary color that reflects the brand's personality, then use harmony rules to build supporting colors. Ensure the palette works across web, print, and social media contexts.</p>
+          </div>
+          <div class="faq-item">
+            <h3>What is the 60-30-10 rule?</h3>
+            <p>The 60-30-10 rule is a design principle: 60% of the interface uses a dominant color (often neutral), 30% uses a secondary color, and 10% uses an accent color for highlights and calls to action. It creates a balanced, professional look.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
+
+<style is:global>
+  .guide-article {
+    padding: 2rem 0 4rem;
+  }
+  .guide-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .guide-header {
+    margin-bottom: 2rem;
+  }
+  .guide-header h1 {
+    font-size: 2.25rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .guide-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+  }
+  .guide-category {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+    background: var(--color-primary-subtle);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
+  }
+  .guide-reading-time {
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+  .guide-toc {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .guide-toc strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9375rem;
+  }
+  .guide-toc ol {
+    list-style-position: inside;
+    padding: 0;
+  }
+  .guide-toc li {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    color: var(--color-text-secondary);
+  }
+  .guide-toc li a {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+  .guide-toc li a:hover {
+    text-decoration: underline;
+  }
+  .guide-article section {
+    margin-bottom: 2.5rem;
+  }
+  .guide-article h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    scroll-margin-top: 5rem;
+  }
+  .guide-article h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  .guide-article p {
+    margin-bottom: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  .guide-article ul, .guide-article ol {
+    margin-bottom: 1.125rem;
+    padding-left: 1.5rem;
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+  }
+  .guide-article li {
+    margin-bottom: 0.5rem;
+  }
+  .guide-article a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .guide-article strong {
+    color: var(--color-text);
+  }
+  .guide-faq {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    margin-top: 3rem;
+  }
+  .guide-faq h2 {
+    margin-top: 0;
+  }
+  .faq-item {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .faq-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .faq-item h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.375rem 0;
+    color: var(--color-text);
+  }
+  .faq-item p {
+    font-size: 0.9375rem;
+    margin: 0;
+    line-height: 1.7;
+  }
+</style>

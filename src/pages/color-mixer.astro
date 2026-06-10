@@ -1,0 +1,393 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../components/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+
+const title = 'Color Mixer';
+const description = 'Mix two colors together with a ratio slider. Get the resulting color in HEX, RGB and HSL formats. Live preview and one-click copy.';
+const canonical = 'https://color-helper.com/color-mixer/';
+const breadcrumbs = [{ label: 'Color Mixer' }];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout title="Color Mixer" {description} {breadcrumbs}>
+    <div class="tool-wrapper">
+      <div id="mixer-root">
+        <div class="converter-card">
+          <h2 class="converter-subtitle">Color Mixer</h2>
+          <p class="converter-desc">Pick two colors and blend them together with a custom ratio.</p>
+
+          <!-- Color Inputs -->
+          <div class="mixer-inputs">
+            <div class="mixer-color-group">
+              <label class="input-label">Color A</label>
+              <div class="mixer-color-row">
+                <input id="color-a-picker" type="color" class="native-picker" value="#6366f1" />
+                <input id="color-a-hex" type="text" class="color-input" value="#6366f1" spellcheck="false" />
+              </div>
+            </div>
+
+            <div class="mixer-color-group">
+              <label class="input-label">Color B</label>
+              <div class="mixer-color-row">
+                <input id="color-b-picker" type="color" class="native-picker" value="#f59e0b" />
+                <input id="color-b-hex" type="text" class="color-input" value="#f59e0b" spellcheck="false" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Ratio Slider -->
+          <div class="input-group">
+            <div class="opacity-header">
+              <label class="input-label">Mix Ratio</label>
+              <span id="ratio-value" class="opacity-value">50% A / 50% B</span>
+            </div>
+            <input
+              id="ratio-slider"
+              type="range"
+              class="opacity-slider"
+              min="0"
+              max="100"
+              value="50"
+            />
+            <div class="ratio-labels">
+              <span>100% A</span>
+              <span>100% B</span>
+            </div>
+          </div>
+
+          <!-- Preview -->
+          <div class="mixer-previews">
+            <div class="mixer-preview-item">
+              <div class="preview-label-sm">Color A</div>
+              <div id="preview-a" class="mixer-swatch" style="background-color: #6366f1;"></div>
+              <code id="preview-a-hex" class="mixer-hex">#6366f1</code>
+            </div>
+            <div class="mixer-preview-item">
+              <div class="preview-label-sm">Mixed</div>
+              <div id="preview-mixed" class="mixer-swatch mixer-swatch-large" style="background-color: #ac8235;"></div>
+              <code id="preview-mixed-hex" class="mixer-hex">#ac8235</code>
+            </div>
+            <div class="mixer-preview-item">
+              <div class="preview-label-sm">Color B</div>
+              <div id="preview-b" class="mixer-swatch" style="background-color: #f59e0b;"></div>
+              <code id="preview-b-hex" class="mixer-hex">#f59e0b</code>
+            </div>
+          </div>
+
+          <!-- Output -->
+          <div id="mixer-results" class="results-card">
+            <div class="result-card">
+              <div class="result-label">HEX</div>
+              <div class="result-row">
+                <code id="result-hex" class="result-value">#ac8235</code>
+                <button class="copy-btn" data-copy="result-hex" title="Copy HEX">📋</button>
+              </div>
+            </div>
+            <div class="result-card">
+              <div class="result-label">RGB</div>
+              <div class="result-row">
+                <code id="result-rgb" class="result-value">rgb(172, 130, 53)</code>
+                <button class="copy-btn" data-copy="result-rgb" title="Copy RGB">📋</button>
+              </div>
+            </div>
+            <div class="result-card">
+              <div class="result-label">HSL</div>
+              <div class="result-row">
+                <code id="result-hsl" class="result-value">hsl(40, 53%, 44%)</code>
+                <button class="copy-btn" data-copy="result-hsl" title="Copy HSL">📋</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="seo-content">
+      <h2>What Is a Color Mixer?</h2>
+      <p>A color mixer blends two input colors together to produce a third color based on a specified ratio. This is essentially a weighted linear interpolation (lerp) between the two colors in RGB space. At 0% the result is pure Color A; at 100% it is pure Color B; at 50% it is an equal blend of both. Adjusting the slider lets you fine-tune the mixture to achieve exactly the mid-tone you want.</p>
+      <p>The Color Mixer is a practical tool for designers building gradient-based UI elements, for artists exploring color transitions, and for developers who need a calculated mid-color for hover states, borders, or background layers. Each color is shown as a swatch along with its HEX code. The resulting mixed color is displayed prominently in the center with its HEX, RGB, and HSL values all available for copying.</p>
+      <p>All blending is performed client-side using simple math: each RGB channel of the output is the weighted average of the corresponding channels of the two input colors. This gives smooth, predictable results. Use the tool alongside our Palette Generator and Gradient Generator to build complete color systems.</p>
+    </section>
+
+    <section class="related-tools">
+      <h2>Related Tools</h2>
+      <ul>
+        <li><a href="/gradient-generator/">Gradient Generator</a> — Create CSS gradients with multiple color stops</li>
+        <li><a href="/color-palette-generator/">Palette Generator</a> — Generate harmonious color palettes</li>
+        <li><a href="/random-color-generator/">Random Color Generator</a> — Discover random colors for inspiration</li>
+        <li><a href="/css-color-converter/">CSS Color Converter</a> — Format colors for your stylesheets</li>
+      </ul>
+    </section>
+
+    <FAQ
+      items={[
+        {
+          question: 'How does the color mixing math work?',
+          answer: 'The mixer performs a linear interpolation (lerp) in RGB space. For each channel (R, G, B), the output value is (1 - t) * colorA + t * colorB, where t is the mix ratio from 0 to 1. This produces a smooth, predictable blend between the two input colors.'
+        },
+        {
+          question: 'What input formats are supported?',
+          answer: 'You can pick colors using the native color picker (click the colored square) or type a HEX code directly into the text field. Both inputs for each color are synchronized — changing one updates the other.'
+        },
+        {
+          question: 'Can I use the mixed color in CSS?',
+          answer: 'Yes. The tool outputs the mixed color in three formats: HEX, RGB, and HSL. Each has a copy button so you can paste the value directly into your CSS, whether you need a hex code, an rgb() function, or an hsl() function.'
+        },
+        {
+          question: 'What are practical uses for a color mixer?',
+          answer: 'Use it to calculate hover-state colors (e.g., a slightly lighter or darker variant), to find mid-tones between a primary and secondary brand color, to create smooth transition colors for UI elements, or to explore how two colors blend before committing them to a gradient or palette.'
+        }
+      ]}
+    />
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+</BaseLayout>
+
+<script>
+  (function() {
+    'use strict';
+
+    const colorAPicker = document.getElementById('color-a-picker');
+    const colorAHex = document.getElementById('color-a-hex');
+    const colorBPicker = document.getElementById('color-b-picker');
+    const colorBHex = document.getElementById('color-b-hex');
+    const ratioSlider = document.getElementById('ratio-slider');
+    const ratioValue = document.getElementById('ratio-value');
+
+    const previewA = document.getElementById('preview-a');
+    const previewB = document.getElementById('preview-b');
+    const previewMixed = document.getElementById('preview-mixed');
+    const previewAHex = document.getElementById('preview-a-hex');
+    const previewBHex = document.getElementById('preview-b-hex');
+    const previewMixedHex = document.getElementById('preview-mixed-hex');
+
+    const resultHex = document.getElementById('result-hex');
+    const resultRgb = document.getElementById('result-rgb');
+    const resultHsl = document.getElementById('result-hsl');
+
+    function parseHex(hex) {
+      let h = hex.trim().replace(/^#/, '');
+      if (h.length === 3) h = h.split('').map(c => c + c).join('');
+      if (!/^[0-9a-fA-F]{6}$/.test(h)) return null;
+      return {
+        r: parseInt(h.substring(0, 2), 16),
+        g: parseInt(h.substring(2, 4), 16),
+        b: parseInt(h.substring(4, 6), 16),
+      };
+    }
+
+    function rgbToHex(r, g, b) {
+      const clamp = n => Math.min(255, Math.max(0, Math.round(n)));
+      return '#' + [r, g, b].map(c => clamp(c).toString(16).padStart(2, '0')).join('');
+    }
+
+    function rgbToHsl(r, g, b) {
+      const rr = r / 255, gg = g / 255, bb = b / 255;
+      const max = Math.max(rr, gg, bb), min = Math.min(rr, gg, bb);
+      const diff = max - min;
+      let h = 0, s = 0, l = (max + min) / 2;
+      if (diff !== 0) {
+        s = l > 0.5 ? diff / (2 - max - min) : diff / (max + min);
+        switch (max) {
+          case rr: h = ((gg - bb) / diff + (gg < bb ? 6 : 0)) * 60; break;
+          case gg: h = ((bb - rr) / diff + 2) * 60; break;
+          case bb: h = ((rr - gg) / diff + 4) * 60; break;
+        }
+      }
+      return { h: Math.round(h), s: Math.round(s * 100), l: Math.round(l * 100) };
+    }
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function clamp(val, min, max) { return Math.min(max, Math.max(min, val)); }
+
+    function updateMix() {
+      const rgbA = parseHex(colorAHex.value);
+      const rgbB = parseHex(colorBHex.value);
+      if (!rgbA || !rgbB) return;
+
+      const t = parseInt(ratioSlider.value, 10) / 100;
+
+      const mixedR = Math.round(lerp(rgbA.r, rgbB.r, t));
+      const mixedG = Math.round(lerp(rgbA.g, rgbB.g, t));
+      const mixedB = Math.round(lerp(rgbA.b, rgbB.b, t));
+
+      const hexA = rgbToHex(rgbA.r, rgbA.g, rgbA.b);
+      const hexB = rgbToHex(rgbB.r, rgbB.g, rgbB.b);
+      const mixedHex = rgbToHex(mixedR, mixedG, mixedB);
+      const mixedHsl = rgbToHsl(mixedR, mixedG, mixedB);
+
+      // Update previews
+      previewA.style.backgroundColor = hexA;
+      previewB.style.backgroundColor = hexB;
+      previewMixed.style.backgroundColor = mixedHex;
+      previewAHex.textContent = hexA;
+      previewBHex.textContent = hexB;
+      previewMixedHex.textContent = mixedHex;
+
+      // Update results
+      resultHex.textContent = mixedHex;
+      resultRgb.textContent = `rgb(${mixedR}, ${mixedG}, ${mixedB})`;
+      resultHsl.textContent = `hsl(${mixedHsl.h}, ${mixedHsl.s}%, ${mixedHsl.l}%)`;
+
+      // Ratio label
+      const pctA = Math.round((1 - t) * 100);
+      const pctB = Math.round(t * 100);
+      ratioValue.textContent = `${pctA}% A / ${pctB}% B`;
+    }
+
+    // Event listeners
+    colorAPicker.addEventListener('input', function() {
+      colorAHex.value = this.value;
+      updateMix();
+    });
+    colorAHex.addEventListener('input', function() {
+      let val = this.value.trim();
+      if (!val.startsWith('#')) val = '#' + val;
+      if (/^#[0-9a-fA-F]{3}$/.test(val) || /^#[0-9a-fA-F]{6}$/.test(val)) {
+        let h = val.replace(/^#/, '');
+        if (h.length === 3) h = h.split('').map(c => c + c).join('');
+        val = '#' + h.toLowerCase();
+        colorAPicker.value = val;
+        updateMix();
+      }
+    });
+
+    colorBPicker.addEventListener('input', function() {
+      colorBHex.value = this.value;
+      updateMix();
+    });
+    colorBHex.addEventListener('input', function() {
+      let val = this.value.trim();
+      if (!val.startsWith('#')) val = '#' + val;
+      if (/^#[0-9a-fA-F]{3}$/.test(val) || /^#[0-9a-fA-F]{6}$/.test(val)) {
+        let h = val.replace(/^#/, '');
+        if (h.length === 3) h = h.split('').map(c => c + c).join('');
+        val = '#' + h.toLowerCase();
+        colorBPicker.value = val;
+        updateMix();
+      }
+    });
+
+    ratioSlider.addEventListener('input', updateMix);
+
+    // Copy buttons
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async function() {
+        const targetId = this.getAttribute('data-copy');
+        const targetEl = document.getElementById(targetId);
+        if (!targetEl) return;
+        const text = targetEl.textContent;
+        if (!text) return;
+
+        const original = this.textContent;
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const ta = document.createElement('textarea');
+          ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+          document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); document.body.removeChild(ta);
+        }
+        this.textContent = '✓';
+        this.classList.add('copied');
+        setTimeout(() => {
+          this.textContent = original;
+          this.classList.remove('copied');
+        }, 1200);
+      });
+    });
+
+    // Init
+    updateMix();
+  })();
+</script>
+
+<style is:global>
+  .tool-wrapper { margin-bottom: 1.5rem; }
+  .converter-card {
+    max-width: 540px; margin: 0 auto;
+    background: #ffffff; border: 1px solid var(--color-border, #e2e8f0);
+    border-radius: 14px; padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+  }
+  .converter-subtitle { margin: 0 0 0.25rem 0; font-size: 1.125rem; font-weight: 700; letter-spacing: -0.01em; color: var(--color-text-primary, #1e293b); }
+  .converter-desc { margin: 0 0 1.25rem 0; font-size: 0.8125rem; color: var(--color-text-secondary, #64748b); }
+  .input-group { margin-bottom: 1rem; }
+  .input-label { display: block; font-size: 0.8125rem; font-weight: 600; margin-bottom: 0.375rem; color: var(--color-text-primary, #1e293b); }
+
+  /* Mixer inputs */
+  .mixer-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+  .mixer-color-group { }
+  .mixer-color-row { display: flex; gap: 0.5rem; align-items: center; }
+  .native-picker { width: 44px; height: 44px; border: 2px solid var(--color-border, #e2e8f0); border-radius: 10px; cursor: pointer; padding: 2px; background: #fff; flex-shrink: 0; }
+  .color-input {
+    display: block; width: 100%; padding: 0.625rem 0.75rem; font-size: 0.875rem;
+    font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+    color: var(--color-text-primary, #1e293b); background: #ffffff;
+    border: 1.5px solid var(--color-border, #e2e8f0); border-radius: 10px; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s; letter-spacing: 0.02em; box-sizing: border-box;
+  }
+  .color-input:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12); }
+
+  /* Ratio */
+  .opacity-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.375rem; }
+  .opacity-value { font-size: 0.875rem; font-weight: 700; color: var(--color-text-primary, #1e293b); font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace; }
+  .opacity-slider {
+    -webkit-appearance: none; appearance: none; width: 100%; height: 8px;
+    background: linear-gradient(to right, #6366f1, #f59e0b); border-radius: 4px;
+    outline: none; cursor: pointer;
+  }
+  .opacity-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none; width: 20px; height: 20px;
+    border-radius: 50%; background: #6366f1; border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2); cursor: pointer;
+  }
+  .ratio-labels { display: flex; justify-content: space-between; font-size: 0.6875rem; font-weight: 500; color: var(--color-text-secondary, #64748b); margin-top: 0.25rem; }
+
+  /* Previews */
+  .mixer-previews { display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 0.75rem; align-items: center; margin-bottom: 1rem; }
+  .mixer-preview-item { text-align: center; }
+  .preview-label-sm { font-size: 0.6875rem; font-weight: 600; color: var(--color-text-secondary, #64748b); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.375rem; }
+  .mixer-swatch { width: 100%; aspect-ratio: 1; border-radius: 10px; border: 2px solid var(--color-border, #e2e8f0); transition: background-color 0.15s ease; max-height: 80px; }
+  .mixer-swatch-large { max-height: 100px; }
+  .mixer-hex { display: block; font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace; font-size: 0.7rem; font-weight: 600; color: var(--color-text-primary, #1e293b); margin-top: 0.25rem; }
+
+  /* Results */
+  #mixer-results { margin-top: 0.5rem; }
+  #mixer-results .result-card { background: var(--color-bg-alt, #f8fafc); border: 1px solid var(--color-border, #e2e8f0); border-radius: 10px; padding: 0.75rem; margin-bottom: 0.5rem; }
+  .result-label { font-size: 0.6875rem; font-weight: 600; color: var(--color-text-secondary, #64748b); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.375rem; }
+  .result-row { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+  .result-value { font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace; font-size: 0.875rem; font-weight: 600; color: var(--color-text-primary, #1e293b); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: transparent; padding: 0; }
+  .copy-btn { flex-shrink: 0; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border: none; border-radius: 8px; background: transparent; cursor: pointer; font-size: 0.875rem; transition: background 0.15s, transform 0.1s; color: var(--color-text-secondary, #64748b); }
+  .copy-btn:hover { background: var(--color-border, #e2e8f0); transform: scale(1.05); }
+  .copy-btn.copied { color: #22c55e; background: rgba(34, 197, 94, 0.1); }
+
+  .seo-content { max-width: 720px; margin: 0 auto; padding: 2rem 0; }
+  .seo-content h2 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--color-text-primary); }
+  .seo-content p { margin-bottom: 1rem; line-height: 1.7; color: var(--color-text-secondary); font-size: 1.05rem; }
+  .seo-content code { font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace; font-size: 0.9em; background: var(--color-bg-alt, #f1f5f9); padding: 0.125rem 0.375rem; border-radius: 4px; }
+  .related-tools { max-width: 720px; margin: 0 auto; padding: 2rem 0; }
+  .related-tools h2 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--color-text-primary); }
+  .related-tools ul { list-style: none; padding: 0; margin: 0; }
+  .related-tools li { padding: 0.375rem 0; line-height: 1.6; color: var(--color-text-secondary); font-size: 1.05rem; }
+  .related-tools a { color: #6366f1; text-decoration: none; font-weight: 600; }
+  .related-tools a:hover { text-decoration: underline; }
+  @media (max-width: 480px) {
+    .converter-card { padding: 1rem; }
+    .mixer-inputs { grid-template-columns: 1fr; }
+    .mixer-previews { grid-template-columns: 1fr; }
+  }
+</style>

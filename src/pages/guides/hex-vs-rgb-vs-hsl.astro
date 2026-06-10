@@ -1,0 +1,388 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = 'HEX vs RGB vs HSL — What\'s the Difference?';
+const description = 'Learn the differences between HEX, RGB, and HSL color formats used in CSS and web design. Find out when to use each format with practical examples.';
+const canonical = 'https://color-helper.com/guides/hex-vs-rgb-vs-hsl/';
+const breadcrumbs = [
+  { label: 'Guides', href: '/guides/' },
+  { label: 'HEX vs RGB vs HSL' },
+];
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "description": description,
+  "author": { "@type": "Organization", "name": "Color Helper" },
+  "publisher": { "@type": "Organization", "name": "Color Helper" },
+  "url": canonical,
+  "mainEntityOfPage": canonical,
+  "datePublished": "2025-01-20",
+  "dateModified": "2025-03-01",
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <article class="guide-article">
+    <div class="container">
+      <div class="guide-wrapper">
+        <div class="guide-header">
+          <h1>HEX vs RGB vs HSL — What's the Difference?</h1>
+          <div class="guide-meta">
+            <span class="guide-category">Formats</span>
+            <span class="guide-reading-time">7 min read</span>
+          </div>
+        </div>
+
+        <div class="guide-toc">
+          <strong>In this guide:</strong>
+          <ol>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#hex">HEX — The Web Standard</a></li>
+            <li><a href="#rgb">RGB — The Display Standard</a></li>
+            <li><a href="#hsl">HSL — The Human-Friendly Format</a></li>
+            <li><a href="#when-to-use">When to Use Each Format</a></li>
+            <li><a href="#browser-support">Browser Support</a></li>
+            <li><a href="#examples">Practical Examples</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ol>
+        </div>
+
+        <section id="introduction">
+          <h2>Introduction</h2>
+          <p>
+            If you have written CSS, you have almost certainly used <code>#ff6600</code>, 
+            <code>rgb(255, 102, 0)</code>, or <code>hsl(30, 100%, 50%)</code>. These three color formats 
+            — HEX, RGB, and HSL — are the primary ways to represent colors on the web. While they can all 
+            describe the same colors, each format has distinct advantages depending on the task at hand.
+          </p>
+          <p>
+            Understanding the differences between these formats is essential for working efficiently with 
+            color in web design and development. This guide explains how each format works, when to use it, 
+            and how to convert between them. Use our <a href="/color-converter/">Color Converter</a> to 
+            experiment with all three formats in real time.
+          </p>
+        </section>
+
+        <section id="hex">
+          <h2>HEX — The Web Standard</h2>
+          <p>
+            HEX (hexadecimal) notation is the most widely used color format on the web. A HEX code consists 
+            of a hash symbol (#) followed by six hexadecimal digits (0–9 and A–F). The six digits are split 
+            into three pairs: the first pair represents red, the second green, and the third blue.
+          </p>
+          <p>
+            For example, <code>#FF6600</code> breaks down as: red = <code>FF</code> (255 in decimal), 
+            green = <code>66</code> (102 in decimal), blue = <code>00</code> (0 in decimal). Each pair can 
+            range from <code>00</code> (0) to <code>FF</code> (255), giving 256 possible values per channel 
+            and over 16 million total colors.
+          </p>
+          <p>
+            HEX also supports a shorthand notation for colors where each pair consists of the same digit: 
+            <code>#FF6600</code> can be shortened to <code>#F60</code>. Shorthand only works when each 
+            channel has repeating digits. For alpha transparency, HEX uses an 8-digit notation 
+            (<code>#FF660080</code> for 50% opacity), though this is less commonly used than the 
+            <code>rgba()</code> function.
+          </p>
+          <p>
+            HEX is compact, easy to copy from design tools, and universally supported in every browser 
+            and CSS framework. It is the default output of most color pickers and design software, making 
+            it the most common format for sharing colors between designers and developers.
+          </p>
+        </section>
+
+        <section id="rgb">
+          <h2>RGB — The Display Standard</h2>
+          <p>
+            RGB (Red, Green, Blue) is the color model that computer monitors, phone screens, and televisions 
+            use to display colors. Each pixel on a screen is made up of red, green, and blue subpixels at 
+            varying intensities. In CSS, the <code>rgb()</code> function takes three values between 0 and 
+            255, or percentages (0% to 100%).
+          </p>
+          <p>
+            The same orange as before is written as <code>rgb(255, 102, 0)</code> or 
+            <code>rgb(100%, 40%, 0%)</code>. The first number controls red intensity, the second green, 
+            and the third blue. Unlike HEX, RGB values are decimal, which makes them more intuitive if 
+            you think in terms of 0-to-255 scales.
+          </p>
+          <p>
+            For transparency, CSS provides <code>rgba()</code>, which adds a fourth alpha parameter: 
+            <code>rgba(255, 102, 0, 0.5)</code> applies 50% opacity. The modern CSS Color Level 4 
+            specification also allows the alpha channel inside <code>rgb()</code> directly: 
+            <code>rgb(255 102 0 / 0.5)</code>.
+          </p>
+          <p>
+            RGB is ideal when you need fine control over individual color channels — for example, when 
+            programmatically adjusting brightness or creating color variations based on numeric calculations. 
+            It is the standard format for canvas, WebGL, and image processing in JavaScript.
+          </p>
+        </section>
+
+        <section id="hsl">
+          <h2>HSL — The Human-Friendly Format</h2>
+          <p>
+            HSL (Hue, Saturation, Lightness) represents colors in a way that aligns more closely with how 
+            humans think about color. Instead of describing how much red, green, and blue a color contains, 
+            HSL describes what kind of color it is (hue), how vivid it is (saturation), and how light or 
+            dark it is (lightness).
+          </p>
+          <p>
+            <strong>Hue</strong> is an angle on the color wheel from 0 to 360 degrees. 0° is red, 
+            120° is green, 240° is blue, and 360° brings you back to red. <strong>Saturation</strong> 
+            is a percentage: 0% is gray (no color), 100% is the purest version of that hue. 
+            <strong>Lightness</strong> is also a percentage: 0% is black, 50% is the pure color, and 
+            100% is white.
+          </p>
+          <p>
+            Our orange example is <code>hsl(30, 100%, 50%)</code>: hue 30° (orange on the wheel), 
+            100% saturation (fully vivid), 50% lightness (mid-tone). To make it lighter, increase 
+            lightness: <code>hsl(30, 100%, 70%)</code>. To make it less vivid, reduce saturation: 
+            <code>hsl(30, 50%, 50%)</code>.
+          </p>
+          <p>
+            HSL is the most intuitive format for manually creating color schemes. If you have a base 
+            hue and want an analogous palette, just add or subtract 30 degrees. For a complementary 
+            color, add or subtract 180 degrees. This makes HSL the preferred format for designers 
+            who adjust colors by feel rather than by channel values.
+          </p>
+        </section>
+
+        <section id="when-to-use">
+          <h2>When to Use Each Format</h2>
+          <p>Choosing the right format depends on your context and workflow:</p>
+          <ul>
+            <li>
+              <strong>Use HEX when</strong> copying colors directly from design tools (Figma, Sketch, 
+              Adobe XD), writing static CSS, or sharing colors with other developers. HEX is the most 
+              compact format and the universal standard for color values in code.
+            </li>
+            <li>
+              <strong>Use RGB when</strong> working with Canvas, WebGL, or image data in JavaScript, 
+              or when you need to programmatically manipulate individual color channels. RGB is the 
+              native format for screen rendering and image processing.
+            </li>
+            <li>
+              <strong>Use HSL when</strong> manually creating color palettes, adjusting perceived 
+              brightness, or building design systems where you need consistent saturation across 
+              different hues. HSL makes it easy to create lighter and darker variants of the same color.
+            </li>
+          </ul>
+          <p>
+            In practice, most projects use a mix of all three. You might define brand colors in HEX 
+            in your CSS custom properties, use HSL in JavaScript for dynamic color generation, and 
+            use RGB when working with canvas. Use our 
+            <a href="/color-converter/">Color Converter</a> to switch between formats instantly.
+          </p>
+        </section>
+
+        <section id="browser-support">
+          <h2>Browser Support</h2>
+          <p>
+            All three formats — HEX, RGB, and HSL — have full browser support across every modern 
+            browser, including Chrome, Firefox, Safari, and Edge. There are no compatibility concerns 
+            when choosing between them. Internet Explorer also supports all three formats for basic 
+            color values.
+          </p>
+          <p>
+            The modern <code>rgb()</code> and <code>hsl()</code> syntax (space-separated values with 
+            optional alpha) is supported in all current browsers. However, if you need to support 
+            older versions, the comma-separated <code>rgb()</code>, <code>rgba()</code>, 
+            <code>hsl()</code>, and <code>hsla()</code> syntaxes work universally.
+          </p>
+          <p>
+            The 8-digit HEX notation (<code>#RRGGBBAA</code>) for alpha transparency is supported in 
+            Chrome 62+, Firefox 49+, Safari 10+, and Edge 79+. For broader compatibility, especially 
+            with older browsers, use <code>rgba()</code> instead of 8-digit HEX.
+          </p>
+        </section>
+
+        <section id="examples">
+          <h2>Practical Examples</h2>
+          <p>Here are the same colors in all three formats for comparison:</p>
+          <ul>
+            <li><strong>Crimson red:</strong> HEX <code>#DC143C</code> = RGB <code>rgb(220, 20, 60)</code> = HSL <code>hsl(348, 83%, 47%)</code></li>
+            <li><strong>Royal blue:</strong> HEX <code>#4169E1</code> = RGB <code>rgb(65, 105, 225)</code> = HSL <code>hsl(225, 73%, 57%)</code></li>
+            <li><strong>Emerald green:</strong> HEX <code>#50C878</code> = RGB <code>rgb(80, 200, 120)</code> = HSL <code>hsl(140, 52%, 55%)</code></li>
+            <li><strong>Amber orange:</strong> HEX <code>#FFBF00</code> = RGB <code>rgb(255, 191, 0)</code> = HSL <code>hsl(45, 100%, 50%)</code></li>
+            <li><strong>Deep purple:</strong> HEX <code>#6A0DAD</code> = RGB <code>rgb(106, 13, 173)</code> = HSL <code>hsl(275, 86%, 36%)</code></li>
+          </ul>
+          <p>
+            Use our <a href="/color-converter/">Color Converter</a> to convert any color between HEX, 
+            RGB, and HSL instantly. The tool also detects the format automatically when you paste a 
+            color value.
+          </p>
+        </section>
+
+        <section id="faq" class="guide-faq">
+          <h2>Frequently Asked Questions</h2>
+          <div class="faq-item">
+            <h3>Which format is best for CSS?</h3>
+            <p>HEX is the most common format in CSS due to its compactness. However, HSL is becoming increasingly popular for design systems because it makes creating color variations intuitive. All three are fully supported, so choose the one that makes your code most readable.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Can I convert HEX to RGB manually?</h3>
+            <p>Yes. Split the HEX into three pairs, convert each pair from hexadecimal (base 16) to decimal (base 10). For example, <code>FF</code> = 255, <code>66</code> = 102, <code>00</code> = 0. Use our converter for instant results.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Does HSL support transparency?</h3>
+            <p>Yes. Use <code>hsla()</code> with an alpha parameter, or the modern syntax <code>hsl(30 100% 50% / 0.5)</code> for 50% opacity.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Why does HSL make color schemes easier?</h3>
+            <p>Because hue is an angle, you can create harmonious schemes by adding fixed offsets. Complementary = hue + 180°. Analogous = hue ± 30°. Triadic = hue + 120° and hue + 240°. This is much simpler than calculating RGB channel adjustments.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Are there any performance differences?</h3>
+            <p>No. Browsers internally convert all color formats to the same representation before rendering. There is no measurable performance difference between HEX, RGB, or HSL in CSS or JavaScript.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
+
+<style is:global>
+  .guide-article {
+    padding: 2rem 0 4rem;
+  }
+  .guide-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .guide-header {
+    margin-bottom: 2rem;
+  }
+  .guide-header h1 {
+    font-size: 2.25rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .guide-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+  }
+  .guide-category {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+    background: var(--color-primary-subtle);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
+  }
+  .guide-reading-time {
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+  .guide-toc {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .guide-toc strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9375rem;
+  }
+  .guide-toc ol {
+    list-style-position: inside;
+    padding: 0;
+  }
+  .guide-toc li {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    color: var(--color-text-secondary);
+  }
+  .guide-toc li a {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+  .guide-toc li a:hover {
+    text-decoration: underline;
+  }
+  .guide-article section {
+    margin-bottom: 2.5rem;
+  }
+  .guide-article h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    scroll-margin-top: 5rem;
+  }
+  .guide-article h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  .guide-article p {
+    margin-bottom: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  .guide-article ul, .guide-article ol {
+    margin-bottom: 1.125rem;
+    padding-left: 1.5rem;
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+  }
+  .guide-article li {
+    margin-bottom: 0.5rem;
+  }
+  .guide-article a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .guide-article strong {
+    color: var(--color-text);
+  }
+  .guide-article code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--color-primary-subtle);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    color: var(--color-text);
+  }
+  .guide-faq {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    margin-top: 3rem;
+  }
+  .guide-faq h2 {
+    margin-top: 0;
+  }
+  .faq-item {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .faq-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .faq-item h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.375rem 0;
+    color: var(--color-text);
+  }
+  .faq-item p {
+    font-size: 0.9375rem;
+    margin: 0;
+    line-height: 1.7;
+  }
+</style>

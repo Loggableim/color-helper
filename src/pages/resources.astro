@@ -1,0 +1,209 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Color Resources';
+const description = 'Curated resources for color design — best tools, color guides, accessibility references, and learning materials for designers and developers.';
+const canonical = 'https://color-helper.com/resources/';
+const breadcrumbs = [{ label: 'Resources' }];
+
+const resourceSections = [
+  {
+    title: 'Color Tools',
+    items: [
+      { name: 'Color Picker', href: '/color-picker/', desc: 'Interactive color picker with real-time preview and multiple output formats.' },
+      { name: 'Image Color Picker', href: '/image-color-picker/', desc: 'Extract color palettes from images directly in your browser.' },
+      { name: 'Color Converter', href: '/color-converter/', desc: 'Universal converter supporting HEX, RGB, and HSL formats with auto-detection.' },
+      { name: 'Color Palette Generator', href: '/color-palette-generator/', desc: 'Create complementary, analogous, and triadic color schemes.' },
+      { name: 'Gradient Generator', href: '/gradient-generator/', desc: 'Build multi-stop CSS gradients with live preview.' },
+      { name: 'Contrast Checker', href: '/contrast-checker/', desc: 'Check WCAG AA and AAA contrast compliance for any color pair.' },
+    ],
+  },
+  {
+    title: 'Guides & Tutorials',
+    items: [
+      { name: 'How to Choose a Color Palette', href: '/guides/how-to-choose-a-color-palette/', desc: 'Step-by-step guide to building cohesive color palettes.' },
+      { name: 'HEX vs RGB vs HSL', href: '/guides/hex-vs-rgb-vs-hsl/', desc: 'Understand the differences between the three main color formats.' },
+      { name: 'Accessibility Color Contrast', href: '/guides/accessibility-color-contrast/', desc: 'Everything you need to know about WCAG contrast requirements.' },
+      { name: 'Color Theory Basics', href: '/guides/color-theory-basics/', desc: 'Fundamentals of the color wheel, harmonies, and color psychology.' },
+      { name: 'Web Design Color Tips', href: '/guides/web-design-color-tips/', desc: 'Practical tips for accessible and consistent color in web design.' },
+    ],
+  },
+  {
+    title: 'Accessibility Resources',
+    items: [
+      { name: 'WCAG 2.2 Guidelines', href: 'https://www.w3.org/TR/WCAG22/', desc: 'Official W3C Web Content Accessibility Guidelines.', external: true },
+      { name: 'Understanding Contrast Ratios', href: '/guides/accessibility-color-contrast/', desc: 'How contrast ratios work and why they matter for accessibility.' },
+      { name: 'Color Blindness Simulator', href: '/contrast-checker/', desc: 'Check how your color choices appear to users with color vision deficiencies.' },
+    ],
+  },
+  {
+    title: 'Learning & Reference',
+    items: [
+      { name: 'Color Theory Basics Guide', href: '/guides/color-theory-basics/', desc: 'Foundational knowledge for working with color in any medium.' },
+      { name: 'Color Names Reference', href: '/color-picker/', desc: 'Browse standard CSS color names and their HEX equivalents.' },
+      { name: 'HEX Code Reference', href: '/hex-to-rgb/', desc: 'Comprehensive reference for HEX color codes and their RGB equivalents.' },
+      { name: 'Paint Color Matching', href: '/paint-color-matching/', desc: 'Find paint colors that match your digital palette.' },
+    ],
+  },
+];
+
+const collectionSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Color Resources - Color Helper",
+  "description": description,
+  "url": canonical,
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <div class="hub-page">
+    <div class="container">
+      <div class="hub-header">
+        <h1>Color Resources</h1>
+        <p class="hub-subtitle">
+          A curated collection of the best color tools, guides, and learning resources for designers, 
+          developers, and accessibility professionals.
+        </p>
+      </div>
+
+      {resourceSections.map((section) => (
+        <section class="resource-section">
+          <h2>{section.title}</h2>
+          <div class="resource-grid">
+            {section.items.map((item) => (
+              <a
+                href={item.href}
+                class="resource-card"
+                {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
+                <div class="resource-card-body">
+                  <h3>{item.name}</h3>
+                  <p>{item.desc}</p>
+                </div>
+                <div class="resource-card-arrow">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                    <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+
+      <section class="hub-seo-content">
+        <h2>Curated Color Design Resources</h2>
+        <p>
+          This page brings together everything Color Helper has to offer — tools, guides, and references — 
+          organized so you can quickly find what you need. Whether you are checking contrast ratios, 
+          generating a palette, or learning color theory, the right resource is just a click away.
+        </p>
+        <p>
+          All tools on this page run entirely in your browser. No data is sent to any server. Your images, 
+          colors, and palettes stay on your device. This commitment to privacy means you can work confidently 
+          with sensitive designs or client assets without concern.
+        </p>
+        <p>
+          New resources and guides are added regularly. If there is a topic you would like to see covered, 
+          feel free to <a href="/contact/">reach out</a>.
+        </p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
+
+<script type="application/ld+json" set:html={JSON.stringify(collectionSchema)}></script>
+
+<style is:global>
+  .hub-page {
+    padding: 2rem 0 4rem;
+  }
+  .hub-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .hub-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .hub-subtitle {
+    max-width: 640px;
+    margin: 0 auto;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+  .resource-section {
+    margin-bottom: 3rem;
+  }
+  .resource-section h2 {
+    font-size: 1.375rem;
+    margin-bottom: 1.125rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 0.75rem;
+  }
+  .resource-card {
+    display: flex;
+    padding: 1rem 1.125rem;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: box-shadow 0.25s var(--ease-out-expo), transform 0.25s var(--ease-out-expo);
+    gap: 0.75rem;
+    align-items: center;
+  }
+  .resource-card:hover {
+    box-shadow: var(--shadow-ring-hover), var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .resource-card-body {
+    flex: 1;
+  }
+  .resource-card-body h3 {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    margin-bottom: 0.125rem;
+  }
+  .resource-card-body p {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+  }
+  .resource-card-arrow {
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    transition: transform 0.3s var(--ease-spring), color 0.3s var(--ease-out-expo);
+  }
+  .resource-card:hover .resource-card-arrow {
+    color: var(--color-primary);
+    transform: translateX(4px);
+  }
+  .hub-seo-content {
+    max-width: 680px;
+    margin: 3rem auto 0;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .hub-seo-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .hub-seo-content p {
+    margin-bottom: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+  }
+  .hub-seo-content a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>

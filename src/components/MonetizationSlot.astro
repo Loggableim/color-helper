@@ -1,0 +1,116 @@
+---
+/**
+ * MonetizationSlot.astro
+ * ────────────────────────────────────────────────────────────
+ * Placeholder component for future monetization (ads, affiliate
+ * links, sponsored content, etc.).
+ *
+ * USAGE:
+ *   <MonetizationSlot position="sidebar-top" className="my-custom-class" />
+ *
+ * PROPS:
+ *   position  – string identifier for the ad slot location
+ *               (e.g., "sidebar-top", "sidebar-bottom", "in-content",
+ *                "footer", "tool-bottom")
+ *   className – additional CSS class(es) passed to the wrapper
+ *
+ * BEHAVIOR:
+ *   - By default this component renders nothing (display: none).
+ *   - To enable, set the CSS custom property in your theme:
+ *       :root { --show-monetization: true; }
+ *     Or override per-slot via a `data-monetization-enabled` attribute.
+ *
+ * FUTURE INTEGRATION POINTS (search for "TODO: Monetization"):
+ *   1. Replace the empty <div> with an <ins> or <div> from an ad network.
+ *   2. Add an <a> with affiliate tracking parameters.
+ *   3. Conditionally render based on environment / feature flag.
+ *   4. Lazy-load the ad script only when this component is visible.
+ *
+ * EXAMPLE – Carbon Ads integration:
+ *   <div id="carbonads" />
+ *   <script async src="//cdn.carbonads.com/carbon.js?serve=..." />
+ *
+ * EXAMPLE – Affiliate banner:
+ *   <a href="https://example.com/ref?track=COLOR_TOOL" target="_blank"
+ *      rel="sponsored noopener">
+ *     <img src="/assets/affiliate-banner.png" alt="Sponsored" />
+ *   </a>
+ *
+ * EXAMPLE – Google AdSense:
+ *   <ins class="adsbygoogle"
+ *        data-ad-client="ca-pub-XXXXXXXXXXXXXX"
+ *        data-ad-slot="XXXXXXXXXX"
+ *        data-ad-format="auto"></ins>
+ *   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+ */
+
+export interface Props {
+  position?: string;
+  className?: string;
+}
+
+const { position = 'default', className = '' } = Astro.props;
+---
+
+<div
+  class={`monetization-slot monetization-slot--${position} ${className}`}
+  data-monetization-position={position}
+  data-monetization-enabled="false"
+  aria-hidden="true"
+>
+  <!--
+    ================================================================
+    TODO: Monetization – Insert ad / affiliate markup here.
+    ================================================================
+
+    When ready:
+      1. Remove `data-monetization-enabled="false"` (or flip via JS/CSS).
+      2. Replace the empty placeholder below with your ad code.
+      3. Ensure the slot respects user privacy (GDPR consent, etc.).
+
+    Example placeholder for future use:
+      <div class="monetization-slot__content">
+        <p class="monetization-slot__label">— Sponsored —</p>
+        <!-- Ad code goes here -->
+      </div>
+    ================================================================
+  -->
+</div>
+
+<style>
+  /*
+   * Hidden by default. Enable via:
+   *   :root { --show-monetization: true; }
+   *   .monetization-slot { display: block; }
+   *
+   * Or target a specific position:
+   *   .monetization-slot--sidebar-top { display: block; }
+   */
+  .monetization-slot {
+    display: none;
+  }
+
+  /* When monetization is globally enabled */
+  :root[style*="--show-monetization: true"] .monetization-slot,
+  :root[style*="--show-monetization:true"] .monetization-slot {
+    display: block;
+  }
+
+  /* Styling hints for future ad slots */
+  .monetization-slot__content {
+    padding: 1rem;
+    text-align: center;
+    min-height: 90px; /* common ad unit height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .monetization-slot__label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted, #9ca3af);
+    margin: 0 0 0.5rem;
+  }
+</style>

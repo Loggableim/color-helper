@@ -1,0 +1,218 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = 'Color Guides & Tutorials';
+const description = 'Learn color theory, accessibility, palette creation, and web design best practices. Expert-written guides for designers and developers.';
+const canonical = 'https://color-helper.com/guides/';
+const breadcrumbs = [{ label: 'Guides' }];
+
+const guides = [
+  {
+    title: 'How to Choose a Color Palette',
+    description: 'A practical step-by-step guide to building harmonious color palettes for your design projects.',
+    href: '/guides/how-to-choose-a-color-palette/',
+    readTime: '10 min read',
+    category: 'Design',
+  },
+  {
+    title: 'HEX vs RGB vs HSL — What\'s the Difference?',
+    description: 'Understand the differences between HEX, RGB, and HSL color formats and when to use each one.',
+    href: '/guides/hex-vs-rgb-vs-hsl/',
+    readTime: '7 min read',
+    category: 'Formats',
+  },
+  {
+    title: 'Accessibility Color Contrast Guide',
+    description: 'Learn about WCAG contrast ratios, AA vs AAA compliance, and how to make your designs accessible.',
+    href: '/guides/accessibility-color-contrast/',
+    readTime: '8 min read',
+    category: 'Accessibility',
+  },
+  {
+    title: 'Color Theory Basics',
+    description: 'Explore the fundamentals of color theory — the color wheel, harmonies, warm vs cool colors, and color psychology.',
+    href: '/guides/color-theory-basics/',
+    readTime: '9 min read',
+    category: 'Theory',
+  },
+  {
+    title: 'Web Design Color Tips',
+    description: 'Practical tips for choosing and working with colors in web design, from accessibility to brand consistency.',
+    href: '/guides/web-design-color-tips/',
+    readTime: '7 min read',
+    category: 'Design',
+  },
+];
+
+const collectionSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Color Guides & Tutorials - Color Helper",
+  "description": description,
+  "url": canonical,
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <div class="hub-page">
+    <div class="container">
+      <div class="hub-header">
+        <h1>Color Guides &amp; Tutorials</h1>
+        <p class="hub-subtitle">
+          Learn how to work with color effectively. From color theory fundamentals to practical web design tips,
+          these guides will help you make better color decisions in your projects.
+        </p>
+      </div>
+
+      <div class="guides-grid">
+        {guides.map((guide) => (
+          <a href={guide.href} class="guide-card">
+            <div class="guide-card-body">
+              <span class="guide-category">{guide.category}</span>
+              <h2 class="guide-title">{guide.title}</h2>
+              <p class="guide-desc">{guide.description}</p>
+              <span class="guide-read-time">{guide.readTime}</span>
+            </div>
+            <div class="guide-card-arrow">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <section class="hub-seo-content">
+        <h2>Learn Color Design with Color Helper</h2>
+        <p>
+          Whether you are a beginner exploring color theory for the first time or an experienced designer 
+          refining your workflow, these guides provide clear, practical advice grounded in real design 
+          principles. Each guide is written to be immediately useful — no filler, no fluff.
+        </p>
+        <p>
+          Start with <a href="/guides/color-theory-basics/">Color Theory Basics</a> to understand the 
+          fundamentals of the color wheel, harmony types, and the psychological impact of color choices. 
+          Then move on to <a href="/guides/how-to-choose-a-color-palette/">How to Choose a Color Palette</a> 
+          for a hands-on approach to building cohesive color schemes. For web designers, the 
+          <a href="/guides/web-design-color-tips/">Web Design Color Tips</a> guide covers everything from 
+          accessibility to brand consistency. Understanding <a href="/guides/hex-vs-rgb-vs-hsl/">color formats</a> 
+          and <a href="/guides/accessibility-color-contrast/">contrast requirements</a> will help you implement 
+          your designs with confidence.
+        </p>
+        <p>
+          Use these guides alongside our free <a href="/tools/">color tools</a> — the 
+          <a href="/color-palette-generator/">Palette Generator</a>, <a href="/contrast-checker/">Contrast 
+          Checker</a>, and <a href="/color-converter/">Color Converter</a> are perfect companions for 
+          applying what you learn.
+        </p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
+
+<script type="application/ld+json" set:html={JSON.stringify(collectionSchema)}></script>
+
+<style is:global>
+  .hub-page {
+    padding: 2rem 0 4rem;
+  }
+  .hub-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .hub-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .hub-subtitle {
+    max-width: 640px;
+    margin: 0 auto;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .guide-card {
+    display: flex;
+    padding: 1.5rem;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: box-shadow 0.25s var(--ease-out-expo), transform 0.25s var(--ease-out-expo);
+    gap: 1rem;
+  }
+  .guide-card:hover {
+    box-shadow: var(--shadow-ring-hover), var(--shadow-lg);
+    transform: translateY(-3px);
+  }
+  .guide-card-body {
+    flex: 1;
+  }
+  .guide-category {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+    background: var(--color-primary-subtle);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.75rem;
+  }
+  .guide-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+  .guide-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+  .guide-read-time {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+  .guide-card-arrow {
+    display: flex;
+    align-items: center;
+    color: var(--color-text-muted);
+    transition: transform 0.3s var(--ease-spring), color 0.3s var(--ease-out-expo);
+    flex-shrink: 0;
+  }
+  .guide-card:hover .guide-card-arrow {
+    color: var(--color-primary);
+    transform: translateX(4px);
+  }
+  .hub-seo-content {
+    max-width: 680px;
+    margin: 0 auto;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .hub-seo-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .hub-seo-content p {
+    margin-bottom: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+  }
+  .hub-seo-content a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>

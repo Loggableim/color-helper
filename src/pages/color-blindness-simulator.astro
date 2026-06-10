@@ -1,0 +1,323 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../components/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+
+const title = 'Color Blindness Simulator';
+const description = 'Simulate how your colors look to people with protanopia, deuteranopia, tritanopia and achromatopsia. Compare original vs simulated swatches side by side.';
+const canonical = 'https://color-helper.com/color-blindness-simulator/';
+const breadcrumbs = [{ label: 'Color Blindness Simulator' }];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout title="Color Blindness Simulator" {description} {breadcrumbs}>
+    <div class="tool-wrapper">
+      <div id="blindness-root">
+        <div class="converter-card">
+          <h2 class="converter-subtitle">Color Blindness Simulator</h2>
+          <p class="converter-desc">Enter a color to see how it appears under four common types of color vision deficiency.</p>
+
+          <div class="input-group">
+            <label for="color-picker" class="input-label">Pick a color</label>
+            <div class="color-pick-row">
+              <input
+                id="color-picker"
+                type="color"
+                class="native-picker"
+                value="#6366f1"
+              />
+              <input
+                id="hex-input"
+                type="text"
+                class="color-input hex-input"
+                value="#6366f1"
+                spellcheck="false"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+
+          <div id="swatches" class="swatches-grid">
+            <!-- Original -->
+            <div class="swatch-card">
+              <div class="swatch-label">Original</div>
+              <div id="swatch-original" class="swatch-box" style="background-color: #6366f1;"></div>
+              <div class="swatch-name">Normal vision</div>
+            </div>
+
+            <!-- Protanopia -->
+            <div class="swatch-card">
+              <div class="swatch-label">Protanopia</div>
+              <div id="swatch-protanopia" class="swatch-box" style="background-color: #6366f1;"></div>
+              <div class="swatch-name">Red-blind</div>
+            </div>
+
+            <!-- Deuteranopia -->
+            <div class="swatch-card">
+              <div class="swatch-label">Deuteranopia</div>
+              <div id="swatch-deuteranopia" class="swatch-box" style="background-color: #6366f1;"></div>
+              <div class="swatch-name">Green-blind</div>
+            </div>
+
+            <!-- Tritanopia -->
+            <div class="swatch-card">
+              <div class="swatch-label">Tritanopia</div>
+              <div id="swatch-tritanopia" class="swatch-box" style="background-color: #6366f1;"></div>
+              <div class="swatch-name">Blue-blind</div>
+            </div>
+
+            <!-- Achromatopsia -->
+            <div class="swatch-card">
+              <div class="swatch-label">Achromatopsia</div>
+              <div id="swatch-achromatopsia" class="swatch-box" style="background-color: #6366f1;"></div>
+              <div class="swatch-name">Monochrome</div>
+            </div>
+          </div>
+
+          <div class="sim-note">
+            <strong>Note:</strong> Color blindness simulation is an approximation based on mathematical models. 
+            Actual perception varies by individual. Use this tool to test contrast and readability, not as a clinical diagnosis.
+          </div>
+
+          <div class="internal-links">
+            <h3>Check Color Contrast</h3>
+            <p>After simulating, verify that your colors meet accessibility standards.</p>
+            <a href="/contrast-checker/" class="internal-link-btn">Open Contrast Checker →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="seo-content">
+      <h2>What Is a Color Blindness Simulator?</h2>
+      <p>A color blindness simulator applies mathematical transformations to a chosen color to approximate how it would appear to someone with a color vision deficiency (CVD). About 8% of men and 0.5% of women worldwide have some form of color blindness. The most common types are protanopia (reduced sensitivity to red light), deuteranopia (reduced sensitivity to green light), tritanopia (reduced sensitivity to blue light), and achromatopsia (complete lack of color vision).</p>
+      <p>This tool lets you pick any color — via a native color picker or by typing a hex code — and see five swatches side by side: the original color and four simulated versions. Each swatch is labeled with the condition name and a short description (e.g., "Red-blind"). The simulation uses a simple matrix-based transformation that converts the RGB values into the perceived color for each deficiency type.</p>
+      <p>Using a color blindness simulator during the design process helps you build more inclusive interfaces. For example, a green "success" indicator and a red "error" indicator may look nearly identical to someone with deuteranopia. By catching these issues early, you can choose color combinations that remain distinguishable for all users, or add redundant cues like icons and text labels alongside color.</p>
+    </section>
+
+    <section class="related-tools">
+      <h2>Related Tools</h2>
+      <ul>
+        <li><a href="/contrast-checker/">Contrast Checker</a> — Verify WCAG contrast ratios for accessible text</li>
+        <li><a href="/color-converter/">Color Converter</a> — Convert between HEX, RGB, and HSL</li>
+        <li><a href="/color-palette-generator/">Palette Generator</a> — Create accessible color palettes</li>
+      </ul>
+    </section>
+
+    <FAQ
+      items={[
+        {
+          question: 'What types of color blindness are simulated?',
+          answer: 'The tool simulates four types: protanopia (red-blind, difficulty perceiving red light), deuteranopia (green-blind, difficulty perceiving green light), tritanopia (blue-blind, difficulty perceiving blue light), and achromatopsia (complete monochrome vision, no color perception at all).'
+        },
+        {
+          question: 'How accurate is the simulation?',
+          answer: 'This simulation uses standard mathematical models (linear transformation matrices applied to the RGB color space) to approximate how a color appears under each deficiency type. These are reasonable approximations used widely in accessibility tools, but individual perception varies. The simulation is a design aid, not a clinical diagnostic tool.'
+        },
+        {
+          question: 'How can I use this to improve accessibility?',
+          answer: 'Test your brand colors, UI elements, and data visualizations by entering them into the simulator. If two colors that carry meaning (e.g., red for error, green for success) look nearly identical in a simulated view, add additional cues such as icons, patterns, or text labels. Also check contrast ratios with our Contrast Checker to ensure readability.'
+        },
+        {
+          question: 'Does the simulator affect the contrast checker link?',
+          answer: 'Yes — after identifying colors that may be hard to distinguish under a deficiency type, click the "Open Contrast Checker" link to test whether those colors meet WCAG AA or AAA contrast ratios for text and UI components.'
+        }
+      ]}
+    />
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+</BaseLayout>
+
+<script>
+  (function() {
+    'use strict';
+
+    const colorPicker = document.getElementById('color-picker');
+    const hexInput = document.getElementById('hex-input');
+
+    function hexToRgb(hex) {
+      let h = hex.trim().replace(/^#/, '');
+      if (h.length === 3) h = h.split('').map(c => c + c).join('');
+      if (h.length !== 6) return null;
+      return {
+        r: parseInt(h.substring(0, 2), 16),
+        g: parseInt(h.substring(2, 4), 16),
+        b: parseInt(h.substring(4, 6), 16),
+      };
+    }
+
+    function rgbToHex(r, g, b) {
+      const clamp = n => Math.min(255, Math.max(0, Math.round(n)));
+      return '#' + [r, g, b].map(c => clamp(c).toString(16).padStart(2, '0')).join('');
+    }
+
+    // Simple simulation matrices based on Brettel-Vienot-Mollon models
+    function simulate(r, g, b, type) {
+      let rr = r / 255, gg = g / 255, bb = b / 255;
+
+      // Linearize sRGB
+      const lin = c => c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+      const R = lin(rr), G = lin(gg), B = lin(bb);
+
+      let r2, g2, b2;
+
+      switch (type) {
+        case 'protanopia':
+          // Protanopia: loss of L-cone sensitivity
+          r2 = 0.0 * R + 2.02344 * G + -2.52581 * B;
+          g2 = 0.0 * R + 1.0 * G + 0.0 * B;
+          b2 = 0.0 * R + 0.0 * G + 1.0 * B;
+          // Normalize
+          r2 = r2 / 2.0;
+          g2 = g2 / 2.0;
+          b2 = b2 / 2.0;
+          break;
+        case 'deuteranopia':
+          // Deuteranopia: loss of M-cone sensitivity
+          r2 = 1.0 * R + 0.0 * G + 0.0 * B;
+          g2 = 2.02344 * R + 0.0 * G + -2.52581 * B;
+          b2 = 0.0 * R + 0.0 * G + 1.0 * B;
+          r2 = r2 / 2.0;
+          g2 = g2 / 2.0;
+          b2 = b2 / 2.0;
+          break;
+        case 'tritanopia':
+          // Tritanopia: loss of S-cone sensitivity
+          r2 = 1.0 * R + 0.0 * G + 0.0 * B;
+          g2 = 0.0 * R + 1.0 * G + 0.0 * B;
+          b2 = -0.395913 * R + 0.801109 * G + 0.0 * B;
+          r2 = r2 / 1.0;
+          g2 = g2 / 1.0;
+          b2 = b2 / 1.5;
+          break;
+        case 'achromatopsia':
+          // Achromatopsia: conversion to grayscale (luminance)
+          const lum = 0.299 * R + 0.587 * G + 0.114 * B;
+          r2 = lum; g2 = lum; b2 = lum;
+          break;
+        default:
+          r2 = R; g2 = G; b2 = B;
+      }
+
+      // Delinearize (gamma)
+      const delin = c => {
+        c = Math.min(1, Math.max(0, c));
+        return c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
+      };
+
+      return {
+        r: Math.round(delin(r2) * 255),
+        g: Math.round(delin(g2) * 255),
+        b: Math.round(delin(b2) * 255),
+      };
+    }
+
+    function updateSwatches(hex) {
+      const rgb = hexToRgb(hex);
+      if (!rgb) return;
+
+      const swatchOriginal = document.getElementById('swatch-original');
+      const swatchProtanopia = document.getElementById('swatch-protanopia');
+      const swatchDeuteranopia = document.getElementById('swatch-deuteranopia');
+      const swatchTritanopia = document.getElementById('swatch-tritanopia');
+      const swatchAchromatopsia = document.getElementById('swatch-achromatopsia');
+
+      swatchOriginal.style.backgroundColor = hex;
+
+      const p = simulate(rgb.r, rgb.g, rgb.b, 'protanopia');
+      swatchProtanopia.style.backgroundColor = rgbToHex(p.r, p.g, p.b);
+
+      const d = simulate(rgb.r, rgb.g, rgb.b, 'deuteranopia');
+      swatchDeuteranopia.style.backgroundColor = rgbToHex(d.r, d.g, d.b);
+
+      const t = simulate(rgb.r, rgb.g, rgb.b, 'tritanopia');
+      swatchTritanopia.style.backgroundColor = rgbToHex(t.r, t.g, t.b);
+
+      const a = simulate(rgb.r, rgb.g, rgb.b, 'achromatopsia');
+      swatchAchromatopsia.style.backgroundColor = rgbToHex(a.r, a.g, a.b);
+    }
+
+    colorPicker.addEventListener('input', function() {
+      hexInput.value = this.value;
+      updateSwatches(this.value);
+    });
+
+    hexInput.addEventListener('input', function() {
+      let val = this.value.trim();
+      if (!val.startsWith('#')) val = '#' + val;
+      if (/^#[0-9a-fA-F]{3}$/.test(val) || /^#[0-9a-fA-F]{6}$/.test(val)) {
+        // Normalize
+        let h = val.replace(/^#/, '');
+        if (h.length === 3) h = h.split('').map(c => c + c).join('');
+        val = '#' + h.toLowerCase();
+        colorPicker.value = val;
+        updateSwatches(val);
+      }
+    });
+
+    // Init
+    updateSwatches('#6366f1');
+  })();
+</script>
+
+<style is:global>
+  .tool-wrapper { margin-bottom: 1.5rem; }
+  .converter-card {
+    max-width: 600px; margin: 0 auto;
+    background: #ffffff; border: 1px solid var(--color-border, #e2e8f0);
+    border-radius: 14px; padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+  }
+  .converter-subtitle { margin: 0 0 0.25rem 0; font-size: 1.125rem; font-weight: 700; letter-spacing: -0.01em; color: var(--color-text-primary, #1e293b); }
+  .converter-desc { margin: 0 0 1.25rem 0; font-size: 0.8125rem; color: var(--color-text-secondary, #64748b); }
+  .input-group { margin-bottom: 1rem; }
+  .input-label { display: block; font-size: 0.8125rem; font-weight: 600; margin-bottom: 0.375rem; color: var(--color-text-primary, #1e293b); }
+  .color-pick-row { display: flex; gap: 0.75rem; align-items: center; }
+  .native-picker { width: 48px; height: 48px; border: 2px solid var(--color-border, #e2e8f0); border-radius: 10px; cursor: pointer; padding: 2px; background: #fff; flex-shrink: 0; }
+  .hex-input { flex: 1; }
+  .color-input {
+    display: block; width: 100%; padding: 0.625rem 0.875rem; font-size: 0.9375rem;
+    font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+    color: var(--color-text-primary, #1e293b); background: #ffffff;
+    border: 1.5px solid var(--color-border, #e2e8f0); border-radius: 10px; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s; letter-spacing: 0.02em; box-sizing: border-box;
+  }
+  .color-input:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12); }
+  .swatches-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem; margin-bottom: 1.25rem; }
+  .swatch-card { text-align: center; }
+  .swatch-label { font-size: 0.6875rem; font-weight: 600; color: var(--color-text-secondary, #64748b); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.375rem; }
+  .swatch-box { width: 100%; aspect-ratio: 1; border-radius: 10px; border: 2px solid var(--color-border, #e2e8f0); transition: background-color 0.15s ease; margin-bottom: 0.375rem; }
+  .swatch-name { font-size: 0.75rem; color: var(--color-text-secondary, #64748b); font-weight: 500; }
+  .sim-note { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.8125rem; color: #92400e; line-height: 1.5; margin-bottom: 1.25rem; }
+  .sim-note strong { font-weight: 700; }
+  .internal-links { padding: 1.25rem; background: var(--color-bg-alt, #f8fafc); border: 1px solid var(--color-border, #e2e8f0); border-radius: 12px; text-align: center; }
+  .internal-links h3 { margin: 0 0 0.5rem 0; font-size: 1rem; font-weight: 700; color: var(--color-text-primary, #1e293b); }
+  .internal-links p { margin: 0 0 0.75rem 0; font-size: 0.875rem; color: var(--color-text-secondary, #64748b); }
+  .internal-link-btn { display: inline-block; padding: 0.5rem 1.25rem; background: #6366f1; color: #fff; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.875rem; transition: background 0.15s; }
+  .internal-link-btn:hover { background: #4f46e5; }
+  .seo-content { max-width: 720px; margin: 0 auto; padding: 2rem 0; }
+  .seo-content h2 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--color-text-primary); }
+  .seo-content p { margin-bottom: 1rem; line-height: 1.7; color: var(--color-text-secondary); font-size: 1.05rem; }
+  .seo-content code { font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace; font-size: 0.9em; background: var(--color-bg-alt, #f1f5f9); padding: 0.125rem 0.375rem; border-radius: 4px; }
+  .related-tools { max-width: 720px; margin: 0 auto; padding: 2rem 0; }
+  .related-tools h2 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--color-text-primary); }
+  .related-tools ul { list-style: none; padding: 0; margin: 0; }
+  .related-tools li { padding: 0.375rem 0; line-height: 1.6; color: var(--color-text-secondary); font-size: 1.05rem; }
+  .related-tools a { color: #6366f1; text-decoration: none; font-weight: 600; }
+  .related-tools a:hover { text-decoration: underline; }
+  @media (max-width: 600px) {
+    .swatches-grid { grid-template-columns: repeat(2, 1fr); }
+    .converter-card { padding: 1rem; }
+  }
+</style>

@@ -1,0 +1,441 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = 'Color Theory Basics';
+const description = 'Learn the fundamentals of color theory — the color wheel, color harmonies, warm vs cool colors, and the psychology of color. A complete beginner-friendly guide.';
+const canonical = 'https://color-helper.com/guides/color-theory-basics/';
+const breadcrumbs = [
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Color Theory Basics' },
+];
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "description": description,
+  "author": { "@type": "Organization", "name": "Color Helper" },
+  "publisher": { "@type": "Organization", "name": "Color Helper" },
+  "url": canonical,
+  "mainEntityOfPage": canonical,
+  "datePublished": "2025-01-22",
+  "dateModified": "2025-03-01",
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <article class="guide-article">
+    <div class="container">
+      <div class="guide-wrapper">
+        <div class="guide-header">
+          <h1>Color Theory Basics</h1>
+          <div class="guide-meta">
+            <span class="guide-category">Theory</span>
+            <span class="guide-reading-time">9 min read</span>
+          </div>
+        </div>
+
+        <div class="guide-toc">
+          <strong>In this guide:</strong>
+          <ol>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#color-wheel">The Color Wheel</a></li>
+            <li><a href="#harmonies">Color Harmonies</a></li>
+            <li><a href="#warm-vs-cool">Warm vs Cool Colors</a></li>
+            <li><a href="#psychology">Color Psychology</a></li>
+            <li><a href="#practical-application">Practical Application</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ol>
+        </div>
+
+        <section id="introduction">
+          <h2>Introduction</h2>
+          <p>
+            Color theory is the science and art of using color. It explains how humans perceive color, 
+            how colors interact with each other, and how to combine them harmoniously. While the subject 
+            has deep roots in physics, physiology, and art history, the practical principles of color 
+            theory are accessible to anyone who works with visual design.
+          </p>
+          <p>
+            Understanding color theory helps you make intentional color choices rather than guessing. 
+            Instead of asking "does this look good?" you can ask "does this combination follow a 
+            complementary scheme?" or "is this palette balanced between warm and cool tones?" These 
+            principles give you a vocabulary and a framework for creating cohesive, effective color 
+            palettes in any medium — web design, branding, illustration, or interior design.
+          </p>
+          <p>
+            This guide covers the essentials: the color wheel, the major harmony types, the distinction 
+            between warm and cool colors, and an introduction to the psychological effects of color. 
+            Use the <a href="/color-palette-generator/">Color Palette Generator</a> to apply these 
+            principles and create your own harmonious palettes.
+          </p>
+        </section>
+
+        <section id="color-wheel">
+          <h2>The Color Wheel</h2>
+          <p>
+            The color wheel is a circular diagram that organizes colors by their chromatic relationship. 
+            It was first developed by Sir Isaac Newton in 1666, who discovered that white light splits 
+            into a spectrum of colors. Arranging those colors in a circle revealed natural relationships 
+            that are still the foundation of color theory today.
+          </p>
+          <p>
+            The traditional color wheel consists of 12 hues based on the RYB (red-yellow-blue) color 
+            model used in painting. However, the digital color wheel used in web design and CSS is based 
+            on the RGB (red-green-blue) model, which is additive — colors combine with light rather than 
+            pigment. The HSL color format maps directly to the color wheel: hue is the position on the 
+            wheel (0–360°), saturation is the intensity, and lightness is the brightness.
+          </p>
+          <p>
+            The three categories of colors on the wheel are:
+          </p>
+          <ul>
+            <li>
+              <strong>Primary colors:</strong> Red (0°), green (120°), and blue (240°) in the RGB model. 
+              These cannot be created by mixing other colors.
+            </li>
+            <li>
+              <strong>Secondary colors:</strong> Cyan (180°, between green and blue), magenta (300°, 
+              between blue and red), and yellow (60°, between red and green). Each is the result of 
+              mixing two primaries.
+            </li>
+            <li>
+              <strong>Tertiary colors:</strong> The six remaining hues created by mixing a primary and 
+              an adjacent secondary — for example, orange (30°, red + yellow).
+            </li>
+          </ul>
+          <p>
+            The color wheel is not just a reference — it is a tool for discovering harmonious 
+            relationships. Moving around the wheel by fixed angular increments produces predictable 
+            color schemes that are naturally pleasing to the eye.
+          </p>
+        </section>
+
+        <section id="harmonies">
+          <h2>Color Harmonies</h2>
+          <p>
+            Color harmonies are specific color combinations based on geometric relationships on the 
+            color wheel. These relationships have been studied for centuries and are used across all 
+            visual disciplines — from painting and photography to UI design and branding. Here are 
+            the most important harmony types:
+          </p>
+          <ul>
+            <li>
+              <strong>Complementary:</strong> Two colors opposite each other on the wheel (180° apart). 
+              Examples: blue and orange, red and green, purple and yellow. Complementary schemes create 
+              high contrast and visual tension, making them ideal for highlighting important elements 
+              like calls to action.
+            </li>
+            <li>
+              <strong>Analogous:</strong> Three colors that sit next to each other on the wheel (usually 
+              within 60°). Examples: blue, blue-green, and green. Analogous palettes are harmonious and 
+              calming, making them popular for backgrounds and overall page design.
+            </li>
+            <li>
+              <strong>Triadic:</strong> Three colors evenly spaced at 120° intervals. Examples: red, 
+              yellow, and blue. Triadic palettes are vibrant and balanced, offering more visual interest 
+              than complementary schemes while remaining harmonious.
+            </li>
+            <li>
+              <strong>Split-Complementary:</strong> A base color plus the two colors adjacent to its 
+              complement (150° and 210° from the base). This offers the contrast of a complementary 
+              scheme with less tension, giving you more flexibility.
+            </li>
+            <li>
+              <strong>Monochromatic:</strong> Variations in lightness and saturation of a single hue. 
+              Monochromatic palettes are clean, elegant, and the easiest to implement successfully. 
+              They create a cohesive look with minimal risk of color clash.
+            </li>
+            <li>
+              <strong>Square / Tetradic:</strong> Four colors equally spaced at 90° intervals. Rich and 
+              complex, but requires careful balance to avoid visual chaos.
+            </li>
+          </ul>
+          <p>
+            Use our <a href="/color-palette-generator/">Color Palette Generator</a> to apply these 
+            harmonies automatically. Pick a base color, select a harmony type, and the tool generates 
+            a complete palette you can copy and use.
+          </p>
+        </section>
+
+        <section id="warm-vs-cool">
+          <h2>Warm vs Cool Colors</h2>
+          <p>
+            Colors are broadly divided into warm and cool categories based on their position on the 
+            color wheel. This distinction has a powerful effect on the mood and perception of a design.
+          </p>
+          <p>
+            <strong>Warm colors</strong> range from red through orange to yellow (approximately 0° to 
+            90° on the HSL wheel). They evoke feelings of warmth, energy, passion, and urgency. Warm 
+            colors advance visually — they appear closer to the viewer, making them effective for calls 
+            to action and elements that need attention. Red is the most intense warm color and is often 
+            used for alerts, sale tags, and urgent notifications.
+          </p>
+          <p>
+            <strong>Cool colors</strong> range from green through blue to purple (approximately 180° to 
+            270°). They convey calm, professionalism, trust, and serenity. Cool colors recede visually, 
+            making them ideal for backgrounds and large areas. Blue is the most popular cool color in 
+            web design, especially for corporate and technology brands.
+          </p>
+          <p>
+            The warm-cool distinction also affects spatial perception. A room painted in warm colors 
+            feels cozier and more intimate, while cool colors make a space feel larger and more open. 
+            In UI design, warm accents against cool backgrounds create a natural focal hierarchy.
+          </p>
+          <p>
+            Most successful color palettes include both warm and cool elements. A predominantly cool 
+            palette with warm accents (or vice versa) provides balance and visual interest. Pure warm 
+            or pure cool palettes can feel one-dimensional unless carefully managed.
+          </p>
+        </section>
+
+        <section id="psychology">
+          <h2>Color Psychology</h2>
+          <p>
+            Color psychology studies how colors influence human behavior, emotion, and perception. While 
+            individual responses to color are shaped by personal experience and culture, certain patterns 
+            are consistent enough to inform design decisions:
+          </p>
+          <ul>
+            <li>
+              <strong>Red:</strong> Passion, energy, urgency, excitement. Increases heart rate and 
+              creates a sense of immediacy. Used by brands like Netflix, YouTube, and Coca-Cola.
+            </li>
+            <li>
+              <strong>Blue:</strong> Trust, stability, professionalism, calm. The most universally 
+              liked color across cultures. Dominates banking (Chase, Bank of America), tech (Facebook, 
+              LinkedIn), and healthcare.
+            </li>
+            <li>
+              <strong>Green:</strong> Nature, growth, health, sustainability. Associated with 
+              environment, finance (positive markets), and wellness (Whole Foods, Starbucks).
+            </li>
+            <li>
+              <strong>Yellow:</strong> Optimism, warmth, attention. Highly visible, used for warnings 
+              and highlights. Can cause eye strain in large amounts (McDonald's, IKEA).
+            </li>
+            <li>
+              <strong>Purple:</strong> Luxury, creativity, wisdom. Historically associated with royalty. 
+              Used by creative brands (Twitch, Cadbury) and beauty products.
+            </li>
+            <li>
+              <strong>Orange:</strong> Friendliness, confidence, playfulness. Less aggressive than red 
+              but still energetic (Amazon, Nickelodeon, Harley-Davidson).
+            </li>
+            <li>
+              <strong>Black:</strong> Sophistication, power, elegance. Common in luxury branding (Chanel, 
+              Apple) and editorial design.
+            </li>
+            <li>
+              <strong>White:</strong> Purity, simplicity, cleanliness. Essential for minimal design and 
+              negative space. Often paired with black for high contrast.
+            </li>
+          </ul>
+          <p>
+            Use color psychology as a starting point, not a prescription. The same color can evoke 
+            different responses depending on its saturation, lightness, context, and the other colors 
+            around it. Always test your color choices with your actual audience.
+          </p>
+        </section>
+
+        <section id="practical-application">
+          <h2>Practical Application</h2>
+          <p>
+            Applying color theory to real projects does not need to be complicated. Here is a simple 
+            workflow you can follow:
+          </p>
+          <ol>
+            <li>
+              <strong>Determine the mood</strong> you want to communicate. Is this project professional 
+              and trustworthy? Use blues. Energetic and fun? Use oranges or reds. Calm and natural? 
+              Use greens.
+            </li>
+            <li>
+              <strong>Pick a base hue</strong> using the <a href="/color-picker/">Color Picker</a>. 
+              Start with a single color that represents the core emotion of your project.
+            </li>
+            <li>
+              <strong>Choose a harmony type</strong> and expand your palette. Use the 
+              <a href="/color-palette-generator/">Palette Generator</a> to create complementary, 
+              analogous, or triadic schemes automatically.
+            </li>
+            <li>
+              <strong>Balance warm and cool.</strong> If your palette is mostly cool, add a small warm 
+              accent. If it is mostly warm, introduce a cool neutral for balance.
+            </li>
+            <li>
+              <strong>Test contrast and accessibility.</strong> Use the 
+              <a href="/contrast-checker/">Contrast Checker</a> to ensure all text and background 
+              combinations meet WCAG AA standards.
+            </li>
+          </ol>
+          <p>
+            Color theory is not about rigid rules — it is a framework for making intentional, 
+            informed decisions. The more you practice, the more intuitive it becomes.
+          </p>
+        </section>
+
+        <section id="faq" class="guide-faq">
+          <h2>Frequently Asked Questions</h2>
+          <div class="faq-item">
+            <h3>What is the 60-30-10 rule?</h3>
+            <p>The 60-30-10 rule is a design principle for balanced color use: 60% of the visual area uses a dominant color (often neutral), 30% uses a secondary color, and 10% uses an accent color for highlights and calls to action.</p>
+          </div>
+          <div class="faq-item">
+            <h3>How many colors should a palette have?</h3>
+            <p>A typical palette has 3 to 5 colors. Start with a primary color, add a secondary color for contrast, an accent for highlights, and one or two neutrals for backgrounds and text.</p>
+          </div>
+          <div class="faq-item">
+            <h3>What is the difference between tint, shade, and tone?</h3>
+            <p>A tint is a color mixed with white (lighter). A shade is a color mixed with black (darker). A tone is a color mixed with gray (less saturated). Monochromatic palettes use tints, shades, and tones of a single hue.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Can I use color theory for branding?</h3>
+            <p>Absolutely. Color theory is essential for branding. Choose a primary brand color based on your brand values, then build a supporting palette using harmony rules. Consistency across all brand touchpoints builds recognition and trust.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Do I need to follow color theory rules strictly?</h3>
+            <p>No. Color theory provides guidelines, not laws. Some of the most memorable designs break the rules intentionally. But understanding the rules first gives you the foundation to break them effectively.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
+
+<style is:global>
+  .guide-article {
+    padding: 2rem 0 4rem;
+  }
+  .guide-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .guide-header {
+    margin-bottom: 2rem;
+  }
+  .guide-header h1 {
+    font-size: 2.25rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .guide-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+  }
+  .guide-category {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+    background: var(--color-primary-subtle);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
+  }
+  .guide-reading-time {
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+  .guide-toc {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .guide-toc strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9375rem;
+  }
+  .guide-toc ol {
+    list-style-position: inside;
+    padding: 0;
+  }
+  .guide-toc li {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    color: var(--color-text-secondary);
+  }
+  .guide-toc li a {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+  .guide-toc li a:hover {
+    text-decoration: underline;
+  }
+  .guide-article section {
+    margin-bottom: 2.5rem;
+  }
+  .guide-article h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    scroll-margin-top: 5rem;
+  }
+  .guide-article h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  .guide-article p {
+    margin-bottom: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  .guide-article ul, .guide-article ol {
+    margin-bottom: 1.125rem;
+    padding-left: 1.5rem;
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+  }
+  .guide-article li {
+    margin-bottom: 0.5rem;
+  }
+  .guide-article a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .guide-article strong {
+    color: var(--color-text);
+  }
+  .guide-faq {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    margin-top: 3rem;
+  }
+  .guide-faq h2 {
+    margin-top: 0;
+  }
+  .faq-item {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .faq-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .faq-item h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.375rem 0;
+    color: var(--color-text);
+  }
+  .faq-item p {
+    font-size: 0.9375rem;
+    margin: 0;
+    line-height: 1.7;
+  }
+</style>
