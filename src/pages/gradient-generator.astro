@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../components/ToolLayout.astro';
+import GradientGenerator from '../components/GradientGenerator';
+import FAQ from '../components/FAQ.astro';
+
+const title = 'Gradient Generator';
+const description = 'Create beautiful CSS gradients with our free online gradient generator. Generate linear, radial, and conic gradients with custom colors and angles.';
+const canonical = 'https://color-helper.com/gradient-generator/';
+const breadcrumbs = [{ label: 'Gradient Generator' }];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout {title} {description} {breadcrumbs}>
+    <div class="tool-wrapper">
+      <GradientGenerator client:load />
+    </div>
+
+    <section class="seo-content">
+      <h2>How to Create Stunning CSS Gradients</h2>
+      <p>Our gradient generator makes it easy to create beautiful gradient backgrounds for your web projects. Choose between linear, radial, or conic gradient types, pick two or more colors, and adjust the angle or position to get the perfect look. The preview updates in real time so you can see exactly what your gradient will look like.</p>
+      <p>Linear gradients transition colors along a straight line. You can control the direction by setting an angle (0–360 degrees) or using predefined directions like top-to-bottom or left-to-right. Radial gradients radiate outward from a center point, and conic gradients sweep around in a circular pattern. Each type creates a different visual effect suitable for different design contexts.</p>
+      <p>Once you're happy with your gradient, simply copy the generated CSS code and paste it into your stylesheet. The tool outputs standard CSS background-image syntax that works in all modern browsers. You can also add multiple color stops for more complex gradients, adjust the stop positions, and preview how the gradient looks as a full-page background.</p>
+    </section>
+
+    <FAQ
+      items={[
+        {
+          question: 'What is a CSS gradient?',
+          answer: 'A CSS gradient is a smooth transition between two or more colors that you can use as a background image in web design. Gradients are created using the CSS background-image property with functions like linear-gradient(), radial-gradient(), and conic-gradient().'
+        },
+        {
+          question: 'What types of gradients can I create?',
+          answer: 'You can create linear gradients (colors transition along a straight line), radial gradients (colors radiate outward from a center point), and conic gradients (colors sweep around a circle). Each type offers unique visual effects for different design needs.'
+        },
+        {
+          question: 'How do I add more colors to my gradient?',
+          answer: 'Click the add color button to insert additional color stops. You can specify the position of each color stop as a percentage along the gradient line or radius. This allows you to create complex multi-color gradients with precise control over where each color appears.'
+        },
+        {
+          question: 'Can I export the gradient as an image?',
+          answer: 'This tool generates CSS code that you can use directly in your web projects. For exporting as an image, you can take a screenshot of the preview or use the gradient CSS in a tool that renders it to an image format like PNG or SVG.'
+        },
+        {
+          question: 'Do all browsers support CSS gradients?',
+          answer: 'Yes, CSS gradients are supported in all modern browsers including Chrome, Firefox, Safari, and Edge. The generated code uses standard CSS syntax without vendor prefixes, ensuring broad compatibility across current browser versions.'
+        }
+      ]}
+    />
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+</BaseLayout>
+
+<style is:global>
+  .tool-wrapper {
+    margin-bottom: 1.5rem;
+  }
+  .seo-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .seo-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .seo-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+</style>

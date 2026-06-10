@@ -1,0 +1,554 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolCard from '../components/ToolCard.astro';
+import FAQ from '../components/FAQ.astro';
+---
+
+<BaseLayout
+  title="Color Helper"
+  description="Free color tools for designers, developers and creators. Browser-based color picker, palette generator, contrast checker and more."
+  canonical="https://color-helper.com/"
+>
+  <!-- ===== Hero Section ===== -->
+  <section class="hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="hero-content">
+        <!-- Animated Color Swatch -->
+        <div class="hero-swatch-wrapper">
+          <div class="hero-swatch" aria-hidden="true">
+            <div class="hero-swatch-inner"></div>
+          </div>
+          <div class="hero-mini-swatches">
+            <span class="mini-swatch" style="background: #6366f1" aria-label="Indigo"></span>
+            <span class="mini-swatch" style="background: #8b5cf6" aria-label="Violet"></span>
+            <span class="mini-swatch" style="background: #d946ef" aria-label="Pink"></span>
+          </div>
+        </div>
+
+        <h1>Color <span class="text-gradient">Helper</span></h1>
+        <p class="hero-subtitle">Free color tools for designers, developers and creators.</p>
+        <p class="hero-description">
+          Everything you need to pick, convert, generate, and check colors —<br />
+          all in your browser, with zero uploads and zero tracking.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#tools" class="btn btn-primary btn-hero">Explore Tools</a>
+          <a href="#features" class="btn btn-secondary btn-hero">All Features</a>
+        </div>
+
+        <div class="hero-trust">
+          <span class="trust-badge">✓ No account needed</span>
+          <span class="trust-badge-sep" aria-hidden="true">·</span>
+          <span class="trust-badge">✓ Works offline</span>
+          <span class="trust-badge-sep" aria-hidden="true">·</span>
+          <span class="trust-badge">✓ 100% free</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Stats Bar ===== -->
+  <section class="stats-section" id="features">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/>
+              <line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/>
+              <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/>
+            </svg>
+          </div>
+          <div class="stat-number">8</div>
+          <div class="stat-label">Free Tools</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Browser-Based</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+          <div class="stat-number">WCAG</div>
+          <div class="stat-label">Compliant Checks</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Tools Grid ===== -->
+  <section class="section tools-section" id="tools">
+    <div class="tools-section-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="tools-header fade-in">
+        <h2>All Tools</h2>
+        <p>Choose from our collection of free browser-based color tools.</p>
+      </div>
+      <div class="tool-grid">
+        <div class="fade-in fade-in-delay-1">
+          <ToolCard
+            title="Color Picker"
+            description="Pick and save colors with an interactive color picker"
+            href="/color-picker/"
+            icon="🎨"
+            gradient="linear-gradient(135deg, #6366f1, #8b5cf6)"
+          />
+        </div>
+        <div class="fade-in fade-in-delay-2">
+          <ToolCard
+            title="Image Color Picker"
+            description="Extract colors from any image directly in your browser"
+            href="/image-color-picker/"
+            icon="🖼️"
+            gradient="linear-gradient(135deg, #ec4899, #f43f5e)"
+          />
+        </div>
+        <div class="fade-in fade-in-delay-1">
+          <ToolCard
+            title="HEX to RGB"
+            description="Convert hex color codes to RGB values instantly"
+            href="/hex-to-rgb/"
+            icon="# →"
+            gradient="linear-gradient(135deg, #14b8a6, #06b6d4)"
+          />
+        </div>
+        <div class="fade-in fade-in-delay-2">
+          <ToolCard
+            title="RGB to HEX"
+            description="Convert RGB values to hex color codes"
+            href="/rgb-to-hex/"
+            icon="→ #"
+            gradient="linear-gradient(135deg, #f97316, #f59e0b)"
+          />
+        </div>
+        <div class="fade-in fade-in-delay-3">
+          <ToolCard
+            title="HSL Converter"
+            description="Convert between color formats (HEX, RGB, HSL)"
+            href="/hex-to-rgb/"
+            icon="🔄"
+            gradient="linear-gradient(135deg, #a855f7, #d946ef)"
+          />
+        </div>
+        <div class="fade-in fade-in-delay-1">
+          <ToolCard
+            title="Color Palette Generator"
+            description="Generate complementary, analogous and triadic color palettes"
+            href="/color-palette-generator/"
+            icon="🎨"
+            gradient="linear-gradient(135deg, #10b981, #22c55e)"
+          />
+        </div>
+        <div class="fade-in fade-in-delay-2">
+          <ToolCard
+            title="Contrast Checker"
+            description="Check WCAG accessibility contrast ratios"
+            href="/contrast-checker/"
+            icon="👁️"
+            gradient="linear-gradient(135deg, #ef4444, #f97316)"
+          />
+        </div>
+        <div class="fade-in fade-in-delay-3">
+          <ToolCard
+            title="Gradient Generator"
+            description="Create beautiful CSS gradients with live preview"
+            href="/gradient-generator/"
+            icon="🌈"
+            gradient="linear-gradient(135deg, #6366f1, #a855f7)"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SEO Content Section ===== -->
+  <section class="section seo-content">
+    <div class="container">
+      <div class="content-wrapper">
+        <h2 class="fade-in">Why Color Helper?</h2>
+        <p class="fade-in fade-in-delay-1">
+          Color Helper is a comprehensive suite of browser-based color tools designed for anyone who works with digital color — whether you are a UI designer fine-tuning a palette, a frontend developer converting between color formats, or a content creator ensuring your visuals are accessible to all audiences. Everything runs directly in your browser, which means your data never leaves your device. There are no image uploads, no server calls, and no tracking. The tools are fast, reliable, and built with a focus on privacy and performance.
+        </p>
+        <p class="fade-in fade-in-delay-2">
+          At the core of Color Helper is a set of essential utilities that cover the full spectrum of color work. The interactive Color Picker lets you explore and save colors with precision, while the Image Color Picker can extract color palettes from any image you load — all processed locally on your machine. The converter tools handle HEX, RGB, and HSL formats, making it easy to translate between the color spaces used in CSS, design software, and image editing. Whether you need to convert a single HEX value to RGB or explore a range of analogous colors, the tools respond instantly with no waiting.
+        </p>
+        <p class="fade-in fade-in-delay-3">
+          For designers and accessibility specialists, the Contrast Checker is one of the most valuable tools in the collection. It evaluates foreground and background color pairs against WCAG (Web Content Accessibility Guidelines) standards, giving you clear pass or fail ratings for both AA and AAA compliance levels. This makes it straightforward to ensure your interfaces are readable by users with low vision or color vision deficiencies. The Palette Generator expands your creative options by producing complementary, analogous, and triadic color schemes based on any starting color you choose.
+        </p>
+        <p class="fade-in fade-in-delay-1">
+          Color Helper serves a broad audience: designers who need quick format conversions and palette exploration, developers who want to integrate accessible color choices into their projects, content creators preparing visuals for social media or presentations, and accessibility professionals auditing digital products for inclusive design. Because the tools are entirely browser-based, there is nothing to install, no account to create, and no subscription to manage. Most tools continue working even without an internet connection once the page has loaded, making them reliable companions whether you are in the office, at home, or on the go.
+        </p>
+        <p class="fade-in fade-in-delay-2">
+          Professional color work requires precision. Color Helper supports standard color representations — HEX, RGB, and HSL — along with opacity handling and real-time preview. The gradient generator lets you craft multi-stop CSS gradients with immediate visual feedback, and the palette generator outputs colors you can copy and use directly in your code or design files. Every tool is designed to be intuitive, responsive, and free of clutter, so you can focus on your work rather than navigating complex interfaces. No ads, no upsells, no data collection — just dependable color utilities at your fingertips.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ Section ===== -->
+  <FAQ
+    title="Frequently Asked Questions"
+    items={[
+      {
+        question: 'Is Color Helper free?',
+        answer: 'Yes, all tools are completely free to use. There are no paid tiers, no subscription plans, and no hidden charges. Every feature on this site is available to everyone without cost.'
+      },
+      {
+        question: 'Do you store my uploaded images?',
+        answer: 'No. Images are processed entirely in your browser using JavaScript. Nothing is uploaded to any server. Your images never leave your device, and no copies are stored anywhere.'
+      },
+      {
+        question: 'What color formats do you support?',
+        answer: 'We support HEX, RGB, and HSL color formats. Our converter tools let you transform between these formats instantly, and all tools display results in multiple formats where applicable.'
+      },
+      {
+        question: 'What is WCAG contrast ratio?',
+        answer: 'WCAG contrast ratio measures the difference in luminance between two colors (typically text and background). The Web Content Accessibility Guidelines define minimum ratios for readable text: 4.5:1 for normal text and 3:1 for large text at AA level, and stricter ratios at AAA level.'
+      },
+      {
+        question: 'Can I use these tools offline?',
+        answer: 'Most tools work offline once the page has loaded. Because everything runs client-side, there is no dependency on a server after the initial page load. Simply visit the tool while connected, and it will remain functional even if you lose internet access.'
+      },
+      {
+        question: 'Do I need to create an account?',
+        answer: 'No account or sign-up is required. All tools are accessible immediately without registration, login, or any personal information.'
+      },
+      {
+        question: 'Is Color Helper related to Color Savvy?',
+        answer: 'No. Color Helper is an independent project and is not affiliated with, endorsed by, or connected to Color Savvy or any of its products or services.'
+      },
+      {
+        question: 'Can I use the palettes commercially?',
+        answer: 'Yes, all generated colors and palettes are yours to use in any project, including commercial work. There are no restrictions or licenses — simply create and use the colors you need.'
+      }
+    ]}
+  />
+</BaseLayout>
+
+<style is:global>
+  /* ============================================================
+     HERO SECTION — Premium glow design
+     ============================================================ */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: 3rem 0 5rem;
+    text-align: center;
+    background: var(--color-bg);
+  }
+
+  .hero-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 70% 60% at 30% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 70% 30%, rgba(139, 92, 246, 0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 50% 80%, rgba(168, 85, 247, 0.06) 0%, transparent 50%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* ---- Animated Color Swatch ---- */
+  .hero-swatch-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-swatch {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    padding: 4px;
+    background: conic-gradient(
+      #6366f1, #8b5cf6, #d946ef, #ec4899,
+      #f43f5e, #f97316, #f59e0b, #22c55e,
+      #14b8a6, #06b6d4, #6366f1
+    );
+    animation: swatch-spin 8s linear infinite;
+    box-shadow:
+      0 0 40px rgba(99, 102, 241, 0.25),
+      0 0 80px rgba(139, 92, 246, 0.15),
+      inset 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+
+  .hero-swatch-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #6366f1;
+    transition: background 1s ease;
+  }
+
+  @keyframes swatch-spin {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .hero-mini-swatches {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .mini-swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border);
+    transition: transform 0.3s var(--ease-spring);
+    cursor: default;
+  }
+  .mini-swatch:hover {
+    transform: scale(1.4);
+  }
+
+  /* ---- Hero Typography ---- */
+  .hero h1 {
+    font-size: clamp(3rem, 7vw, 5rem);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+    color: var(--color-text);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-description {
+    font-size: 1.05rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.7;
+  }
+
+  /* ---- Hero Actions ---- */
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .btn-hero {
+    font-size: 0.9375rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: var(--radius-md);
+  }
+
+  /* ---- Trust Badges ---- */
+  .hero-trust {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  .trust-badge {
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+
+  .trust-badge-sep {
+    color: var(--color-text-dim);
+  }
+
+  /* ============================================================
+     STATS BAR — Glass effect cards
+     ============================================================ */
+  .stats-section {
+    padding: 0 0 3.5rem;
+    position: relative;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: var(--shadow-sm), 0 0 0 1px rgba(99, 102, 241, 0.04);
+    transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s var(--ease-out-expo);
+  }
+
+  .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md), 0 0 0 1px rgba(99, 102, 241, 0.08);
+  }
+
+  .stat-icon {
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+    opacity: 0.85;
+  }
+
+  .stat-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-text);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    margin-top: 0.15rem;
+  }
+
+  /* ============================================================
+     TOOLS SECTION — Subtle top gradient
+     ============================================================ */
+  .tools-section {
+    position: relative;
+    padding: 4rem 0 5rem;
+    background: linear-gradient(180deg, var(--color-bg-alt) 0%, var(--color-bg) 40%);
+  }
+
+  .tools-section-glow {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(99, 102, 241, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .tools-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .tools-header h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .tools-header p {
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+
+  /* ---- Fade-in animations for tool cards ---- */
+  .tool-grid .fade-in {
+    animation: fadeInUp 0.5s var(--ease-out-expo) both;
+  }
+  .tool-grid .fade-in-delay-1 { animation-delay: 0.08s; }
+  .tool-grid .fade-in-delay-2 { animation-delay: 0.16s; }
+  .tool-grid .fade-in-delay-3 { animation-delay: 0.24s; }
+
+  /* ============================================================
+     SEO CONTENT
+     ============================================================ */
+  .seo-content {
+    background: var(--color-bg-alt);
+  }
+
+  .content-wrapper {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .content-wrapper h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  .content-wrapper p {
+    margin-bottom: 1.25rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 768px) {
+    .hero {
+      padding: 2rem 0 3.5rem;
+    }
+
+    .hero-swatch {
+      width: 96px;
+      height: 96px;
+    }
+
+    .hero-description br {
+      display: none;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+      max-width: 320px;
+    }
+
+    .stat-card {
+      padding: 1.25rem 1rem;
+    }
+
+    .tools-section {
+      padding: 3rem 0 4rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn-hero {
+      width: 100%;
+      max-width: 260px;
+    }
+
+    .hero-trust {
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .trust-badge-sep {
+      display: none;
+    }
+  }
+</style>

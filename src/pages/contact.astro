@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Contact"
+  description="Get in touch with Color Helper. Send us your suggestions, bug reports, or questions."
+  canonical="https://color-helper.com/contact/"
+>
+  <div class="content-page">
+    <div class="container">
+      <div class="content-wrapper">
+        <h1>Contact</h1>
+
+        <p>
+          Have a suggestion or found a bug? We'd love to hear from you.
+        </p>
+
+        <p>
+          Email: <a href="mailto:hello@color-helper.com" class="email-link">hello@color-helper.com</a>
+        </p>
+
+        <p>
+          Please note: Color Helper is a free tool project. Response times may vary.
+        </p>
+
+        <div class="contact-card">
+          <div class="contact-card-icon">✉</div>
+          <div class="contact-card-content">
+            <strong>Email</strong>
+            <a href="mailto:hello@color-helper.com">hello@color-helper.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .content-page {
+    padding: 2rem 0;
+  }
+  .content-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-text-primary);
+  }
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  .email-link {
+    color: var(--color-accent, #3b82f6);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .email-link:hover {
+    text-decoration: underline;
+  }
+  .contact-card {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--color-surface, #1e293b);
+    border: 1px solid var(--color-border, #334155);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .contact-card-icon {
+    font-size: 2rem;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-accent-muted, rgba(59, 130, 246, 0.1));
+    border-radius: 10px;
+  }
+  .contact-card-content strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--color-text-primary);
+  }
+  .contact-card-content a {
+    color: var(--color-accent, #3b82f6);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .contact-card-content a:hover {
+    text-decoration: underline;
+  }
+</style>

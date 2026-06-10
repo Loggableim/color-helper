@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../components/ToolLayout.astro';
+import PaletteGenerator from '../components/PaletteGenerator';
+import FAQ from '../components/FAQ.astro';
+
+const title = 'Color Palette Generator';
+const description = 'Generate beautiful color palettes with complementary, analogous, triadic and monochromatic schemes. Perfect for designers and developers.';
+const canonical = 'https://color-helper.com/color-palette-generator/';
+const breadcrumbs = [{ label: 'Color Palette Generator' }];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout {title} {description} {breadcrumbs}>
+    <div class="tool-wrapper">
+      <PaletteGenerator client:load />
+    </div>
+
+    <section class="seo-content">
+      <h2>What Is a Color Palette?</h2>
+      <p>A color palette is a collection of colors that work together harmoniously. Designers and artists use palettes to establish a consistent visual identity across websites, branding materials, and artwork. A well-crafted palette typically includes a primary color, secondary colors, accent colors, and neutrals that complement each other.</p>
+      <p>Our color palette generator uses established color harmony rules to create balanced palettes from any starting color. You can choose from complementary (colors opposite each other on the color wheel), analogous (colors adjacent to each other), triadic (three evenly spaced colors), or monochromatic (variations of a single hue) schemes.</p>
+      <p>Each generated palette includes five color swatches with their HEX values displayed. You can copy any color to your clipboard, regenerate the palette with a new seed color, or lock individual colors to explore variations while keeping your favorites. This tool is ideal for web design, graphic design, interior design, and any creative project that needs cohesive color schemes.</p>
+    </section>
+
+    <FAQ
+      items={[
+        {
+          question: 'What is a color palette?',
+          answer: 'A color palette is a set of colors chosen to work together in a design project. It typically includes a primary color, supporting secondary colors, accent colors, and neutrals. Palettes ensure visual consistency and harmony across all elements of a project.'
+        },
+        {
+          question: 'What are the different color harmony types?',
+          answer: 'Complementary: colors opposite each other on the color wheel, creating high contrast. Analogous: colors next to each other, producing harmonious and serene designs. Triadic: three evenly spaced colors, offering vibrant yet balanced palettes. Monochromatic: variations in lightness and saturation of a single hue.'
+        },
+        {
+          question: 'How do I choose a starting color?',
+          answer: 'Start with a color that represents your brand or the mood you want to convey. You can enter any hex color code, use the built-in color picker, or let the tool generate a random seed color. The generator will then create a full palette based on your chosen harmony rule.'
+        },
+        {
+          question: 'Can I export or save my palettes?',
+          answer: 'Yes, you can copy individual color values to your clipboard, and the palette remains visible as you explore different variations. For persistent storage, we recommend saving your favorite hex codes in a design tool, document, or color management app.'
+        },
+        {
+          question: 'What is the difference between a palette and a gradient?',
+          answer: 'A palette consists of distinct, solid colors that work together as a set, while a gradient is a smooth transition between two or more colors. Palettes are used for UI elements, branding, and design systems, whereas gradients are typically used for backgrounds, buttons, and visual effects.'
+        }
+      ]}
+    />
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+</BaseLayout>
+
+<style is:global>
+  .tool-wrapper {
+    margin-bottom: 1.5rem;
+  }
+  .seo-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .seo-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .seo-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+</style>

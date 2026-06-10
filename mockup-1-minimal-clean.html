@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Helper — Free Color Tools</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== Reset & Base ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff;
+            color: #1e293b;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== Container ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== Header ===== */
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid #f1f5f9;
+            background: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 22px;
+            color: #1e293b;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+        }
+
+        .logo span {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        nav a:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        nav a.nav-cta {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+        }
+
+        nav a.nav-cta:hover {
+            opacity: 0.9;
+        }
+
+        /* Mobile nav toggle */
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: #1e293b;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            padding: 60px 0 40px;
+            text-align: center;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #eef2ff;
+            color: #6366f1;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 6vw, 60px);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: #0f172a;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: clamp(16px, 2.2vw, 20px);
+            color: #64748b;
+            max-width: 580px;
+            margin: 0 auto 8px;
+            font-weight: 400;
+        }
+
+        .hero .sub-claim {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        /* ===== Tool Cards Grid ===== */
+        .tools-section {
+            padding: 0 0 80px;
+            background: #f8fafc;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .tool-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 28px 22px 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.10);
+            border-color: #e0e7ff;
+        }
+
+        .tool-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #eef2ff, #ede9fe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 16px;
+            flex-shrink: 0;
+        }
+
+        .tool-card h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .tool-card p {
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .tool-card .card-arrow {
+            margin-top: 14px;
+            font-size: 13px;
+            color: #6366f1;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateX(-6px);
+            transition: opacity 0.25s, transform 0.25s;
+        }
+
+        .tool-card:hover .card-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ===== Features / Trust Section ===== */
+        .features-bar {
+            background: #ffffff;
+            padding: 48px 0;
+            border-top: 1px solid #f1f5f9;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .features-bar .container {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            flex-wrap: wrap;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .feature-item .fi-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: #eef2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            background: #ffffff;
+            padding: 40px 0 32px;
+            margin-top: auto;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        footer .footer-links {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        footer .footer-links a {
+            text-decoration: none;
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        footer .footer-links a:hover {
+            color: #6366f1;
+        }
+
+        footer .footer-copy {
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1024px) {
+            .tools-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            header .container {
+                flex-wrap: wrap;
+            }
+
+            .nav-toggle {
+                display: flex;
+            }
+
+            nav {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                padding-top: 16px;
+                gap: 4px;
+            }
+
+            nav.open {
+                display: flex;
+            }
+
+            nav a {
+                width: 100%;
+                padding: 12px 16px;
+                border-radius: 8px;
+            }
+
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .hero {
+                padding: 40px 0 32px;
+            }
+
+            .features-bar .container {
+                gap: 24px;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            footer .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            footer .footer-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .tool-card {
+                padding: 20px 18px 18px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+        }
+
+        /* ===== Simple Mobile Nav Toggle Script ===== */
+    </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+    <div class="container">
+        <a href="#" class="logo" aria-label="Color Helper home">
+            <!-- Simple color wheel SVG -->
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="16" cy="16" r="14" stroke="url(#logograd)" stroke-width="2.5" fill="none"/>
+                <path d="M16 2 A14 14 0 0 1 30 16 L16 16 Z" fill="#6366f1"/>
+                <path d="M30 16 A14 14 0 0 1 16 30 L16 16 Z" fill="#8b5cf6"/>
+                <path d="M16 30 A14 14 0 0 1 2 16 L16 16 Z" fill="#a78bfa"/>
+                <path d="M2 16 A14 14 0 0 1 16 2 L16 16 Z" fill="#c4b5fd"/>
+                <defs>
+                    <linearGradient id="logograd" x1="0" y1="0" x2="32" y2="32">
+                        <stop stop-color="#6366f1"/>
+                        <stop offset="1" stop-color="#8b5cf6"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <span>Color Helper</span>
+        </a>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+        </button>
+
+        <nav id="mainNav">
+            <a href="#">Tools</a>
+            <a href="#">Palettes</a>
+            <a href="#">Docs</a>
+            <a href="#" class="nav-cta">Get Started</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-badge">
+            <span>✦</span> Free &amp; Open Source
+        </div>
+        <h1>
+            Color tools,<br>
+            <span class="gradient-text">designed for clarity.</span>
+        </h1>
+        <p>Free color tools for designers, developers and creators.</p>
+        <p class="sub-claim">No sign-up. No tracking. Just fast, beautiful color utilities.</p>
+    </div>
+</section>
+
+<!-- ===== TOOL CARDS ===== -->
+<section class="tools-section">
+    <div class="tools-grid">
+
+        <!-- 1 – Color Picker -->
+        <div class="tool-card">
+            <div class="tool-icon">🎨</div>
+            <h3>Color Picker</h3>
+            <p>Pick and tweak any color with a beautiful visual picker, hex preview and quick copy.</p>
+            <span class="card-arrow">Open →</span>
+        </div>
+
+        <!-- 2 – Image Color Picker -->
+        <div class="tool-card">
+            <div class="tool-icon">🖼️</div>
+            <h3>Image Color Picker</h3>
+            <p>Upload any image and extract its dominant colors or pick exact shades pixel by pixel.</p>
+            <span class="card-arrow">Open →</span>
+        </div>
+
+        <!-- 3 – HEX to RGB -->
+        <div class="tool-card">
+            <div class="tool-icon"># →</div>
+            <h3>HEX to RGB</h3>
+            <p>Convert hex color codes to RGB values instantly. Works with 3, 6 and 8-digit hex.</p>
+            <span class="card-arrow">Open →</span>
+        </div>
+
+        <!-- 4 – RGB to HEX -->
+        <div class="tool-card">
+            <div class="tool-icon">→ #</div>
+            <h3>RGB to HEX</h3>
+            <p>Turn RGB or RGBA values into clean hex codes, ready for CSS or design tools.</p>
+            <span class="card-arrow">Open →</span>
+        </div>
+
+        <!-- 5 – HSL Converter -->
+        <div class="tool-card">
+            <div class="tool-icon">🌀</div>
+            <h3>HSL Converter</h3>
+            <p>Convert between HSL, hex and RGB — adjust hue, saturation and lightness visually.</p>
+            <span class="card-arrow">Open →</span>
+        </div>
+
+        <!-- 6 – Color Palette Generator -->
+        <div class="tool-card">
+            <div class="tool-icon">✨</div>
+            <h3>Palette Generator</h3>
+            <p>Generate harmonious color palettes from any starting color — monochromatic, complementary &amp; more.</p>
+            <span class="card-arrow">Open →</span>
+        </div>
+
+        <!-- 7 – Contrast Checker -->
+        <div class="tool-card">
+            <div class="tool-icon">◐</div>
+            <h3>Contrast Checker</h3>
+            <p>Check contrast ratios between two colors. WCAG AA &amp; AAA compliance at a glance.</p>
+            <span class="card-arrow">Open →</span>
+        </div>
+
+        <!-- 8 – Gradient Generator -->
+        <div class="tool-card">
+            <div class="tool-icon">🌈</div>
+            <h3>Gradient Generator</h3>
+            <p>Create smooth, custom CSS gradients with multiple stops, angle control and live preview.</p>
+            <span class="card-arrow">Open →</span>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== FEATURES BAR ===== -->
+<section class="features-bar">
+    <div class="container">
+        <div class="feature-item">
+            <span class="fi-icon">⚡</span>
+            Blazing fast, no bloat
+        </div>
+        <div class="feature-item">
+            <span class="fi-icon">🔒</span>
+            100% client-side
+        </div>
+        <div class="feature-item">
+            <span class="fi-icon">🆓</span>
+            Free forever
+        </div>
+        <div class="feature-item">
+            <span class="fi-icon">📱</span>
+            Works everywhere
+        </div>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+    <div class="container">
+        <div class="footer-links">
+            <a href="#">All Tools</a>
+            <a href="#">About</a>
+            <a href="#">Privacy</a>
+            <a href="#">GitHub</a>
+            <a href="#">Contact</a>
+        </div>
+        <div class="footer-copy">
+            &copy; 2026 Color Helper
+        </div>
+    </div>
+</footer>
+
+<!-- ===== Mobile Nav Toggle Script ===== -->
+<script>
+    (function() {
+        var toggle = document.getElementById('navToggle');
+        var nav = document.getElementById('mainNav');
+        if (toggle && nav) {
+            toggle.addEventListener('click', function() {
+                nav.classList.toggle('open');
+            });
+        }
+    })();
+</script>
+
+</body>
+</html>

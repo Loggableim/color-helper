@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Privacy Policy"
+  description="Privacy policy for Color Helper — learn how your data is handled when using our color tools."
+  canonical="https://color-helper.com/privacy/"
+>
+  <div class="content-page">
+    <div class="container">
+      <div class="content-wrapper">
+        <h1>Privacy Policy</h1>
+
+        <h2>Data Collection</h2>
+        <p>
+          Color Helper does not collect, store, or transmit any personal data. All tools run entirely in your
+          browser using client-side JavaScript. No account creation is required and no session data is tracked.
+        </p>
+
+        <h2>Image Processing</h2>
+        <p>
+          When you use the Image Color Picker, your image is processed locally on your device using the HTML5
+          Canvas API. No image data is uploaded to any server. The entire process happens within your browser.
+        </p>
+
+        <h2>Local Storage</h2>
+        <p>
+          The Color Picker tool uses localStorage to save your custom color palette. This data never leaves your
+          browser and can be cleared at any time through your browser settings.
+        </p>
+
+        <h2>Analytics</h2>
+        <p>
+          This MVP does not include any analytics or tracking scripts. We do not use cookies, fingerprinting, or
+          any other tracking mechanisms.
+        </p>
+
+        <h2>Third-Party Services</h2>
+        <p>
+          We use Google Fonts for typography. Google may collect usage data such as your IP address when loading
+          fonts. Please refer to Google's privacy policy for more information.
+        </p>
+
+        <h2>Changes</h2>
+        <p>
+          We may update this policy from time to time. Any changes will be posted on this page. We encourage you
+          to review this policy periodically.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          If you have any questions about this privacy policy, please reach out to us at
+          hello@color-helper.com.
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .content-page {
+    padding: 2rem 0;
+  }
+  .content-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-text-primary);
+  }
+  h2 {
+    font-size: 1.35rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-text-primary);
+  }
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+</style>

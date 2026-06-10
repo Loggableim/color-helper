@@ -1,0 +1,251 @@
+---
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/color-picker/', label: 'Picker' },
+  { href: '/hex-to-rgb/', label: 'Converter' },
+  { href: '/color-palette-generator/', label: 'Palette' },
+  { href: '/contrast-checker/', label: 'Contrast' },
+  { href: '/gradient-generator/', label: 'Gradient' },
+];
+---
+
+<header class="site-header">
+  <nav class="container header-inner" aria-label="Main navigation">
+    <a href="/" class="logo-link" aria-label="Color Helper – Home">
+      <span class="logo-icon-wrap">
+        <svg class="logo-icon" width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <rect x="2" y="2" width="32" height="32" rx="8" fill="url(#logoGrad)"/>
+          <circle cx="18" cy="18" r="8" fill="white" fill-opacity="0.2"/>
+          <circle cx="18" cy="14" r="3" fill="white"/>
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+              <stop stop-color="var(--color-primary)"/>
+              <stop offset="1" stop-color="var(--color-secondary)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </span>
+      <span class="logo-text">Color <span class="text-gradient">Helper</span></span>
+    </a>
+
+    <div class="nav-links" id="main-nav">
+      {navLinks.map(link => (
+        <a href={link.href} class="nav-link" data-current-page={link.href === Astro.url.pathname ? '' : undefined}>
+          {link.label}
+        </a>
+      ))}
+    </div>
+
+    <div class="header-actions">
+      <a href="/#tools" class="btn btn-primary btn-sm header-cta">Get Started</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const nav = document.getElementById('main-nav');
+  if (toggle && nav) {
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      nav.classList.toggle('open');
+      toggle.classList.toggle('open');
+      document.body.classList.toggle('nav-open');
+    });
+  }
+</script>
+
+<style is:global>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+    height: var(--header-height);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  /* ---- Logo ---- */
+  .logo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    text-decoration: none;
+    color: var(--color-text);
+    font-weight: 700;
+    font-size: 1.125rem;
+    position: relative;
+  }
+
+  .logo-icon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  .logo-icon-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--color-primary), var(--color-secondary), var(--color-accent), var(--color-primary));
+    opacity: 0.35;
+    filter: blur(2px);
+    animation: logo-ring-spin 6s linear infinite;
+  }
+
+  @keyframes logo-ring-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .logo-icon {
+    position: relative;
+    z-index: 1;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+  }
+
+  .logo-text {
+    letter-spacing: -0.02em;
+  }
+
+  /* ---- Navigation ---- */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .nav-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    border-radius: var(--radius-sm);
+    transition: color 0.2s var(--ease-out-expo), background 0.2s var(--ease-out-expo);
+    text-decoration: none;
+  }
+
+  .nav-link:hover {
+    color: var(--color-primary);
+    background: var(--color-primary-subtle);
+  }
+
+  .nav-link[data-current-page] {
+    color: var(--color-primary);
+    background: var(--color-primary-subtle);
+    font-weight: 600;
+  }
+
+  /* ---- Header Actions ---- */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .header-cta {
+    display: inline-flex;
+  }
+
+  /* ---- Hamburger ---- */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    z-index: 60;
+  }
+
+  .hamburger-line {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--color-text);
+    border-radius: 2px;
+    transition: transform 0.35s var(--ease-out-expo), opacity 0.2s var(--ease-out-expo);
+    transform-origin: center;
+  }
+
+  .nav-toggle.open .hamburger-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .nav-toggle.open .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .nav-toggle.open .hamburger-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* ---- Mobile ---- */
+  @media (max-width: 768px) {
+    .header-cta {
+      display: none;
+    }
+
+    .nav-toggle {
+      display: flex;
+    }
+
+    .nav-links {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 2rem;
+      z-index: 55;
+      box-shadow: none;
+      border-bottom: none;
+    }
+
+    .nav-links.open {
+      display: flex;
+    }
+
+    .nav-link {
+      width: auto;
+      padding: 0.75rem 1.5rem;
+      font-size: 1.125rem;
+    }
+
+    body.nav-open {
+      overflow: hidden;
+    }
+  }
+</style>

@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../components/ToolLayout.astro';
+import ImageColorPicker from '../components/ImageColorPicker';
+import FAQ from '../components/FAQ.astro';
+
+const title = 'Image Color Picker';
+const description = 'Extract colors from any image with our free online image color picker. Upload an image and click to get exact HEX, RGB, and HSL values from any pixel.';
+const canonical = 'https://color-helper.com/image-color-picker/';
+const breadcrumbs = [{ label: 'Image Color Picker' }];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout {title} {description} {breadcrumbs}>
+    <div class="tool-wrapper">
+      <ImageColorPicker client:load />
+    </div>
+
+    <section class="seo-content">
+      <h2>How to Extract Colors from an Image</h2>
+      <p>Our image color picker lets you extract precise colors from any image directly in your browser. Simply upload an image by clicking the upload area or dragging and dropping a file. Once loaded, click anywhere on the image to sample the exact color of that pixel. The tool instantly displays the color in HEX, RGB, and HSL formats.</p>
+      <p>All image processing happens locally on your device — no files are uploaded to any server. This means your images remain private and secure, and the tool works even without an internet connection after the initial page load. You can upload JPG, PNG, GIF, WEBP, and other common image formats.</p>
+      <p>The magnified preview area shows a zoomed-in view around your cursor, making it easy to select precise pixels. You can also see a list of recently picked colors and copy any color value to your clipboard with a single click. This tool is invaluable for designers extracting brand colors from logos, developers matching colors from mockups, or anyone who needs to identify colors in digital images.</p>
+    </section>
+
+    <FAQ
+      items={[
+        {
+          question: 'Are my images uploaded to a server?',
+          answer: 'No. All image processing is done entirely in your browser using the HTML5 Canvas API. Your images never leave your device. This ensures complete privacy and also means the tool works offline after the initial page load.'
+        },
+        {
+          question: 'What image formats are supported?',
+          answer: 'The tool supports common image formats including JPG, PNG, GIF, WEBP, BMP, and SVG. Most standard image files that your browser can display will work. If you encounter issues, try converting your image to PNG or JPG format first.'
+        },
+        {
+          question: 'How accurate is the color picking?',
+          answer: 'The tool picks the exact color of the pixel you click on at full resolution. Accuracy depends on your display calibration and the image quality. For the most accurate results, use high-resolution images without compression artifacts.'
+        },
+        {
+          question: 'Can I upload an image from a URL?',
+          answer: 'Currently, the tool supports uploading images from your local device. To use an image from the web, first download it to your computer and then upload it. This approach also ensures your privacy since the image isn\'t fetched from an external URL.'
+        },
+        {
+          question: 'What is the maximum image size I can upload?',
+          answer: 'Since the processing happens entirely in your browser, the maximum image size depends on your device\'s available memory. Most standard-resolution images work without issues. For very large images (e.g., 4000+ pixels), there may be some performance impact, but the tool will still function.'
+        }
+      ]}
+    />
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+</BaseLayout>
+
+<style is:global>
+  .tool-wrapper {
+    margin-bottom: 1.5rem;
+  }
+  .seo-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .seo-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .seo-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+</style>

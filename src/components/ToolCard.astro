@@ -1,0 +1,112 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  href: string;
+  icon: string;
+  gradient?: string;
+}
+
+const { title, description, href, icon, gradient = 'linear-gradient(135deg, #6366f1, #8b5cf6)' } = Astro.props;
+---
+
+<a href={href} class="tool-card">
+  <div class="tool-card-icon" style={`background: ${gradient}`}>
+    {icon}
+  </div>
+  <div class="tool-card-body">
+    <h3 class="tool-card-title">{title}</h3>
+    <p class="tool-card-desc">{description}</p>
+  </div>
+  <div class="tool-card-arrow">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</a>
+
+<style is:global>
+  .tool-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: box-shadow 0.3s var(--ease-out-expo), transform 0.3s var(--ease-out-expo), border-color 0.3s var(--ease-out-expo);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.02), transparent 60%);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .tool-card:hover {
+    box-shadow: var(--shadow-ring-hover), var(--shadow-lg);
+    transform: translateY(-4px);
+    border-color: var(--color-primary-light);
+  }
+
+  .tool-card:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .tool-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.375rem;
+    flex-shrink: 0;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    z-index: 1;
+  }
+
+  .tool-card-body {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tool-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: var(--color-text);
+  }
+
+  .tool-card-desc {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .tool-card-arrow {
+    color: var(--color-text-muted);
+    margin-top: 0.5rem;
+    transition: transform 0.4s var(--ease-spring), color 0.3s var(--ease-out-expo);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tool-card:hover .tool-card-arrow {
+    color: var(--color-primary);
+    transform: translateX(4px);
+  }
+</style>

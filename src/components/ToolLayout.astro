@@ -1,0 +1,62 @@
+---
+import Breadcrumbs from './Breadcrumbs.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  breadcrumbs?: { label: string; href?: string }[];
+}
+const { title, description, breadcrumbs } = Astro.props;
+---
+
+<section class="tool-header">
+  <div class="container">
+    {breadcrumbs && breadcrumbs.length > 0 && (
+      <Breadcrumbs items={breadcrumbs} />
+    )}
+    <h1 class="tool-header-title">{title}</h1>
+    <p class="tool-header-desc">{description}</p>
+  </div>
+</section>
+
+<article class="tool-content container">
+  <slot />
+</article>
+
+<style is:global>
+  .tool-header {
+    padding: 3rem 0 2rem;
+    background: linear-gradient(180deg, var(--color-bg-alt) 0%, var(--color-bg) 100%);
+    position: relative;
+  }
+
+  .tool-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-border), transparent);
+  }
+
+  .tool-header-title {
+    margin-top: 0.5rem;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .tool-header-desc {
+    margin-top: 0.5rem;
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    max-width: 560px;
+  }
+
+  .tool-content {
+    padding-top: 2.5rem;
+    padding-bottom: 4rem;
+  }
+</style>

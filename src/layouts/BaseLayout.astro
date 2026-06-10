@@ -1,0 +1,97 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  breadcrumbs?: { label: string; href?: string }[];
+  noIndex?: boolean;
+  isTool?: boolean;
+}
+
+const { title, description, canonical, ogImage, breadcrumbs, noIndex, isTool } = Astro.props;
+const siteUrl = 'https://color-helper.com';
+const pageUrl = canonical || siteUrl;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | Color Helper</title>
+    <meta name="description" content={description} />
+
+    <!-- Canonical -->
+    <link rel="canonical" href={pageUrl} />
+
+    <!-- OpenGraph -->
+    <meta property="og:type" content={isTool ? 'website' : 'website'} />
+    <meta property="og:title" content={`${title} | Color Helper`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:site_name" content="Color Helper" />
+    <meta property="og:locale" content="en_US" />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} | Color Helper`} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- Robots -->
+    {noIndex && <meta name="robots" content="noindex,nofollow" />}
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <!-- JSON-LD: WebSite schema -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Color Helper",
+      "url": siteUrl,
+      "description": "Free color tools for designers, developers and creators.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": `${siteUrl}/?q={search_term_string}`
+        },
+        "query-input": "required name=search_term_string"
+      }
+    })}></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <Header />
+    <main id="main-content">
+      {breadcrumbs && breadcrumbs.length > 0 && (
+        <div class="container" style="padding-top: 1rem; padding-bottom: 0;">
+          <Breadcrumbs items={breadcrumbs} />
+        </div>
+      )}
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style is:global>
+  /* Additional layout styles */
+  main {
+    min-height: calc(100vh - var(--header-height) - 280px);
+  }
+</style>

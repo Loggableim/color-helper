@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../components/ToolLayout.astro';
+import ColorPicker from '../components/ColorPicker';
+import FAQ from '../components/FAQ.astro';
+
+const title = 'Color Picker';
+const description = 'Pick and save colors with our interactive browser-based color picker. Get HEX, RGB, and HSL values instantly.';
+const canonical = 'https://color-helper.com/color-picker/';
+const breadcrumbs = [{ label: 'Color Picker' }];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout {title} {description} {breadcrumbs}>
+    <div class="tool-wrapper">
+      <ColorPicker client:load />
+    </div>
+
+    <section class="seo-content">
+      <h2>How to Use the Color Picker</h2>
+      <p>Our interactive color picker lets you explore millions of colors with ease. Simply click or drag on the color canvas to select a color, then fine-tune it using the sliders or input fields. You can switch between HEX, RGB, and HSL formats to see your color in different representations.</p>
+      <p>Once you've found the perfect color, click the save button to add it to your saved colors list. Your saved colors are stored locally in your browser, so you can access them even after closing the page. This is perfect for building a palette of brand colors, tracking project color schemes, or just keeping your favorite shades handy.</p>
+      <p>The color preview area shows your selected color in a large swatch, making it easy to evaluate. You can also copy the color value to your clipboard with a single click. Whether you're a designer, developer, or hobbyist, this tool makes color selection fast and intuitive.</p>
+    </section>
+
+    <FAQ
+      items={[
+        {
+          question: 'What is HEX?',
+          answer: 'HEX (hexadecimal) is a six-digit color code that represents colors in the format #RRGGBB. Each pair of digits corresponds to the red, green, and blue components, ranging from 00 to FF (0 to 255 in decimal). HEX is widely used in web design and CSS.'
+        },
+        {
+          question: 'What is RGB?',
+          answer: 'RGB stands for Red, Green, Blue. It is a color model where colors are created by combining different intensities of red, green, and blue light. Each component ranges from 0 to 255. RGB is the standard model for digital screens and displays.'
+        },
+        {
+          question: 'What is HSL?',
+          answer: 'HSL stands for Hue, Saturation, and Lightness. Hue defines the color type (0–360 degrees), saturation controls the intensity or purity of the color (0–100%), and lightness determines how light or dark the color appears (0–100%). HSL is often more intuitive for humans to work with than HEX or RGB.'
+        },
+        {
+          question: 'How do I save colors?',
+          answer: 'To save a color, select it using the picker and click the save button (usually a bookmark or plus icon). Your saved colors are stored in your browser\'s local storage and will persist across sessions. You can click on any saved color to copy its value or remove it from your list.'
+        },
+        {
+          question: 'Can I use the color picker offline?',
+          answer: 'Yes! Since the color picker runs entirely in your browser with no server-side processing, it works offline once the page has been loaded. All color conversion and saving functionality is handled locally on your device.'
+        }
+      ]}
+    />
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+</BaseLayout>
+
+<style is:global>
+  .tool-wrapper {
+    margin-bottom: 1.5rem;
+  }
+  .seo-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .seo-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .seo-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+</style>

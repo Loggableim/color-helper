@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../components/ToolLayout.astro';
+import HexToRgb from '../components/HexToRgb';
+import FAQ from '../components/FAQ.astro';
+
+const title = 'HEX to RGB Converter';
+const description = 'Convert hex color codes to RGB values instantly with our free online converter. Get accurate red, green, and blue values from any hex color.';
+const canonical = 'https://color-helper.com/hex-to-rgb/';
+const breadcrumbs = [{ label: 'HEX to RGB Converter' }];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout {title} {description} {breadcrumbs}>
+    <div class="tool-wrapper">
+      <HexToRgb client:load />
+    </div>
+
+    <section class="seo-content">
+      <h2>How to Convert HEX to RGB</h2>
+      <p>Converting hex color codes to RGB values is straightforward with our converter. Simply enter a hex color code (like #FF5733) into the input field, and the tool instantly displays the corresponding red, green, and blue values. You can type or paste the hex code, and the conversion happens in real time without any page reload.</p>
+      <p>HEX codes are the standard way to represent colors in HTML and CSS. Each pair of hexadecimal digits represents one of the three primary color components: the first two for red, the middle two for green, and the last two for blue. Our converter handles both 3-digit and 6-digit hex formats, as well as codes with or without the leading hash symbol.</p>
+      <p>Understanding the RGB equivalent of a hex color is useful when working with image editing software, design tools, or any application that uses the RGB color model. Bookmark this tool for quick conversions whenever you need to switch between color formats.</p>
+    </section>
+
+    <FAQ
+      items={[
+        {
+          question: 'What is a HEX color code?',
+          answer: 'A HEX color code is a six-digit hexadecimal number prefixed with a hash symbol (#), representing colors in the format #RRGGBB. Each pair of digits ranges from 00 to FF and corresponds to the red, green, and blue components of the color.'
+        },
+        {
+          question: 'What is the RGB color model?',
+          answer: 'RGB (Red, Green, Blue) is an additive color model used primarily in digital displays. Colors are created by combining different intensities of red, green, and blue light, with each component ranging from 0 (no light) to 255 (full intensity).'
+        },
+        {
+          question: 'How do I convert a 3-digit hex code to RGB?',
+          answer: 'A 3-digit hex code like #F3A is shorthand for #FF33AA. Each digit is doubled to create the full 6-digit code. Our converter automatically handles this expansion, so you can input any valid hex format and get accurate RGB results.'
+        },
+        {
+          question: 'What is the difference between HEX and RGB?',
+          answer: 'HEX and RGB represent the same color information in different formats. HEX uses base-16 (hexadecimal) notation in a compact 6-digit string, while RGB uses three decimal numbers between 0 and 255. Both describe the same red, green, and blue components — just in different syntax.'
+        },
+        {
+          question: 'Can I convert multiple hex codes at once?',
+          answer: 'The tool currently converts one hex code at a time for precise results. Simply enter each hex code individually to get its RGB equivalent. The real-time conversion makes it fast to process multiple colors in sequence.'
+        }
+      ]}
+    />
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+</BaseLayout>
+
+<style is:global>
+  .tool-wrapper {
+    margin-bottom: 1.5rem;
+  }
+  .seo-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .seo-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .seo-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+</style>

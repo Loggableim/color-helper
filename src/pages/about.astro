@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="About"
+  description="Color Helper is an independent color utility website created for designers, developers, and anyone working with colors."
+  canonical="https://color-helper.com/about/"
+>
+  <div class="content-page">
+    <div class="container">
+      <div class="content-wrapper">
+        <div class="tool-header">
+          <h1>About Color Helper</h1>
+        </div>
+
+        <p>
+          Color Helper is an independent, browser-based color utility website created for designers, developers,
+          and anyone working with colors. It provides a suite of fast, accessible tools for color conversion,
+          palette generation, contrast checking, and more — all without requiring any server-side processing.
+        </p>
+
+        <p>
+          All tools run entirely in your browser. No image uploads are sent to any server. Your data stays on your
+          device.
+        </p>
+
+        <p>
+          Color Helper is not affiliated with any former Color Savvy products, companies, or brands. This is a
+          completely independent project.
+        </p>
+
+        <p>
+          Our goal is to provide fast, accessible, and reliable color conversion, palette generation, and
+          accessibility checking tools — completely free.
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .content-page {
+    padding: 2rem 0;
+  }
+  .content-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .tool-header h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-text-primary);
+  }
+  .content-wrapper p {
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+</style>

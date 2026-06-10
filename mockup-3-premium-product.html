@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color-Helper.com — Premium Color Tools</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { font-size: 16px; scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #F1F5F9;
+            color: #1E293B;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        a { text-decoration: none; color: inherit; }
+        img, svg { display: block; max-width: 100%; }
+
+        /* ===== LAYOUT GRID ===== */
+        .app-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            background: #1E293B;
+            color: #E2E8F0;
+            padding: 2rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.75rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .sidebar-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3B82F6, #60A5FA);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .sidebar-brand {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+        .sidebar-brand span { color: #60A5FA; }
+        .sidebar-nav { flex: 1; }
+        .sidebar-nav-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #64748B;
+            margin-bottom: 0.75rem;
+            margin-top: 1.5rem;
+        }
+        .sidebar-nav-label:first-child { margin-top: 0; }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.65rem 0.85rem;
+            border-radius: 10px;
+            color: #94A3B8;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            margin-bottom: 0.2rem;
+        }
+        .sidebar-link svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            opacity: 0.7;
+        }
+        .sidebar-link:hover {
+            background: rgba(59,130,246,0.12);
+            color: #E2E8F0;
+        }
+        .sidebar-link:hover svg { opacity: 1; }
+        .sidebar-link.active {
+            background: rgba(59,130,246,0.18);
+            color: #60A5FA;
+        }
+        .sidebar-link.active svg { opacity: 1; color: #60A5FA; }
+        .sidebar-badge {
+            margin-left: auto;
+            background: rgba(59,130,246,0.2);
+            color: #60A5FA;
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 0.15rem 0.55rem;
+            border-radius: 20px;
+            letter-spacing: 0.02em;
+        }
+        .sidebar-footer {
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            margin-top: auto;
+        }
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .sidebar-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366F1, #3B82F6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        .sidebar-user-info { flex: 1; min-width: 0; }
+        .sidebar-user-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #E2E8F0;
+        }
+        .sidebar-user-plan {
+            font-size: 0.7rem;
+            color: #64748B;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-area {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 40%, #1E3A5F 100%);
+            padding: 3rem 3rem 2.5rem 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle at center, rgba(59,130,246,0.10) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: 10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle at center, rgba(99,102,241,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(59,130,246,0.15);
+            border: 1px solid rgba(59,130,246,0.25);
+            color: #60A5FA;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 0.9rem;
+            border-radius: 100px;
+            margin-bottom: 1rem;
+            letter-spacing: 0.03em;
+        }
+        .hero-badge svg { width: 14px; height: 14px; }
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.75rem;
+        }
+        .hero h1 span {
+            background: linear-gradient(135deg, #60A5FA, #93C5FD);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            color: #94A3B8;
+            max-width: 600px;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 1.75rem;
+            padding-top: 1.75rem;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .hero-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+        .hero-stat-label {
+            font-size: 0.8rem;
+            color: #64748B;
+            font-weight: 500;
+        }
+
+        /* ===== TOOLBAR / SEARCH ===== */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 3rem;
+            background: #fff;
+            border-bottom: 1px solid #E2E8F0;
+        }
+        .toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .toolbar h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1E293B;
+            letter-spacing: -0.02em;
+        }
+        .toolbar h2 span { color: #3B82F6; }
+        .toolbar-count {
+            font-size: 0.8rem;
+            color: #64748B;
+            font-weight: 500;
+            background: #F1F5F9;
+            padding: 0.2rem 0.7rem;
+            border-radius: 100px;
+        }
+        .toolbar-search {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #F1F5F9;
+            padding: 0.45rem 0.9rem;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .toolbar-search:focus-within {
+            border-color: #3B82F6;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+        .toolbar-search svg { width: 18px; height: 18px; color: #94A3B8; flex-shrink: 0; }
+        .toolbar-search input {
+            border: none;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: #1E293B;
+            outline: none;
+            width: 200px;
+        }
+        .toolbar-search input::placeholder { color: #94A3B8; }
+        .toolbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .toolbar-btn {
+            background: transparent;
+            border: 1px solid #E2E8F0;
+            padding: 0.45rem 0.9rem;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .toolbar-btn svg { width: 16px; height: 16px; }
+        .toolbar-btn:hover {
+            background: #F1F5F9;
+            border-color: #CBD5E1;
+        }
+        .toolbar-btn.primary {
+            background: #3B82F6;
+            border-color: #3B82F6;
+            color: #fff;
+        }
+        .toolbar-btn.primary:hover { background: #2563EB; }
+
+        /* ===== DASHBOARD GRID ===== */
+        .dashboard {
+            padding: 2rem 3rem 4rem 3rem;
+            flex: 1;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* ===== TOOL CARD ===== */
+        .tool-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 1.75rem 1.5rem 1.5rem 1.5rem;
+            border: 1px solid #E2E8F0;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3B82F6, #60A5FA);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .tool-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.06);
+            border-color: transparent;
+        }
+        .tool-card:hover::before { opacity: 1; }
+        .tool-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .tool-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #fff;
+        }
+        .tool-card-icon svg { width: 24px; height: 24px; }
+        .tool-card-icon.blue  { background: linear-gradient(135deg, #3B82F6, #2563EB); }
+        .tool-card-icon.teal  { background: linear-gradient(135deg, #14B8A6, #0D9488); }
+        .tool-card-icon.amber { background: linear-gradient(135deg, #F59E0B, #D97706); }
+        .tool-card-icon.rose  { background: linear-gradient(135deg, #F43F5E, #E11D48); }
+        .tool-card-icon.purple{ background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+        .tool-card-icon.emerald{ background: linear-gradient(135deg, #10B981, #059669); }
+        .tool-card-icon.sky   { background: linear-gradient(135deg, #0EA5E9, #0284C7); }
+        .tool-card-icon.indigo{ background: linear-gradient(135deg, #6366F1, #4F46E5); }
+        .tool-card-icon.orange{ background: linear-gradient(135deg, #F97316, #EA580C); }
+        .tool-card-title {
+            flex: 1;
+            min-width: 0;
+        }
+        .tool-card-title h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1E293B;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.15rem;
+        }
+        .tool-card-title .hex-display {
+            font-family: 'SF Mono', 'Cascadia Code', 'JetBrains Mono', 'Consolas', monospace;
+            font-size: 0.75rem;
+            color: #3B82F6;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+        .tool-card-body {
+            flex: 1;
+            margin-bottom: 1rem;
+        }
+        .tool-card-body p {
+            font-size: 0.85rem;
+            color: #64748B;
+            line-height: 1.55;
+        }
+        .tool-card-stats {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: auto;
+        }
+        .tool-card-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.75rem;
+            color: #64748B;
+            font-weight: 500;
+            background: #F8FAFC;
+            padding: 0.25rem 0.65rem;
+            border-radius: 8px;
+            border: 1px solid #F1F5F9;
+        }
+        .tool-card-stat svg { width: 14px; height: 14px; color: #94A3B8; }
+        .tool-card-stat strong {
+            color: #1E293B;
+            font-weight: 700;
+        }
+        .tool-card-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 0.2rem 0.55rem;
+            border-radius: 100px;
+            background: rgba(59,130,246,0.10);
+            color: #3B82F6;
+            letter-spacing: 0.02em;
+            margin-left: auto;
+        }
+        .tool-card-badge svg { width: 12px; height: 12px; }
+        .tool-card-badge.new { background: rgba(16,185,129,0.10); color: #059669; }
+        .tool-card-badge.popular { background: rgba(245,158,11,0.10); color: #D97706; }
+
+        /* ===== FOOTER ===== */
+        .site-footer {
+            background: #1E293B;
+            color: #94A3B8;
+            padding: 4rem 3rem 2rem 3rem;
+            margin-top: auto;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            max-width: 1200px;
+        }
+        .footer-brand {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+        .footer-brand span { color: #60A5FA; }
+        .footer-desc {
+            font-size: 0.85rem;
+            line-height: 1.7;
+            max-width: 300px;
+        }
+        .footer-col h4 {
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 0.5rem; }
+        .footer-col a {
+            font-size: 0.85rem;
+            color: #64748B;
+            transition: color 0.2s ease;
+        }
+        .footer-col a:hover { color: #60A5FA; }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding-top: 1.5rem;
+            margin-top: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #475569;
+        }
+        .footer-bottom a { color: #64748B; }
+        .footer-bottom a:hover { color: #60A5FA; }
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+        .footer-social a {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748B;
+            transition: all 0.2s ease;
+        }
+        .footer-social a:hover {
+            background: rgba(59,130,246,0.15);
+            color: #60A5FA;
+        }
+        .footer-social svg { width: 18px; height: 18px; }
+
+        /* ===== MOBILE TOGGLE ===== */
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .mobile-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: #1E293B;
+            border-radius: 2px;
+            transition: all 0.2s ease;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hero { padding: 2.5rem 2rem 2rem 2rem; }
+            .toolbar { padding: 1rem 2rem; }
+            .dashboard { padding: 1.5rem 2rem 3rem 2rem; }
+            .site-footer { padding: 3rem 2rem 2rem 2rem; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+        }
+
+        @media (max-width: 768px) {
+            .app-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                position: fixed;
+                z-index: 100;
+                left: -100%;
+                top: 0;
+                width: 280px;
+                height: 100vh;
+                transition: left 0.3s ease;
+                box-shadow: 4px 0 30px rgba(0,0,0,0.2);
+            }
+            .sidebar.open { left: 0; }
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.4);
+                z-index: 99;
+            }
+            .sidebar-overlay.show { display: block; }
+            .mobile-toggle { display: flex; }
+            .hero h1 { font-size: 2rem; }
+            .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+            .toolbar {
+                padding: 0.9rem 1.25rem;
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+            .toolbar-search input { width: 140px; }
+            .dashboard { padding: 1.25rem 1.25rem 3rem 1.25rem; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .site-footer { padding: 2.5rem 1.25rem 1.5rem 1.25rem; }
+            .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+
+        @media (max-width: 480px) {
+            .hero { padding: 2rem 1.25rem 1.75rem 1.25rem; }
+            .hero h1 { font-size: 1.6rem; }
+            .toolbar-actions .toolbar-btn span { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR OVERLAY (mobile) ===== -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ===== APP LAYOUT ===== -->
+<div class="app-layout">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">CH</div>
+            <div class="sidebar-brand">Color<span>Helper</span></div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="sidebar-nav-label">Übersicht</div>
+            <a href="#" class="sidebar-link active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                Dashboard
+            </a>
+            <a href="#" class="sidebar-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg>
+                Color Picker
+                <span class="sidebar-badge">NEU</span>
+            </a>
+            <a href="#" class="sidebar-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="10" height="10"/><rect x="11" y="11" width="2" height="2"/></svg>
+                Palette Generator
+            </a>
+            <a href="#" class="sidebar-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                Gradient Generator
+            </a>
+
+            <div class="sidebar-nav-label">Werkzeuge</div>
+            <a href="#" class="sidebar-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2L2 6l2 4h4l2-4-2-4H4z"/><path d="M14 2l-2 4 2 4h4l2-4-2-4h-4z"/><path d="M4 14l-2 4 2 4h4l2-4-2-4H4z"/><path d="M14 14l-2 4 2 4h4l2-4-2-4h-4z"/></svg>
+                HEX / RGB Converter
+            </a>
+            <a href="#" class="sidebar-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/><path d="M6 12H2"/><path d="M22 12h-4"/><path d="M12 6V2"/><path d="M12 22v-4"/></svg>
+                Contrast Checker
+                <span class="sidebar-badge">PRO</span>
+            </a>
+            <a href="#" class="sidebar-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                Color Editor
+            </a>
+
+            <div class="sidebar-nav-label">API & Integration</div>
+            <a href="#" class="sidebar-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+                API Zugriff
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="sidebar-avatar">MK</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Max Koch</div>
+                    <div class="sidebar-user-plan">Pro Plan · <span style="color:#60A5FA;">Aktiv</span></div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-area">
+
+        <!-- ===== HERO ===== -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    Premium Color Tools Suite
+                </div>
+                <h1>Professionelle Farbwerkzeuge.<br><span>Exakt. Schnell. Kostenlos.</span></h1>
+                <p>Paletten generieren, Kontraste prüfen, Farben konvertieren &mdash; alles an einem Ort. Entwickelt für Designer und Entwickler, die Wert auf Präzision legen.</p>
+                <div class="hero-stats">
+                    <div>
+                        <div class="hero-stat-value">12.4K</div>
+                        <div class="hero-stat-label">Farbpaletten erstellt</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-value">98.7%</div>
+                        <div class="hero-stat-label">WCAG-Konformität</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-value">15</div>
+                        <div class="hero-stat-label">Integrierte Tools</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TOOLBAR ===== -->
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Menü öffnen">
+                    <span></span><span></span><span></span>
+                </button>
+                <h2>Alle <span>Tools</span></h2>
+                <span class="toolbar-count">9 Werkzeuge</span>
+            </div>
+            <div class="toolbar-search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" placeholder="Tool suchen…" aria-label="Tool suchen">
+            </div>
+            <div class="toolbar-actions">
+                <button class="toolbar-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M2 14h4"/><path d="M10 8h4"/><path d="M18 16h4"/></svg>
+                    <span>Filter</span>
+                </button>
+                <button class="toolbar-btn primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>Neu</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ===== DASHBOARD ===== -->
+        <main class="dashboard">
+            <div class="dashboard-grid">
+
+                <!-- Card 1 - Color Palette Generator -->
+                <div class="tool-card">
+                    <div class="tool-card-header">
+                        <div class="tool-card-icon purple">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="10" height="10"/><rect x="11" y="11" width="2" height="2"/></svg>
+                        </div>
+                        <div class="tool-card-title">
+                            <h3>Palette Generator</h3>
+                            <span class="hex-display">#6366F1</span>
+                        </div>
+                        <span class="tool-card-badge popular">★ Beliebt</span>
+                    </div>
+                    <div class="tool-card-body">
+                        <p>Generiere harmonische Farbpaletten aus jeder Farbe. Unterstützt komplementär, triadisch, monochromatisch und viele weitere Modi.</p>
+                    </div>
+                    <div class="tool-card-stats">
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> <strong>5</strong> Modi</span>
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> HEX · RGB · HSL</span>
+                    </div>
+                </div>
+
+                <!-- Card 2 - Color Picker -->
+                <div class="tool-card">
+                    <div class="tool-card-header">
+                        <div class="tool-card-icon blue">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg>
+                        </div>
+                        <div class="tool-card-title">
+                            <h3>Color Picker</h3>
+                            <span class="hex-display">#3B82F6</span>
+                        </div>
+                        <span class="tool-card-badge new">Neu</span>
+                    </div>
+                    <div class="tool-card-body">
+                        <p>Wähle Farben direkt aus dem Spektrum oder aus Bildern. Präzise HEX-, RGB- und HSL-Werte in Echtzeit.</p>
+                    </div>
+                    <div class="tool-card-stats">
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg> <strong>16M</strong> Farben</span>
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> HEX · RGB · HSL</span>
+                    </div>
+                </div>
+
+                <!-- Card 3 - Contrast Checker -->
+                <div class="tool-card">
+                    <div class="tool-card-header">
+                        <div class="tool-card-icon amber">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/><path d="M6 12H2"/><path d="M22 12h-4"/><path d="M12 6V2"/><path d="M12 22v-4"/></svg>
+                        </div>
+                        <div class="tool-card-title">
+                            <h3>Kontrast Checker</h3>
+                            <span class="hex-display">#F59E0B</span>
+                        </div>
+                    </div>
+                    <div class="tool-card-body">
+                        <p>Überprüfe Farbkontraste nach WCAG 2.1 AA/AAA. Simuliere Sehbeeinträchtigungen wie Deuteranopie und Tritanopie.</p>
+                    </div>
+                    <div class="tool-card-stats">
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> <strong>AA</strong> / AAA</span>
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> <strong>6</strong> Simulationen</span>
+                    </div>
+                </div>
+
+                <!-- Card 4 - Gradient Generator -->
+                <div class="tool-card">
+                    <div class="tool-card-header">
+                        <div class="tool-card-icon teal">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                        </div>
+                        <div class="tool-card-title">
+                            <h3>Gradient Generator</h3>
+                            <span class="hex-display">#14B8A6</span>
+                        </div>
+                    </div>
+                    <div class="tool-card-body">
+                        <p>Erstelle sanfte Farbverläufe mit bis zu 6 Stopps. Linear, radial und konisch &mdash; mit sofortiger CSS/CSS-Vorschau.</p>
+                    </div>
+                    <div class="tool-card-stats">
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="10" height="10"/></svg> <strong>3</strong> Typen</span>
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/></svg> CSS + SVG</span>
+                    </div>
+                </div>
+
+                <!-- Card 5 - HEX / RGB Converter -->
+                <div class="tool-card">
+                    <div class="tool-card-header">
+                        <div class="tool-card-icon rose">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2L2 6l2 4h4l2-4-2-4H4z"/><path d="M14 2l-2 4 2 4h4l2-4-2-4h-4z"/><path d="M4 14l-2 4 2 4h4l2-4-2-4H4z"/><path d="M14 14l-2 4 2 4h4l2-4-2-4h-4z"/></svg>
+                        </div>
+                        <div class="tool-card-title">
+                            <h3>HEX / RGB / HSL</h3>
+                            <span class="hex-display">#F43F5E</span>
+                        </div>
+                    </div>
+                    <div class="tool-card-body">
+                        <p>Konvertiere zwischen HEX, RGB, RGBA, HSL, HSLA und CMYK. Kopiere Werte mit einem Klick &mdash; inklusive Tailwind/SCSS-Formaten.</p>
+                    </div>
+                    <div class="tool-card-stats">
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9"/><polyline points="10 2 10 10 15 7 10 2"/></svg> <strong>6</strong> Formate</span>
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="4"/><line x1="8" y1="2" x2="8" y2="22"/></svg> 1-Klick-Kopie</span>
+                    </div>
+                </div>
+
+                <!-- Card 6 - Color Editor -->
+                <div class="tool-card">
+                    <div class="tool-card-header">
+                        <div class="tool-card-icon emerald">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        </div>
+                        <div class="tool-card-title">
+                            <h3>Color Editor</h3>
+                            <span class="hex-display">#10B981</span>
+                        </div>
+                        <span class="tool-card-badge popular">★ Beliebt</span>
+                    </div>
+                    <div class="tool-card-body">
+                        <p>Bearbeite Farben visuell mit intuitiven HSL/HEX-Schiebereglern. Sehe sofort die Auswirkungen auf dein Design.</p>
+                    </div>
+                    <div class="tool-card-stats">
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> <strong>4</strong> Kanäle</span>
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="4"/><line x1="8" y1="2" x2="8" y2="22"/></svg> Live-Vorschau</span>
+                    </div>
+                </div>
+
+                <!-- Card 7 - Accessibility Simulator -->
+                <div class="tool-card">
+                    <div class="tool-card-header">
+                        <div class="tool-card-icon sky">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </div>
+                        <div class="tool-card-title">
+                            <h3>Accessibility Simulator</h3>
+                            <span class="hex-display">#0EA5E9</span>
+                        </div>
+                        <span class="tool-card-badge new">Neu</span>
+                    </div>
+                    <div class="tool-card-body">
+                        <p>Simuliere Farbenblindheit (Protanopie, Deuteranopie, Tritanopie) und prüfe, ob dein Design für alle zugänglich bleibt.</p>
+                    </div>
+                    <div class="tool-card-stats">
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9H15"/><line x1="12" y1="12" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg> <strong>8</strong> Filter</span>
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> WCAG-Report</span>
+                    </div>
+                </div>
+
+                <!-- Card 8 - API Access -->
+                <div class="tool-card">
+                    <div class="tool-card-header">
+                        <div class="tool-card-icon indigo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+                        </div>
+                        <div class="tool-card-title">
+                            <h3>REST API</h3>
+                            <span class="hex-display">#6366F1</span>
+                        </div>
+                    </div>
+                    <div class="tool-card-body">
+                        <p>Integriere Color-Helper direkt in deine CI/CD-Pipeline oder dein Design-Tool. Vollständig dokumentiert mit API-Key.</p>
+                    </div>
+                    <div class="tool-card-stats">
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> <strong>10K</strong> Rate-Limit</span>
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg> OpenAPI</span>
+                    </div>
+                </div>
+
+                <!-- Card 9 - Export / Integration -->
+                <div class="tool-card">
+                    <div class="tool-card-header">
+                        <div class="tool-card-icon orange">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        </div>
+                        <div class="tool-card-title">
+                            <h3>Export & Integrationen</h3>
+                            <span class="hex-display">#F97316</span>
+                        </div>
+                    </div>
+                    <div class="tool-card-body">
+                        <p>Exportiere Paletten als CSS, SCSS, Tailwind, Figma oder Adobe Swatch. Nahtlose Integration in deinen Workflow.</p>
+                    </div>
+                    <div class="tool-card-stats">
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="4"/><line x1="8" y1="2" x2="8" y2="22"/></svg> <strong>7</strong> Formate</span>
+                        <span class="tool-card-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9"/><polyline points="10 2 10 10 15 7 10 2"/></svg> Figma · Tailwind</span>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="site-footer">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">Color<span>Helper</span></div>
+                    <p class="footer-desc">Professionelle Farbwerkzeuge für Designer und Entwickler. Präzise, schnell und zuverlässig &mdash; mit einem starken Fokus auf Barrierefreiheit und moderne Standards.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Tools</h4>
+                    <ul>
+                        <li><a href="#">Color Picker</a></li>
+                        <li><a href="#">Palette Generator</a></li>
+                        <li><a href="#">Gradient Generator</a></li>
+                        <li><a href="#">Kontrast Checker</a></li>
+                        <li><a href="#">HEX / RGB Converter</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Ressourcen</h4>
+                    <ul>
+                        <li><a href="#">Dokumentation</a></li>
+                        <li><a href="#">API Referenz</a></li>
+                        <li><a href="#">WCAG-Richtlinien</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Changelog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Unternehmen</h4>
+                    <ul>
+                        <li><a href="#">Über uns</a></li>
+                        <li><a href="#">Preise</a></li>
+                        <li><a href="#">Datenschutz</a></li>
+                        <li><a href="#">Impressum</a></li>
+                        <li><a href="#">Kontakt</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 Color-Helper.com &mdash; Alle Rechte vorbehalten.</span>
+                <div class="footer-social">
+                    <a href="#" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                    <a href="#" aria-label="Twitter / X">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                    <a href="#" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </footer>
+
+    </div><!-- /main-area -->
+</div><!-- /app-layout -->
+
+<!-- ===== MOBILE SIDEBAR TOGGLE ===== -->
+<script>
+(function() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const toggle = document.getElementById('mobileToggle');
+
+    function openSidebar() {
+        sidebar.classList.add('open');
+        overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    if (toggle) toggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (sidebar.classList.contains('open')) closeSidebar();
+        else openSidebar();
+    });
+
+    if (overlay) overlay.addEventListener('click', closeSidebar);
+
+    // Optional: Klick außerhalb schließt
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && sidebar.classList.contains('open')) closeSidebar();
+    });
+})();
+</script>
+
+</body>
+</html>

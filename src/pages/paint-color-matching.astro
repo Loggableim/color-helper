@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Paint Color Matching Guide"
+  description="Learn how paint color matching works, the role of spectrophotometers, why lighting matters, and tips for better results."
+  canonical="https://color-helper.com/paint-color-matching/"
+  breadcrumbs={[{ label: 'Paint Color Matching' }]}
+>
+  <div class="content-page">
+    <div class="container">
+      <div class="content-wrapper">
+        <div class="tool-header">
+          <h1>Paint Color Matching Guide</h1>
+        </div>
+
+        <p>
+          Understanding how paint color matching works can save you time, money, and frustration. Whether
+          you're touching up a wall, matching a specific brand color, or replicating a vintage shade, knowing
+          the science and best practices behind color matching makes all the difference.
+        </p>
+
+        <h2>How Paint Color Matching Works</h2>
+        <p>
+          Paint color matching is the process of reproducing a specific color by analyzing a sample and
+          creating a custom paint formulation. The process typically involves measuring the sample with a
+          spectrophotometer, identifying the closest matching formula in a paint brand's database, and then
+          adjusting the formulation until the match is as close as possible.
+        </p>
+
+        <h2>The Role of Spectrophotometers</h2>
+        <p>
+          A spectrophotometer measures the light reflected from a surface across the visible spectrum. By
+          analyzing this reflectance data, the device can precisely determine the color's characteristics and
+          map it to a specific paint formula. These instruments are far more accurate than the human eye and
+          can detect subtle differences that might otherwise go unnoticed.
+        </p>
+
+        <h2>Why Lighting Matters</h2>
+        <p>
+          The same paint color can look completely different under different lighting conditions. Natural
+          daylight, warm incandescent light, cool fluorescent light — each changes how pigments are perceived.
+          This phenomenon, called metamerism, is why a color that matches perfectly in the store might look
+          off in your home. Always evaluate color samples under the lighting conditions where they will
+          actually be used.
+        </p>
+
+        <h2>The Importance of Physical Samples</h2>
+        <p>
+          Digital screens display colors using RGB light, while paint uses physical pigments that reflect
+          light. These are fundamentally different color models. What looks perfect on your monitor may not
+          translate accurately to a painted wall. Physical paint samples or swatches remain the gold standard
+          for evaluating how a color will actually appear in your space.
+        </p>
+
+        <h2>Common Challenges</h2>
+        <p>
+          Factors like paint sheen, surface texture, and age of existing paint can all affect how well a new
+          color matches the original. Glossier finishes reflect more light and can appear lighter or more
+          saturated, while textured surfaces create shadows that alter the perceived color. Older paint may
+          have yellowed or faded, making an exact match difficult.
+        </p>
+
+        <h2>Tips for Better Results</h2>
+        <ul>
+          <li>Always test on the actual surface you'll be painting, not on a separate piece of material.</li>
+          <li>View samples in multiple lighting conditions — morning, afternoon, and evening.</li>
+          <li>Use a primer for consistent base color and better coverage.</li>
+          <li>Consider the paint finish (matte, eggshell, satin, gloss) — the same color in different sheens will look different.</li>
+        </ul>
+
+        <h2>Digital Color Tools</h2>
+        <p>
+          While not a replacement for physical samples, digital color tools can help you explore color
+          combinations, check contrast ratios, and convert between color formats. Use them as a starting
+          point for inspiration, then verify with physical samples before making a final decision.
+        </p>
+
+        <div class="disclaimer">
+          <strong>Disclaimer:</strong> Color Helper is an independent resource. We are not affiliated with any
+          paint manufacturer or Color Savvy products.
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .content-page {
+    padding: 2rem 0;
+  }
+  .content-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .tool-header h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-text-primary);
+  }
+  h2 {
+    font-size: 1.35rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-text-primary);
+  }
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  ul {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+  }
+  ul li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+  .disclaimer {
+    margin-top: 2rem;
+    padding: 1rem 1.25rem;
+    background: var(--color-surface, #1e293b);
+    border: 1px solid var(--color-border, #334155);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+  .disclaimer strong {
+    color: var(--color-text-primary);
+  }
+</style>

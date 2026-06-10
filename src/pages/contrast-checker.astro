@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../components/ToolLayout.astro';
+import ContrastChecker from '../components/ContrastChecker';
+import FAQ from '../components/FAQ.astro';
+
+const title = 'Contrast Checker';
+const description = 'Check WCAG accessibility contrast ratios between two colors. Ensure your text and background colors meet WCAG AA and AAA standards for readability.';
+const canonical = 'https://color-helper.com/contrast-checker/';
+const breadcrumbs = [{ label: 'Contrast Checker' }];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout {title} {description} {breadcrumbs}>
+    <div class="tool-wrapper">
+      <ContrastChecker client:load />
+    </div>
+
+    <section class="seo-content">
+      <h2>Why Contrast Matters for Accessibility</h2>
+      <p>Color contrast is a critical factor in web accessibility. Sufficient contrast between text and its background ensures that content is readable by people with visual impairments, including low vision and color blindness. The Web Content Accessibility Guidelines (WCAG) define specific contrast ratio thresholds that websites should meet to be accessible to the widest possible audience.</p>
+      <p>Our contrast checker calculates the contrast ratio between any two colors and immediately tells you whether they pass WCAG AA or AAA standards. AA requires a ratio of at least 4.5:1 for normal text and 3:1 for large text. AAA is a higher standard, requiring 7:1 for normal text and 4.5:1 for large text.</p>
+      <p>Using this tool is simple: enter a foreground and background color in HEX format, and the tool displays the contrast ratio along with pass/fail indicators for each WCAG level. The live preview shows exactly how your text will look against the chosen background. This is an essential tool for designers, developers, and content creators who want to build inclusive digital experiences.</p>
+    </section>
+
+    <FAQ
+      items={[
+        {
+          question: 'What is WCAG?',
+          answer: 'WCAG (Web Content Accessibility Guidelines) is an international standard for web accessibility published by the W3C. It provides guidelines for making web content more accessible to people with disabilities, including recommendations for color contrast ratios to ensure text readability.'
+        },
+        {
+          question: 'What is a good contrast ratio?',
+          answer: 'For WCAG AA compliance, normal text needs a contrast ratio of at least 4.5:1, and large text (18px+ bold or 24px+ regular) needs at least 3:1. For WCAG AAA compliance, normal text needs at least 7:1, and large text needs at least 4.5:1. A ratio of 21:1 is the maximum possible contrast (black on white).'
+        },
+        {
+          question: 'How is contrast ratio calculated?',
+          answer: 'Contrast ratio is calculated using the relative luminance of the two colors. The formula defined by the W3C compares the brighter color\'s luminance (L1) to the darker color\'s luminance (L2): (L1 + 0.05) / (L2 + 0.05). The resulting ratio ranges from 1:1 (no contrast) to 21:1 (maximum contrast).'
+        },
+        {
+          question: 'What colors should I test?',
+          answer: 'Always test your primary text color against your background color. Also test link text, placeholder text, error messages, and any other text elements. Don\'t forget to check hover states and focus indicators — they need sufficient contrast too.'
+        },
+        {
+          question: 'Can I use this tool for mobile app design?',
+          answer: 'Absolutely! While WCAG is primarily a web standard, the same contrast principles apply to mobile apps, digital signage, and any other screen-based medium. Ensuring good contrast improves readability and user experience across all platforms.'
+        }
+      ]}
+    />
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+</BaseLayout>
+
+<style is:global>
+  .tool-wrapper {
+    margin-bottom: 1.5rem;
+  }
+  .seo-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .seo-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .seo-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+</style>
