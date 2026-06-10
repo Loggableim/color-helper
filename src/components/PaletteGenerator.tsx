@@ -252,6 +252,26 @@ export default function PaletteGenerator() {
     [showFeedback],
   );
 
+  const handleExportCss = useCallback(
+    async (colors: string[]) => {
+      const cssVars = colors
+        .map((c, i) => `  --color-${i + 1}: ${c};`)
+        .join('\n');
+      const ok = await copyToClipboard(cssVars);
+      if (ok) showFeedback(`Copied CSS variables (${colors.length} colors)`);
+    },
+    [showFeedback],
+  );
+
+  const handleExportJson = useCallback(
+    async (colors: string[]) => {
+      const json = JSON.stringify(colors, null, 2);
+      const ok = await copyToClipboard(json);
+      if (ok) showFeedback(`Copied JSON (${colors.length} colors)`);
+    },
+    [showFeedback],
+  );
+
   /* ---- render ---- */
   return (
     <div style={styles.wrapper}>
@@ -292,28 +312,77 @@ export default function PaletteGenerator() {
         <div key={palette.name} style={styles.card}>
           <div style={styles.cardHeader}>
             <h2 style={styles.paletteName}>{palette.name}</h2>
-            <button
-              type="button"
-              onClick={() => handleCopyAll(palette.colors)}
-              style={styles.copyAllBtn}
-              aria-label={`Copy all ${palette.name} colors`}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLButtonElement).style.borderColor = primary;
-                (e.currentTarget as HTMLButtonElement).style.color = primary;
-                (e.currentTarget as HTMLButtonElement).style.background = '#eef2ff';
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLButtonElement).style.borderColor = borderColor;
-                (e.currentTarget as HTMLButtonElement).style.color = textSecondary;
-                (e.currentTarget as HTMLButtonElement).style.background = '#ffffff';
-              }}
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-              </svg>
-              Copy All
-            </button>
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={() => handleExportCss(palette.colors)}
+                style={styles.copyAllBtn}
+                aria-label={`Export ${palette.name} as CSS variables`}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = primary;
+                  (e.currentTarget as HTMLButtonElement).style.color = primary;
+                  (e.currentTarget as HTMLButtonElement).style.background = '#eef2ff';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = borderColor;
+                  (e.currentTarget as HTMLButtonElement).style.color = textSecondary;
+                  (e.currentTarget as HTMLButtonElement).style.background = '#ffffff';
+                }}
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="16 3 21 3 21 8" />
+                  <line x1="4" y1="20" x2="21" y2="3" />
+                  <polyline points="21 16 21 21 16 21" />
+                  <line x1="15" y1="15" x2="21" y2="21" />
+                  <line x1="4" y1="4" x2="9" y2="9" />
+                </svg>
+                CSS
+              </button>
+              <button
+                type="button"
+                onClick={() => handleExportJson(palette.colors)}
+                style={styles.copyAllBtn}
+                aria-label={`Export ${palette.name} as JSON`}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = primary;
+                  (e.currentTarget as HTMLButtonElement).style.color = primary;
+                  (e.currentTarget as HTMLButtonElement).style.background = '#eef2ff';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = borderColor;
+                  (e.currentTarget as HTMLButtonElement).style.color = textSecondary;
+                  (e.currentTarget as HTMLButtonElement).style.background = '#ffffff';
+                }}
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  <line x1="9" y1="10" x2="15" y2="10" />
+                </svg>
+                JSON
+              </button>
+              <button
+                type="button"
+                onClick={() => handleCopyAll(palette.colors)}
+                style={styles.copyAllBtn}
+                aria-label={`Copy all ${palette.name} colors`}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = primary;
+                  (e.currentTarget as HTMLButtonElement).style.color = primary;
+                  (e.currentTarget as HTMLButtonElement).style.background = '#eef2ff';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = borderColor;
+                  (e.currentTarget as HTMLButtonElement).style.color = textSecondary;
+                  (e.currentTarget as HTMLButtonElement).style.background = '#ffffff';
+                }}
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+                Copy All
+              </button>
+            </div>
           </div>
           <div style={styles.colorRow}>
             {palette.colors.map((color, idx) => {

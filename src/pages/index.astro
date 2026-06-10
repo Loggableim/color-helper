@@ -20,9 +20,9 @@ import FAQ from '../components/FAQ.astro';
             <div class="hero-swatch-inner"></div>
           </div>
           <div class="hero-mini-swatches">
-            <span class="mini-swatch" style="background: #6366f1" aria-label="Indigo"></span>
-            <span class="mini-swatch" style="background: #8b5cf6" aria-label="Violet"></span>
-            <span class="mini-swatch" style="background: #d946ef" aria-label="Pink"></span>
+            <span class="mini-swatch" style="background: #7C3AED" aria-label="Indigo"></span>
+            <span class="mini-swatch" style="background: #06B6D4" aria-label="Violet"></span>
+            <span class="mini-swatch" style="background: #EC4899" aria-label="Pink"></span>
           </div>
         </div>
 
@@ -41,7 +41,7 @@ import FAQ from '../components/FAQ.astro';
         <div class="hero-trust">
           <span class="trust-badge">✓ No account needed</span>
           <span class="trust-badge-sep" aria-hidden="true">·</span>
-          <span class="trust-badge">✓ Works offline</span>
+          <span class="trust-badge">✓ Runs in browser</span>
           <span class="trust-badge-sep" aria-hidden="true">·</span>
           <span class="trust-badge">✓ 100% free</span>
         </div>
@@ -135,9 +135,9 @@ import FAQ from '../components/FAQ.astro';
         </div>
         <div class="fade-in fade-in-delay-3">
           <ToolCard
-            title="HSL Converter"
-            description="Convert between color formats (HEX, RGB, HSL)"
-            href="/hex-to-rgb/"
+            title="Color Converter"
+            description="Convert between HEX, RGB, and HSL color formats in one place"
+            href="/color-converter/"
             icon="🔄"
             gradient="linear-gradient(135deg, #a855f7, #d946ef)"
           />
@@ -219,7 +219,7 @@ import FAQ from '../components/FAQ.astro';
       },
       {
         question: 'Can I use these tools offline?',
-        answer: 'Most tools work offline once the page has loaded. Because everything runs client-side, there is no dependency on a server after the initial page load. Simply visit the tool while connected, and it will remain functional even if you lose internet access.'
+        answer: 'Most tools work after the initial page load since everything runs client-side in your browser. However, full offline support requires a service worker, which is planned for a future update.'
       },
       {
         question: 'Do I need to create an account?',

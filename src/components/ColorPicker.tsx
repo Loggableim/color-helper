@@ -383,7 +383,7 @@ export default function ColorPicker() {
   // Copy to clipboard
   const handleCopy = useCallback(async (text: string, label: string) => {
     await copyToClipboard(text);
-    showToast(`${label} copié`);
+    showToast(`${label} copied`);
   }, []);
 
   // Toast
@@ -401,7 +401,7 @@ export default function ColorPicker() {
     const updated = [...palette, hex];
     setPalette(updated);
     savePalette(updated);
-    showToast('Couleur sauvegardée');
+    showToast('Color saved');
   }, [palette, hex, showToast]);
 
   // Load from palette
@@ -463,7 +463,7 @@ export default function ColorPicker() {
           <button
             style={styles.copyBtn}
             onClick={() => handleCopy(hex.toUpperCase(), 'HEX')}
-            aria-label="Copier la valeur HEX"
+            aria-label="Copy HEX value"
             type="button"
             onMouseEnter={e => {
               (e.currentTarget as HTMLButtonElement).style.borderColor = primary;
@@ -474,7 +474,7 @@ export default function ColorPicker() {
               (e.currentTarget as HTMLButtonElement).style.color = textSecondary;
             }}
           >
-            Copier HEX
+            Copy HEX
           </button>
         </div>
         <div style={styles.colorValueGroup}>
@@ -482,7 +482,7 @@ export default function ColorPicker() {
           <button
             style={styles.copyBtn}
             onClick={() => handleCopy(rgbToString(rgb), 'RGB')}
-            aria-label="Copier la valeur RGB"
+            aria-label="Copy RGB value"
             type="button"
             onMouseEnter={e => {
               (e.currentTarget as HTMLButtonElement).style.borderColor = primary;
@@ -493,7 +493,7 @@ export default function ColorPicker() {
               (e.currentTarget as HTMLButtonElement).style.color = textSecondary;
             }}
           >
-            Copier RGB
+            Copy RGB
           </button>
         </div>
         <div style={styles.colorValueGroup}>
@@ -501,7 +501,7 @@ export default function ColorPicker() {
           <button
             style={styles.copyBtn}
             onClick={() => handleCopy(hslToString(hsl), 'HSL')}
-            aria-label="Copier la valeur HSL"
+            aria-label="Copy HSL value"
             type="button"
             onMouseEnter={e => {
               (e.currentTarget as HTMLButtonElement).style.borderColor = primary;
@@ -512,19 +512,19 @@ export default function ColorPicker() {
               (e.currentTarget as HTMLButtonElement).style.color = textSecondary;
             }}
           >
-            Copier HSL
+            Copy HSL
           </button>
         </div>
       </div>
 
       {/* Picker Card */}
       <div style={styles.card}>
-        <h2 style={styles.cardTitle}>Sélecteur de couleur</h2>
+        <h2 style={styles.cardTitle}>Color Picker</h2>
 
         {/* Native Color Picker */}
         <div style={styles.inputGroup}>
           <label htmlFor="native-color" style={styles.label}>
-            Nuancier
+            Color
           </label>
           <input
             id="native-color"
@@ -532,7 +532,7 @@ export default function ColorPicker() {
             value={hex}
             onChange={handleNativeColor}
             style={styles.colorInput}
-            title="Choisir une couleur"
+            title="Choose a color"
           />
         </div>
 
@@ -559,7 +559,7 @@ export default function ColorPicker() {
           </div>
           {hexError && (
             <p id="hex-error" style={styles.errorText} role="alert">
-              Format HEX invalide (ex: #6366f1)
+              Invalid HEX format (e.g. #6366f1)
             </p>
           )}
         </div>
@@ -584,7 +584,7 @@ export default function ColorPicker() {
                   value={rgb[ch]}
                   onChange={(e) => handleRgbInput(ch, e.target.value)}
                   style={styles.input}
-                  aria-label={`Valeur RGB ${ch.toUpperCase()}`}
+                  aria-label={`RGB ${ch.toUpperCase()} value`}
                 />
               </div>
             ))}
@@ -610,7 +610,7 @@ export default function ColorPicker() {
                 value={hsl.h}
                 onChange={(e) => handleHslInput('h', e.target.value)}
                 style={styles.input}
-                aria-label="Valeur HSL Teinte (H)"
+                aria-label="HSL Hue (H)"
               />
             </div>
             <div style={styles.flexGrow}>
@@ -628,7 +628,7 @@ export default function ColorPicker() {
                 value={hsl.s}
                 onChange={(e) => handleHslInput('s', e.target.value)}
                 style={styles.input}
-                aria-label="Valeur HSL Saturation (S)"
+                aria-label="HSL Saturation (S)"
               />
             </div>
             <div style={styles.flexGrow}>
@@ -646,7 +646,7 @@ export default function ColorPicker() {
                 value={hsl.l}
                 onChange={(e) => handleHslInput('l', e.target.value)}
                 style={styles.input}
-                aria-label="Valeur HSL Luminosité (L)"
+                aria-label="HSL Lightness (L)"
               />
             </div>
           </div>
@@ -669,7 +669,7 @@ export default function ColorPicker() {
               (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 2px 8px rgba(99, 102, 241, 0.3)';
             }}
           >
-            🎲 Aléatoire
+            Random
           </button>
           <button
             style={{ ...styles.btn, ...styles.btnSecondary }}
@@ -687,20 +687,20 @@ export default function ColorPicker() {
               (e.currentTarget as HTMLButtonElement).style.color = textPrimary;
             }}
           >
-            💾 Sauvegarder
+            Save Color
           </button>
         </div>
       </div>
 
       {/* Palette Card */}
       <div style={styles.card}>
-        <h2 style={styles.cardTitle}>Palette sauvegardée</h2>
+        <h2 style={styles.cardTitle}>Saved Palette</h2>
         {palette.length === 0 ? (
           <p style={styles.emptyPalette}>
-            Aucune couleur sauvegardée. Cliquez sur « Sauvegarder » pour en ajouter.
+            No saved colors yet. Click "Save Color" to add one.
           </p>
         ) : (
-          <div style={styles.paletteGrid} role="list" aria-label="Couleurs sauvegardées">
+          <div style={styles.paletteGrid} role="list" aria-label="Saved colors">
             {palette.map((color, index) => (
               <div
                 key={`${color}-${index}`}
@@ -717,7 +717,7 @@ export default function ColorPicker() {
                   }
                 }}
                 tabIndex={0}
-                aria-label={`Couleur ${color.toUpperCase()}, cliquer pour charger`}
+                aria-label={`Load color ${color.toUpperCase()}`}
                 title={color.toUpperCase()}
                 onMouseEnter={e => {
                   (e.currentTarget as HTMLDivElement).style.transform = 'scale(1.12)';
@@ -749,7 +749,7 @@ export default function ColorPicker() {
                     fontFamily: "'Inter', sans-serif",
                   }}
                   className="swatch-remove-btn"
-                  aria-label={`Supprimer ${color.toUpperCase()} de la palette`}
+                  aria-label={`Remove ${color.toUpperCase()}`}
                   type="button"
                 >
                   ×

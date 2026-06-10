@@ -1,12 +1,14 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import {
   isValidHex,
   normalizeHex,
   getContrastRatio,
   meetsWcagAA,
   meetsWcagAAA,
+  hexToRgb,
+  rgbToHex,
 } from '../utils/color';
 
 /* ===== Design Tokens ===== */
@@ -295,6 +297,47 @@ export default function ContrastChecker() {
     setBgError(false);
   }, [fgHex, bgHex, fgInput, bgInput]);
 
+  /* ---- Accessible Text Color Suggestion ---- */
+  const suggestedTextColor = useMemo<{ hex: string; ratio: number; label: string } | null>(() => {
+    if (!validBg) return null;
+
+    const candidates: { hex: string; label: string }[] = [
+      { hex: '#ffffff', label: 'White' },
+      { hex: '#000000', label: 'Black' },
+    ];
+
+    // If we have a valid foreground, also try darkened/lightened variants
+    if (validFg) {
+      const rgb = hexToRgb(validFg);
+      if (rgb) {
+        // Darkened: reduce luminance by 40%
+        const dark = rgbToHex(
+          Math.round(rgb.r * 0.4),
+          Math.round(rgb.g * 0.4),
+          Math.round(rgb.b * 0.4),
+        );
+        candidates.push({ hex: dark, label: 'Darker shade' });
+
+        // Lightened: blend with white (60% white)
+        const light = rgbToHex(
+          Math.round(rgb.r + (255 - rgb.r) * 0.6),
+          Math.round(rgb.g + (255 - rgb.g) * 0.6),
+          Math.round(rgb.b + (255 - rgb.b) * 0.6),
+        );
+        candidates.push({ hex: light, label: 'Lighter tint' });
+      }
+    }
+
+    let best = { hex: '#ffffff', ratio: 0, label: 'White' };
+    for (const c of candidates) {
+      const r = getContrastRatio(c.hex, validBg);
+      if (r > best.ratio) {
+        best = { hex: c.hex, ratio: r, label: c.label };
+      }
+    }
+    return best;
+  }, [validFg, validBg]);
+
   const displayFg = validFg || fgHex.startsWith('#') ? fgHex : '#1e293b';
   const displayBg = validBg || bgHex.startsWith('#') ? bgHex : '#ffffff';
 
@@ -448,6 +491,61 @@ export default function ContrastChecker() {
             4.5:1 for large text. Large text is defined as at least 18pt (24px) or
             14pt (19px) bold.
           </div>
+
+          {/* Suggest Accessible Text Color */}
+          {suggestedTextColor && (
+            <>
+              <hr style={styles.divider} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: textPrimary, flex: 1, minWidth: '140px' }}>
+                  Suggested Text Color
+                </div>
+                <div
+                  style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: '8px',
+                    border: `1.5px solid ${borderColor}`,
+                    background: suggestedTextColor.hex,
+                    flexShrink: 0,
+                  }}
+                />
+                <div style={{ fontFamily: monoFont, fontSize: '0.8125rem', color: textPrimary, fontWeight: 600 }}>
+                  {suggestedTextColor.hex}
+                </div>
+                <div style={{ fontSize: '0.75rem', color: textSecondary, fontWeight: 500 }}>
+                  {suggestedTextColor.ratio.toFixed(2)}:1 · {suggestedTextColor.label}
+                </div>
+                <button
+                  type="button"
+                  style={{
+                    ...styles.swapBtn,
+                    marginBottom: 0,
+                    padding: '0.375rem 0.75rem',
+                    fontSize: '0.75rem',
+                  }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = primary;
+                    (e.currentTarget as HTMLButtonElement).style.color = primary;
+                    (e.currentTarget as HTMLButtonElement).style.background = '#eef2ff';
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = borderColor;
+                    (e.currentTarget as HTMLButtonElement).style.color = textPrimary;
+                    (e.currentTarget as HTMLButtonElement).style.background = '#ffffff';
+                  }}
+                  onClick={() => {
+                    setFgHex(suggestedTextColor.hex);
+                    setFgInput(suggestedTextColor.hex);
+                    setFgError(false);
+                  }}
+                  aria-label="Apply suggested text color"
+                >
+                  Apply
+                </button>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

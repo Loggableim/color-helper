@@ -1,16 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
   <defs>
-    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#6366f1"/>
-      <stop offset="100%" stop-color="#8b5cf6"/>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4"/>
+      <stop offset="33%" stop-color="#7C3AED"/>
+      <stop offset="66%" stop-color="#EC4899"/>
+      <stop offset="100%" stop-color="#F97316"/>
     </linearGradient>
-    <linearGradient id="g2" x1="100%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#a855f7"/>
-      <stop offset="100%" stop-color="#6366f1"/>
-    </linearGradient>
+    <radialGradient id="highlight" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
   </defs>
-  <circle cx="40" cy="40" r="36" fill="url(#g1)" opacity="0.12"/>
-  <circle cx="40" cy="40" r="26" fill="url(#g1)" opacity="0.2"/>
-  <circle cx="40" cy="40" r="16" fill="url(#g2)"/>
-  <circle cx="40" cy="40" r="6" fill="white"/>
+
+  <!-- Background circle with multi-color gradient -->
+  <circle cx="40" cy="40" r="38" fill="url(#bgGrad)"/>
+
+  <!-- Inner gleam / highlight overlay -->
+  <circle cx="40" cy="40" r="38" fill="url(#highlight)"/>
+
+  <!-- Pipette / Eyedropper Icon -->
+  <g fill="white">
+    <!-- Pointed dropper tip -->
+    <path d="M40,72 L36,57 L44,57 Z"/>
+
+    <!-- Straight shaft -->
+    <rect x="36" y="31" width="8" height="26" rx="1"/>
+
+    <!-- Rubber bulb (pill shape) -->
+    <rect x="30" y="17" width="20" height="15" rx="7.5"/>
+
+    <!-- Plunger stem -->
+    <rect x="38.5" y="11" width="3" height="6"/>
+
+    <!-- Plunger button -->
+    <rect x="35" y="5" width="10" height="6" rx="3"/>
+
+    <!-- Subtle volume marking lines -->
+    <line x1="38" y1="47" x2="42" y2="47" stroke="rgba(255,255,255,0.45)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="38" y1="43" x2="42" y2="43" stroke="rgba(255,255,255,0.45)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="38" y1="39" x2="42" y2="39" stroke="rgba(255,255,255,0.45)" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
 </svg>

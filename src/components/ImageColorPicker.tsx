@@ -301,37 +301,75 @@ export default function ImageColorPicker() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const gridX = 5;
-    const gridY = 5;
-    const cellW = Math.floor(canvas.width / gridX);
-    const cellH = Math.floor(canvas.height / gridY);
-    const colors: string[] = [];
+    const w = canvas.width;
+    const h = canvas.height;
+    const totalPixels = w * h;
 
-    for (let gy = 0; gy < gridY; gy++) {
-      for (let gx = 0; gx < gridX; gx++) {
-        let totalR = 0, totalG = 0, totalB = 0, count = 0;
+    // Sample up to 200 random points across the image
+    const NUM_SAMPLES = Math.min(200, totalPixels);
+    const samples: RGB[] = [];
 
-        for (let py = gy * cellH; py < (gy + 1) * cellH && py < canvas.height; py++) {
-          for (let px = gx * cellW; px < (gx + 1) * cellW && px < canvas.width; px++) {
-            const pixel = ctx.getImageData(px, py, 1, 1).data;
-            totalR += pixel[0];
-            totalG += pixel[1];
-            totalB += pixel[2];
-            count++;
-          }
-        }
+    // Use a deterministic-ish approach: sample on a grid with random jitter
+    // This gives good coverage while still being random enough
+    const gridSize = Math.ceil(Math.sqrt(NUM_SAMPLES));
+    const stepX = Math.max(1, Math.floor(w / gridSize));
+    const stepY = Math.max(1, Math.floor(h / gridSize));
 
-        if (count > 0) {
-          const avgR = Math.round(totalR / count);
-          const avgG = Math.round(totalG / count);
-          const avgB = Math.round(totalB / count);
-          colors.push(rgbToHex(avgR, avgG, avgB));
-        }
+    for (let gy = 0; gy < gridSize && samples.length < NUM_SAMPLES; gy++) {
+      for (let gx = 0; gx < gridSize && samples.length < NUM_SAMPLES; gx++) {
+        // Add small random jitter within the cell
+        const baseX = gx * stepX + Math.floor(Math.random() * stepX * 0.6);
+        const baseY = gy * stepY + Math.floor(Math.random() * stepY * 0.6);
+        const x = Math.min(baseX, w - 1);
+        const y = Math.min(baseY, h - 1);
+        const pixel = ctx.getImageData(x, y, 1, 1).data;
+        samples.push({ r: pixel[0], g: pixel[1], b: pixel[2] });
       }
     }
 
-    const deduped = [...new Set(colors)];
-    setDominantColors(deduped);
+    // Simple distance-based clustering
+    const CLUSTER_DIST = 40; // max RGB Euclidean distance to merge
+    const clusters: { avg: RGB; count: number; colors: number[][] }[] = [];
+
+    for (const sample of samples) {
+      let found = false;
+      for (const cluster of clusters) {
+        const dr = cluster.avg.r - sample.r;
+        const dg = cluster.avg.g - sample.g;
+        const db = cluster.avg.b - sample.b;
+        const dist = Math.sqrt(dr * dr + dg * dg + db * db);
+        if (dist < CLUSTER_DIST) {
+          // Weighted average into cluster
+          const total = cluster.count + 1;
+          cluster.avg.r = Math.round((cluster.avg.r * cluster.count + sample.r) / total);
+          cluster.avg.g = Math.round((cluster.avg.g * cluster.count + sample.g) / total);
+          cluster.avg.b = Math.round((cluster.avg.b * cluster.count + sample.b) / total);
+          cluster.count++;
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        clusters.push({ avg: { ...sample }, count: 1, colors: [[sample.r, sample.g, sample.b]] });
+      }
+    }
+
+    // Sort by cluster size descending, take top 12
+    clusters.sort((a, b) => b.count - a.count);
+    const top = clusters.slice(0, 12);
+
+    // Deduplicate by hex value (some clusters may have merged to same hex after averaging)
+    const seen = new Set<string>();
+    const colors: string[] = [];
+    for (const cluster of top) {
+      const hex = rgbToHex(cluster.avg.r, cluster.avg.g, cluster.avg.b);
+      if (!seen.has(hex)) {
+        seen.add(hex);
+        colors.push(hex);
+      }
+    }
+
+    setDominantColors(colors);
   }, []);
 
   return (
