@@ -159,6 +159,30 @@ const webAppSchema = {
   (function() {
     'use strict';
 
+    /* ===== URL Params ===== */
+    function getParam(key) {
+      const p = new URLSearchParams(window.location.search);
+      return p.get(key);
+    }
+    function setParam(key, value) {
+      const url = new URL(window.location.href);
+      if (value !== null && value !== undefined && value !== '') url.searchParams.set(key, value);
+      else url.searchParams.delete(key);
+      window.history.replaceState({}, '', url.toString());
+    }
+
+    /* ===== Storage Helpers ===== */
+    function addRecentColor(hex) {
+      try {
+        const raw = localStorage.getItem('color-helper:saved-palettes');
+        const data = raw ? JSON.parse(raw) : { palettes: [], recentColors: [] };
+        const normalized = hex.toLowerCase();
+        data.recentColors = [normalized, ...data.recentColors.filter(c => c !== normalized)];
+        if (data.recentColors.length > 20) data.recentColors = data.recentColors.slice(0, 20);
+        localStorage.setItem('color-helper:saved-palettes', JSON.stringify(data));
+      } catch(e) { /* silent */ }
+    }
+
     const colorAPicker = document.getElementById('color-a-picker');
     const colorAHex = document.getElementById('color-a-hex');
     const colorBPicker = document.getElementById('color-b-picker');
@@ -246,6 +270,12 @@ const webAppSchema = {
       const pctA = Math.round((1 - t) * 100);
       const pctB = Math.round(t * 100);
       ratioValue.textContent = `${pctA}% A / ${pctB}% B`;
+
+      // Update URL params
+      setParam('a', hexA.replace('#', ''));
+      setParam('b', hexB.replace('#', ''));
+      setParam('ratio', String(ratioSlider.value));
+      addRecentColor(mixedHex);
     }
 
     // Event listeners
@@ -311,7 +341,34 @@ const webAppSchema = {
     });
 
     // Init
-    updateMix();
+    (function initFromUrl() {
+      const a = getParam('a');
+      const b = getParam('b');
+      const ratio = getParam('ratio');
+      if (a) {
+        let ha = a.trim();
+        if (!ha.startsWith('#')) ha = '#' + ha;
+        if (/^#[0-9a-f]{6}$/i.test(ha)) {
+          colorAPicker.value = ha;
+          colorAHex.value = ha;
+        }
+      }
+      if (b) {
+        let hb = b.trim();
+        if (!hb.startsWith('#')) hb = '#' + hb;
+        if (/^#[0-9a-f]{6}$/i.test(hb)) {
+          colorBPicker.value = hb;
+          colorBHex.value = hb;
+        }
+      }
+      if (ratio) {
+        const r = parseInt(ratio, 10);
+        if (!isNaN(r) && r >= 0 && r <= 100) {
+          ratioSlider.value = r;
+        }
+      }
+      updateMix();
+    })();
   })();
 </script>
 

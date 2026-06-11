@@ -12,6 +12,10 @@ import {
   type RGB,
   type HSL,
 } from '../utils/color';
+import { getQueryParam, setQueryParam, parseHexParam, toolLinks } from '../utils/url';
+import { addRecentColor, formatCSSVariables, formatJSON } from '../utils/storage';
+import Toast from './Toast';
+import CopyButton from './CopyButton';
 
 /* ===== Design Tokens ===== */
 
@@ -23,44 +27,6 @@ const textSecondary = '#64748b';
 const bgSubtle = '#f8fafc';
 const fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif";
 const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace";
-
-/* ===== CopyToast Component (same file) ===== */
-
-interface CopyToastProps {
-  message: string;
-  visible: boolean;
-}
-
-function CopyToast({ message, visible }: CopyToastProps) {
-  if (!visible) return null;
-
-  const toastStyle: React.CSSProperties = {
-    position: 'fixed',
-    bottom: '1.5rem',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    background: '#1e293b',
-    color: '#fff',
-    padding: '0.625rem 1.25rem',
-    borderRadius: '10px',
-    fontSize: '0.875rem',
-    fontWeight: 500,
-    zIndex: 100,
-    boxShadow: '0 10px 15px -3px rgba(0,0,0,0.12), 0 4px 6px -4px rgba(0,0,0,0.08)',
-    fontFamily,
-  };
-
-  return (
-    <div
-      style={toastStyle}
-      role="status"
-      aria-live="polite"
-      aria-atomic="true"
-    >
-      {message}
-    </div>
-  );
-}
 
 /* ===== Helpers ===== */
 
@@ -300,14 +266,30 @@ export default function ColorPicker() {
   const [hexInput, setHexInput] = useState('#6366f1');
   const [hexError, setHexError] = useState(false);
   const [palette, setPalette] = useState<string[]>([]);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastVisible, setToastVisible] = useState(false);
-  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [showExport, setShowExport] = useState(false);
+  const exportRef = useRef<HTMLDivElement | null>(null);
 
-  // Load palette on mount
+  // Load palette and URL params on mount
   useEffect(() => {
     setPalette(loadPalette());
-  }, []);
+    // Read ?color= param from URL
+    const colorParam = getQueryParam('color');
+    const parsed = parseHexParam(colorParam);
+    if (parsed) {
+      syncFromHex(parsed);
+    }
+    // Close export dropdown on outside click
+    const handleClickOutside = (e: MouseEvent) => {
+      if (exportRef.current && !exportRef.current.contains(e.target as Node)) {
+        setShowExport(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []); // intentionally run once on mount — syncFromHex is stable
 
   // Sync from hex
   const syncFromHex = useCallback((newHex: string) => {
@@ -320,6 +302,10 @@ export default function ColorPicker() {
       setRgb(rgbVal);
       setHsl(hslVal);
       setHexError(false);
+      // Sync URL
+      setQueryParam('color', normalized.replace('#', ''));
+      // Add to recent colors
+      addRecentColor(normalized);
     } else {
       setHexError(true);
     }
@@ -386,14 +372,9 @@ export default function ColorPicker() {
     showToast(`${label} copied`);
   }, []);
 
-  // Toast
+  // Toast (uses global Toast component)
   const showToast = useCallback((msg: string) => {
-    if (toastTimer.current) clearTimeout(toastTimer.current);
     setToastMessage(msg);
-    setToastVisible(true);
-    toastTimer.current = setTimeout(() => {
-      setToastVisible(false);
-    }, 1800);
   }, []);
 
   // Save to palette
@@ -417,12 +398,30 @@ export default function ColorPicker() {
     savePalette(updated);
   }, [palette]);
 
-  // Cleanup timer
-  useEffect(() => {
-    return () => {
-      if (toastTimer.current) clearTimeout(toastTimer.current);
-    };
-  }, []);
+  // Clear all saved colors
+  const handleClearPalette = useCallback(() => {
+    setPalette([]);
+    savePalette([]);
+    showToast('Saved colors cleared');
+    setShowExport(false);
+  }, [showToast]);
+
+  // Handle export copy
+  const handleExportCopy = useCallback(async (type: 'css' | 'json') => {
+    if (palette.length === 0) return;
+    let text: string;
+    let label: string;
+    if (type === 'css') {
+      text = formatCSSVariables(palette);
+      label = 'CSS variables';
+    } else {
+      text = formatJSON(palette);
+      label = 'JSON';
+    }
+    await copyToClipboard(text);
+    showToast(`${label} copied`);
+    setShowExport(false);
+  }, [palette, showToast]);
 
   const previewTextColor = rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114 > 128 ? '#1e293b' : '#f8fafc';
 
@@ -460,60 +459,37 @@ export default function ColorPicker() {
         {/* Color Values */}
         <div style={styles.colorValueGroup}>
           <span style={styles.colorValue}>{hex.toUpperCase()}</span>
-          <button
+          <CopyButton
+            text={hex.toUpperCase()}
+            label="HEX"
             style={styles.copyBtn}
-            onClick={() => handleCopy(hex.toUpperCase(), 'HEX')}
-            aria-label="Copy HEX value"
-            type="button"
-            onMouseEnter={e => {
-              (e.currentTarget as HTMLButtonElement).style.borderColor = primary;
-              (e.currentTarget as HTMLButtonElement).style.color = primary;
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLButtonElement).style.borderColor = borderColor;
-              (e.currentTarget as HTMLButtonElement).style.color = textSecondary;
-            }}
-          >
-            Copy HEX
-          </button>
+          />
         </div>
         <div style={styles.colorValueGroup}>
           <span style={styles.colorValue}>{rgbToString(rgb)}</span>
-          <button
+          <CopyButton
+            text={rgbToString(rgb)}
+            label="RGB"
             style={styles.copyBtn}
-            onClick={() => handleCopy(rgbToString(rgb), 'RGB')}
-            aria-label="Copy RGB value"
-            type="button"
-            onMouseEnter={e => {
-              (e.currentTarget as HTMLButtonElement).style.borderColor = primary;
-              (e.currentTarget as HTMLButtonElement).style.color = primary;
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLButtonElement).style.borderColor = borderColor;
-              (e.currentTarget as HTMLButtonElement).style.color = textSecondary;
-            }}
-          >
-            Copy RGB
-          </button>
+          />
         </div>
         <div style={styles.colorValueGroup}>
           <span style={styles.colorValue}>{hslToString(hsl)}</span>
-          <button
+          <CopyButton
+            text={hslToString(hsl)}
+            label="HSL"
             style={styles.copyBtn}
-            onClick={() => handleCopy(hslToString(hsl), 'HSL')}
-            aria-label="Copy HSL value"
-            type="button"
-            onMouseEnter={e => {
-              (e.currentTarget as HTMLButtonElement).style.borderColor = primary;
-              (e.currentTarget as HTMLButtonElement).style.color = primary;
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLButtonElement).style.borderColor = borderColor;
-              (e.currentTarget as HTMLButtonElement).style.color = textSecondary;
-            }}
-          >
-            Copy HSL
-          </button>
+          />
+        </div>
+
+        {/* CSS Variable Output */}
+        <div style={{ ...styles.colorValueGroup, marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: `1px solid ${borderColor}` }}>
+          <span style={styles.colorValue}>{`--color: ${hex};`}</span>
+          <CopyButton
+            text={`--color: ${hex};`}
+            label="CSS variable"
+            style={styles.copyBtn}
+          />
         </div>
       </div>
 
@@ -690,6 +666,57 @@ export default function ColorPicker() {
             Save Color
           </button>
         </div>
+
+        <hr style={styles.sectionDivider} />
+
+        {/* Generate Palette + Tool Links */}
+        <div style={styles.buttonRow}>
+          <a
+            href={toolLinks.paletteGenerator(hex)}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ ...styles.btn, ...styles.btnPrimary, textDecoration: 'none' }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(-1px)';
+              (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 4px 12px rgba(99, 102, 241, 0.4)';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(0)';
+              (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 2px 8px rgba(99, 102, 241, 0.3)';
+            }}
+          >
+            Generate Palette ↗
+          </a>
+        </div>
+        <div style={{ ...styles.buttonRow, marginTop: '0.25rem', display: 'flex', gap: '0.5rem' }}>
+          <span style={{ fontSize: '0.8125rem', color: textSecondary, fontWeight: 500, lineHeight: '32px' }}>
+            Open in:
+          </span>
+          <a
+            href={toolLinks.colorConverter(hex)}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ ...styles.btn, ...styles.btnGhost, textDecoration: 'none' }}
+          >
+            Color Converter ↗
+          </a>
+          <a
+            href={toolLinks.contrastChecker(hex, '#ffffff')}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ ...styles.btn, ...styles.btnGhost, textDecoration: 'none' }}
+          >
+            Contrast Checker ↗
+          </a>
+          <a
+            href={toolLinks.paletteGenerator(hex)}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ ...styles.btn, ...styles.btnGhost, textDecoration: 'none' }}
+          >
+            Palette Generator ↗
+          </a>
+        </div>
       </div>
 
       {/* Palette Card */}
@@ -758,10 +785,92 @@ export default function ColorPicker() {
             ))}
           </div>
         )}
+
+        {/* Export + Clear actions (only show when palette has items) */}
+        {palette.length > 0 && (
+          <div style={{ ...styles.buttonRow, marginTop: '0.75rem' }}>
+            <div ref={exportRef} style={{ position: 'relative' }}>
+              <button
+                style={{ ...styles.btn, ...styles.btnSecondary }}
+                onClick={() => setShowExport(!showExport)}
+                type="button"
+              >
+                Export ▼
+              </button>
+              {showExport && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '100%',
+                    left: 0,
+                    marginBottom: '0.25rem',
+                    background: '#ffffff',
+                    border: `1px solid ${borderColor}`,
+                    borderRadius: '10px',
+                    boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.05)',
+                    zIndex: 50,
+                    minWidth: '180px',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <button
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      padding: '0.5rem 1rem',
+                      fontSize: '0.8125rem',
+                      fontWeight: 500,
+                      color: textPrimary,
+                      background: 'transparent',
+                      border: 'none',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      fontFamily,
+                    }}
+                    onClick={() => handleExportCopy('css')}
+                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = bgSubtle; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
+                    type="button"
+                  >
+                    Copy as CSS Variables
+                  </button>
+                  <button
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      padding: '0.5rem 1rem',
+                      fontSize: '0.8125rem',
+                      fontWeight: 500,
+                      color: textPrimary,
+                      background: 'transparent',
+                      border: 'none',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      fontFamily,
+                    }}
+                    onClick={() => handleExportCopy('json')}
+                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = bgSubtle; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
+                    type="button"
+                  >
+                    Copy as JSON
+                  </button>
+                </div>
+              )}
+            </div>
+            <button
+              style={{ ...styles.btn, ...styles.btnGhost, color: '#ef4444' }}
+              onClick={handleClearPalette}
+              type="button"
+            >
+              Clear Saved
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Copy Toast */}
-      <CopyToast message={toastMessage} visible={toastVisible} />
+      {/* Global Toast */}
+      <Toast message={toastMessage} onClose={() => setToastMessage(null)} />
 
       {/* Hover remove button style via inline style tag */}
       <style>{`

@@ -36,11 +36,17 @@ const breadcrumbs = [{ label: 'Brand Color Palette Generator' }];
         <div id="bp-a11y-results" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;"></div>
       </div>
 
+      <div id="bp-export" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+        <button id="bp-copy-css" class="btn btn-primary btn-sm" type="button">Copy CSS</button>
+        <button id="bp-export-json" class="btn btn-secondary btn-sm" type="button">Export JSON</button>
+        <button id="bp-export-tailwind" class="btn btn-secondary btn-sm" type="button">Export Tailwind</button>
+        <button id="bp-save-btn" class="btn btn-secondary btn-sm" type="button">💾 Save Palette</button>
+      </div>
+
       <div class="card" style="padding: 1.25rem;">
-        <h3 style="margin-bottom: 0.75rem;">Export as CSS Variables</h3>
+        <h3 style="margin-bottom: 0.75rem;">CSS Custom Properties</h3>
         <pre id="bp-css" style="background: #0f172a; color: #e2e8f0; padding: 1rem; border-radius: 10px; font-family: var(--font-mono); font-size: 0.8125rem; overflow-x: auto; margin-bottom: 0.75rem;"></pre>
         <div style="display: flex; gap: 0.5rem;">
-          <button id="bp-copy" class="btn btn-primary btn-sm" type="button">Copy CSS</button>
           <button id="bp-download" class="btn btn-secondary btn-sm" type="button">Download .css</button>
         </div>
       </div>
@@ -49,13 +55,59 @@ const breadcrumbs = [{ label: 'Brand Color Palette Generator' }];
     <script>
       (() => {
         'use strict';
+
+        /* ===== URL Params ===== */
+        function getParam(key) {
+          const p = new URLSearchParams(window.location.search);
+          return p.get(key);
+        }
+        function setParam(key, value) {
+          const url = new URL(window.location.href);
+          if (value) url.searchParams.set(key, value);
+          else url.searchParams.delete(key);
+          window.history.replaceState({}, '', url.toString());
+        }
+
+        /* ===== Storage Helpers ===== */
+        function savePaletteToStorage(name, colors) {
+          try {
+            const raw = localStorage.getItem('color-helper:saved-palettes');
+            const data = raw ? JSON.parse(raw) : { palettes: [], recentColors: [] };
+            const palette = {
+              id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
+              name: name,
+              colors: colors.map(c => c.toLowerCase()),
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+              source: 'brand',
+            };
+            data.palettes = [palette, ...data.palettes];
+            localStorage.setItem('color-helper:saved-palettes', JSON.stringify(data));
+            return true;
+          } catch(e) { return false; }
+        }
+
+        function addRecentColor(hex) {
+          try {
+            const raw = localStorage.getItem('color-helper:saved-palettes');
+            const data = raw ? JSON.parse(raw) : { palettes: [], recentColors: [] };
+            const normalized = hex.toLowerCase();
+            data.recentColors = [normalized, ...data.recentColors.filter(c => c !== normalized)];
+            if (data.recentColors.length > 20) data.recentColors = data.recentColors.slice(0, 20);
+            localStorage.setItem('color-helper:saved-palettes', JSON.stringify(data));
+          } catch(e) { /* silent */ }
+        }
+
         const colorInput = document.getElementById('bp-base');
         const hexInput = document.getElementById('bp-hex');
         const paletteEl = document.getElementById('bp-palette');
         const a11yEl = document.getElementById('bp-a11y-results');
         const cssPre = document.getElementById('bp-css');
-        const copyBtn = document.getElementById('bp-copy');
+        const copyBtn = document.getElementById('bp-copy-css');
         const dloadBtn = document.getElementById('bp-download');
+        const exportJsonBtn = document.getElementById('bp-export-json');
+        const exportTailwindBtn = document.getElementById('bp-export-tailwind');
+        const saveBtn = document.getElementById('bp-save-btn');
 
         function hex2rgb(h) {
           const c = h.replace('#','');
@@ -94,9 +146,17 @@ const breadcrumbs = [{ label: 'Brand Color Palette Generator' }];
         }
 
         function render() {
-          const hex = hexInput.value.startsWith('#') ? hexInput.value : '#' + hexInput.value;
+          let hex = hexInput.value;
+          if (!hex.startsWith('#')) hex = '#' + hex;
+          // Validate
+          const stripped = hex.replace('#', '');
+          if (!/^[0-9a-f]{6}$/i.test(stripped)) return;
+
           const palette = generatePalette(hex);
           if (!palette) return;
+
+          // Update URL param
+          setParam('base', stripped);
 
           paletteEl.innerHTML = Object.entries(palette).map(([key, val]) =>
             `<div class="card" style="padding: 1rem; text-align: center;">
@@ -107,9 +167,9 @@ const breadcrumbs = [{ label: 'Brand Color Palette Generator' }];
           ).join('');
 
           const pairs = [
-            { label: 'Text on Background', fg: palette.text, bg: palette.background, id: 'text-bg' },
-            { label: 'Text on Primary', fg: palette.text, bg: palette.primary, id: 'text-primary' },
-            { label: 'Text on Secondary', fg: palette.text, bg: palette.secondary, id: 'text-secondary' },
+            { label: 'Text on Background', fg: palette.text, bg: palette.background },
+            { label: 'Text on Primary', fg: palette.text, bg: palette.primary },
+            { label: 'Text on Secondary', fg: palette.text, bg: palette.secondary },
           ];
 
           a11yEl.innerHTML = pairs.map(p => {
@@ -128,6 +188,20 @@ const breadcrumbs = [{ label: 'Brand Color Palette Generator' }];
 
           const cssVars = Object.entries(palette).map(([k, v]) => `  --color-${k}: ${v};`).join('\n');
           cssPre.textContent = `:root {\n${cssVars}\n}`;
+        }
+
+        function readHexFromUrl() {
+          const base = getParam('base');
+          if (base) {
+            let hex = base.trim();
+            if (!hex.startsWith('#')) hex = '#' + hex;
+            const stripped = hex.replace('#', '');
+            if (/^[0-9a-f]{6}$/i.test(stripped)) {
+              colorInput.value = hex.toLowerCase();
+              hexInput.value = hex.toLowerCase();
+              render();
+            }
+          }
         }
 
         colorInput.addEventListener('input', () => {
@@ -153,7 +227,50 @@ const breadcrumbs = [{ label: 'Brand Color Palette Generator' }];
           a.click();
           URL.revokeObjectURL(a.href);
         });
-        render();
+
+        // Export JSON
+        exportJsonBtn.addEventListener('click', () => {
+          const palette = generatePalette(hexInput.value.startsWith('#') ? hexInput.value : '#' + hexInput.value);
+          if (!palette) return;
+          const json = JSON.stringify(palette, null, 2);
+          navigator.clipboard.writeText(json).then(() => {
+            exportJsonBtn.textContent = '✓ JSON Copied!';
+            setTimeout(() => exportJsonBtn.textContent = 'Export JSON', 2000);
+          });
+        });
+
+        // Export Tailwind
+        exportTailwindBtn.addEventListener('click', () => {
+          const palette = generatePalette(hexInput.value.startsWith('#') ? hexInput.value : '#' + hexInput.value);
+          if (!palette) return;
+          const entries = Object.entries(palette).map(([k, v]) => `    '${k}': '${v}'`).join(',\n');
+          const tw = `{\n  colors: {\n${entries}\n  }\n}`;
+          navigator.clipboard.writeText(tw).then(() => {
+            exportTailwindBtn.textContent = '✓ Tailwind Copied!';
+            setTimeout(() => exportTailwindBtn.textContent = 'Export Tailwind', 2000);
+          });
+        });
+
+        // Save palette
+        saveBtn.addEventListener('click', () => {
+          const palette = generatePalette(hexInput.value.startsWith('#') ? hexInput.value : '#' + hexInput.value);
+          if (!palette) return;
+          const colors = Object.values(palette);
+          const ok = savePaletteToStorage('Brand Palette', colors);
+          if (ok) {
+            colors.forEach(c => addRecentColor(c));
+            saveBtn.textContent = '✓ Saved!';
+            setTimeout(() => saveBtn.textContent = '💾 Save Palette', 2000);
+          }
+        });
+
+        // Read URL param on load
+        readHexFromUrl();
+
+        // Initial render if no URL param
+        if (!getParam('base')) {
+          render();
+        }
       })();
     </script>
 

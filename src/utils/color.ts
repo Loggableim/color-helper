@@ -157,6 +157,64 @@ export function generateMonochromePalette(hex: string, steps: number = 5): Palet
   return { name: 'Monochromatic', colors };
 }
 
+export function generateSplitComplementaryPalette(hex: string): Palette {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return { name: 'Split Complementary', colors: [hex, '#ffffff', '#cccccc'] };
+  const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+  const comp = (hsl.h + 180) % 360;
+  const split1 = hslToRgb((comp - 30 + 360) % 360, hsl.s, hsl.l);
+  const split2 = hslToRgb((comp + 30) % 360, hsl.s, hsl.l);
+  return {
+    name: 'Split Complementary',
+    colors: [hex, rgbToHex(split1.r, split1.g, split1.b), rgbToHex(split2.r, split2.g, split2.b)],
+  };
+}
+
+export function generateTetradicPalette(hex: string): Palette {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return { name: 'Tetradic', colors: [hex, '#ffffff', '#cccccc', '#999999'] };
+  const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+  const c1 = hslToRgb((hsl.h + 60) % 360, hsl.s, hsl.l);
+  const c2 = hslToRgb((hsl.h + 180) % 360, hsl.s, hsl.l);
+  const c3 = hslToRgb((hsl.h + 240) % 360, hsl.s, hsl.l);
+  return {
+    name: 'Tetradic',
+    colors: [hex, rgbToHex(c1.r, c1.g, c1.b), rgbToHex(c2.r, c2.g, c2.b), rgbToHex(c3.r, c3.g, c3.b)],
+  };
+}
+
+export function generateTintsPalette(hex: string, steps: number = 5): Palette {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return { name: 'Tints', colors: [hex] };
+  const colors: string[] = [];
+  for (let i = 0; i < steps; i++) {
+    const mix = (i + 1) / (steps + 1);
+    const c = {
+      r: Math.round(rgb.r + (255 - rgb.r) * mix),
+      g: Math.round(rgb.g + (255 - rgb.g) * mix),
+      b: Math.round(rgb.b + (255 - rgb.b) * mix),
+    };
+    colors.push(rgbToHex(c.r, c.g, c.b));
+  }
+  return { name: 'Tints', colors };
+}
+
+export function generateShadesPalette(hex: string, steps: number = 5): Palette {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return { name: 'Shades', colors: [hex] };
+  const colors: string[] = [];
+  for (let i = 0; i < steps; i++) {
+    const mix = (i + 1) / (steps + 1);
+    const c = {
+      r: Math.round(rgb.r * (1 - mix)),
+      g: Math.round(rgb.g * (1 - mix)),
+      b: Math.round(rgb.b * (1 - mix)),
+    };
+    colors.push(rgbToHex(c.r, c.g, c.b));
+  }
+  return { name: 'Shades', colors };
+}
+
 export function generateTintsAndShades(hex: string, steps: number = 9): Palette {
   const rgb = hexToRgb(hex);
   if (!rgb) return { name: 'Tints & Shades', colors: [hex] };

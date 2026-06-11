@@ -2,6 +2,9 @@
 
 import { type RGB, type HSL, hexToRgb, rgbToHsl, rgbToHex, copyToClipboard } from '../utils/color';
 import { useState, useRef, useCallback } from 'react';
+import { savePalette, addRecentColor, formatCSSVariables, formatJSON } from '../utils/storage';
+import { toolLinks } from '../utils/url';
+import Toast from './Toast';
 
 type ColorPick = {
   hex: string;
@@ -203,6 +206,19 @@ const dominantLabel: React.CSSProperties = {
   color: textSecondary,
 };
 
+const actionLinkStyle: React.CSSProperties = {
+  ...btnBase,
+  background: '#f0fdf4',
+  color: '#166534',
+  border: '1px solid #86efac',
+  textDecoration: 'none',
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '0.375rem',
+  fontSize: '0.75rem',
+  padding: '0.375rem 0.75rem',
+};
+
 export default function ImageColorPicker() {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -210,15 +226,22 @@ export default function ImageColorPicker() {
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [dominantColors, setDominantColors] = useState<string[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
 
+  const showToast = useCallback((msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 2000);
+  }, []);
+
   const handleCopy = useCallback(async (text: string, field: string) => {
     await copyToClipboard(text);
     setCopiedField(field);
+    showToast(`${field.toUpperCase()} copied!`);
     setTimeout(() => setCopiedField(null), 1500);
-  }, []);
+  }, [showToast]);
 
   const loadImage = useCallback((file: File) => {
     if (!file.type.startsWith('image/')) return;
@@ -291,6 +314,7 @@ export default function ImageColorPicker() {
 
     const hex = rgbToHex(r, g, b);
     const hsl = rgbToHsl(r, g, b);
+    addRecentColor(hex);
 
     setColorPick({ hex, rgb: { r, g, b }, hsl });
   }, []);
@@ -309,15 +333,12 @@ export default function ImageColorPicker() {
     const NUM_SAMPLES = Math.min(200, totalPixels);
     const samples: RGB[] = [];
 
-    // Use a deterministic-ish approach: sample on a grid with random jitter
-    // This gives good coverage while still being random enough
     const gridSize = Math.ceil(Math.sqrt(NUM_SAMPLES));
     const stepX = Math.max(1, Math.floor(w / gridSize));
     const stepY = Math.max(1, Math.floor(h / gridSize));
 
     for (let gy = 0; gy < gridSize && samples.length < NUM_SAMPLES; gy++) {
       for (let gx = 0; gx < gridSize && samples.length < NUM_SAMPLES; gx++) {
-        // Add small random jitter within the cell
         const baseX = gx * stepX + Math.floor(Math.random() * stepX * 0.6);
         const baseY = gy * stepY + Math.floor(Math.random() * stepY * 0.6);
         const x = Math.min(baseX, w - 1);
@@ -328,7 +349,7 @@ export default function ImageColorPicker() {
     }
 
     // Simple distance-based clustering
-    const CLUSTER_DIST = 40; // max RGB Euclidean distance to merge
+    const CLUSTER_DIST = 40;
     const clusters: { avg: RGB; count: number; colors: number[][] }[] = [];
 
     for (const sample of samples) {
@@ -339,7 +360,6 @@ export default function ImageColorPicker() {
         const db = cluster.avg.b - sample.b;
         const dist = Math.sqrt(dr * dr + dg * dg + db * db);
         if (dist < CLUSTER_DIST) {
-          // Weighted average into cluster
           const total = cluster.count + 1;
           cluster.avg.r = Math.round((cluster.avg.r * cluster.count + sample.r) / total);
           cluster.avg.g = Math.round((cluster.avg.g * cluster.count + sample.g) / total);
@@ -358,7 +378,7 @@ export default function ImageColorPicker() {
     clusters.sort((a, b) => b.count - a.count);
     const top = clusters.slice(0, 12);
 
-    // Deduplicate by hex value (some clusters may have merged to same hex after averaging)
+    // Deduplicate by hex value
     const seen = new Set<string>();
     const colors: string[] = [];
     for (const cluster of top) {
@@ -370,10 +390,49 @@ export default function ImageColorPicker() {
     }
 
     setDominantColors(colors);
-  }, []);
+    showToast(`Extracted ${colors.length} dominant colors`);
+  }, [showToast]);
+
+  const handleSavePalette = useCallback(() => {
+    if (dominantColors.length === 0) {
+      if (colorPick) {
+        savePalette(`Image Color - ${colorPick.hex}`, [colorPick.hex], 'image');
+        showToast('Color saved!');
+      }
+      return;
+    }
+    const name = `Image Palette ${new Date().toLocaleDateString()}`;
+    savePalette(name, dominantColors, 'image');
+    dominantColors.forEach(c => addRecentColor(c));
+    showToast(`Palette "${name}" saved!`);
+  }, [dominantColors, colorPick, showToast]);
+
+  const handleCopyAll = useCallback(async () => {
+    if (dominantColors.length === 0) return;
+    const text = dominantColors.join('\n');
+    await copyToClipboard(text);
+    showToast('All colors copied!');
+  }, [dominantColors, showToast]);
+
+  const handleExportCSS = useCallback(async () => {
+    if (dominantColors.length === 0) return;
+    const css = ':root {\n' + formatCSSVariables(dominantColors, 'img') + '\n}';
+    await copyToClipboard(css);
+    showToast('CSS variables copied!');
+  }, [dominantColors, showToast]);
+
+  const handleExportJSON = useCallback(async () => {
+    if (dominantColors.length === 0) return;
+    const json = formatJSON(dominantColors);
+    await copyToClipboard(json);
+    showToast('JSON copied!');
+  }, [dominantColors, showToast]);
 
   return (
     <div style={wrapperStyle}>
+      {/* Toast */}
+      {toast && <Toast message={toast} />}
+
       {/* Upload Card */}
       <div style={cardStyle}>
         <h2 style={cardTitleStyle}>Image Color Picker</h2>
@@ -387,10 +446,10 @@ export default function ImageColorPicker() {
             onDrop={handleDrop}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
-            onClick={() => document.getElementById('image-upload-input')?.click()}
+            onClick={() => document.getElementById('image-upload-input-picker')?.click()}
           >
             <input
-              id="image-upload-input"
+              id="image-upload-input-picker"
               type="file"
               accept="image/*"
               style={{ display: 'none' }}
@@ -431,7 +490,7 @@ export default function ImageColorPicker() {
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '0.75rem' }}>
               <button
                 style={secondaryBtnStyle}
-                onClick={() => document.getElementById('image-upload-input')?.click()}
+                onClick={() => document.getElementById('image-upload-input-picker')?.click()}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
@@ -439,13 +498,6 @@ export default function ImageColorPicker() {
                 </svg>
                 Change Image
               </button>
-              <input
-                id="image-upload-input"
-                type="file"
-                accept="image/*"
-                style={{ display: 'none' }}
-                onChange={handleFileChange}
-              />
               <button style={primaryBtnStyle} onClick={extractDominantColors}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10" />
@@ -508,6 +560,29 @@ export default function ImageColorPicker() {
                       {copiedField === 'hsl' ? '✓ Copied' : 'Copy'}
                     </button>
                   </div>
+
+                  {/* Save and open in tools */}
+                  <div style={{ display: 'flex', gap: '0.375rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
+                    <button style={secondaryBtnStyle} onClick={handleSavePalette}>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                      </svg>
+                      Save Color
+                    </button>
+                    <a
+                      href={toolLinks.paletteGenerator(colorPick.hex)}
+                      style={actionLinkStyle}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                        <polyline points="15 3 21 3 21 9" />
+                        <line x1="10" y1="14" x2="21" y2="3" />
+                      </svg>
+                      Open in Palette Generator
+                    </a>
+                  </div>
                 </div>
               </div>
             )}
@@ -515,8 +590,24 @@ export default function ImageColorPicker() {
             {/* Dominant colors */}
             {dominantColors.length > 0 && (
               <div style={{ marginTop: '1rem' }}>
-                <div style={sectionLabel}>Dominant Colors</div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                  <div style={sectionLabel}>Dominant Colors ({dominantColors.length})</div>
+                  <div style={{ display: 'flex', gap: '0.375rem', flexWrap: 'wrap' }}>
+                    <button style={secondaryBtnStyle} onClick={handleCopyAll}>
+                      Copy All
+                    </button>
+                    <button style={secondaryBtnStyle} onClick={handleExportCSS}>
+                      Export CSS
+                    </button>
+                    <button style={secondaryBtnStyle} onClick={handleExportJSON}>
+                      Export JSON
+                    </button>
+                    <button style={primaryBtnStyle} onClick={handleSavePalette}>
+                      Save Palette
+                    </button>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '0.75rem' }}>
                   {dominantColors.map((color, idx) => (
                     <div key={idx} style={{ textAlign: 'center' }}>
                       <div

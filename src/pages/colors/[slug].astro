@@ -3,7 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ToolLayout from '../../components/ToolLayout.astro';
 import { colors, getRelatedColors } from '../../data/colors';
 import type { ColorData } from '../../data/colors';
-import { generateTintsAndShades, generateComplementaryPalette, generateAnalogousPalette, rgbToHsl } from '../../utils/color';
+import { generateTintsAndShades, generateComplementaryPalette, generateAnalogousPalette, rgbToHsl, copyToClipboard } from '../../utils/color';
+import { toolLinks } from '../../utils/url';
 import FAQ from '../../components/FAQ.astro';
 
 export async function getStaticPaths() {
@@ -92,14 +93,44 @@ const webAppSchema = {
       <div class="value-card">
         <span class="value-label">HEX</span>
         <code class="value-code">{color.hex}</code>
+        <button class="copy-btn" data-copy-value={color.hex} title="Copy HEX value">Copy</button>
       </div>
       <div class="value-card">
         <span class="value-label">RGB</span>
         <code class="value-code">rgb({color.r}, {color.g}, {color.b})</code>
+        <button class="copy-btn" data-copy-value={`rgb(${color.r}, ${color.g}, ${color.b})`} title="Copy RGB value">Copy</button>
       </div>
       <div class="value-card">
         <span class="value-label">HSL</span>
         <code class="value-code">{hslStr}</code>
+        <button class="copy-btn" data-copy-value={hslStr} title="Copy HSL value">Copy</button>
+      </div>
+    </section>
+
+    <!-- Tool Action Buttons -->
+    <section class="tool-ctas">
+      <h2>Use {color.name} in Your Projects</h2>
+      <div class="tool-cta-grid">
+        <a href={toolLinks.colorPicker(color.hex)} class="tool-cta-card">
+          <span class="tool-cta-icon">🎨</span>
+          <span class="tool-cta-label">Open in Color Picker</span>
+        </a>
+        <a href={toolLinks.paletteGenerator(color.hex)} class="tool-cta-card">
+          <span class="tool-cta-icon">🌈</span>
+          <span class="tool-cta-label">Generate Palette</span>
+        </a>
+        <a href={toolLinks.contrastChecker(color.hex, 'ffffff')} class="tool-cta-card">
+          <span class="tool-cta-icon">👁️</span>
+          <span class="tool-cta-label">Check Contrast</span>
+        </a>
+        <a href={toolLinks.colorConverter(color.hex)} class="tool-cta-card">
+          <span class="tool-cta-icon">🔄</span>
+          <span class="tool-cta-label">Convert Color</span>
+        </a>
+        <a href={toolLinks.gradientGenerator(color.hex, 'ffffff')} class="tool-cta-card">
+          <span class="tool-cta-icon">🌊</span>
+          <span class="tool-cta-label">Use in Gradient</span>
+        </a>
       </div>
     </section>
 
@@ -198,6 +229,33 @@ const webAppSchema = {
       </div>
     </section>
 
+    <!-- Tool CTAs -->
+    <section class="tool-ctas">
+      <h2>Color Tools</h2>
+      <div class="tool-cta-grid">
+        <a href={toolLinks.colorPicker(color.hex)} class="tool-cta-card">
+          <span class="tool-cta-icon">🎨</span>
+          <span class="tool-cta-label">Open in Color Picker</span>
+        </a>
+        <a href={toolLinks.paletteGenerator(color.hex)} class="tool-cta-card">
+          <span class="tool-cta-icon">🎨</span>
+          <span class="tool-cta-label">Generate palette from this color</span>
+        </a>
+        <a href={toolLinks.contrastChecker(color.hex, '#ffffff')} class="tool-cta-card">
+          <span class="tool-cta-icon">🔍</span>
+          <span class="tool-cta-label">Check contrast with this color</span>
+        </a>
+        <a href={toolLinks.colorConverter(color.hex)} class="tool-cta-card">
+          <span class="tool-cta-icon">🔄</span>
+          <span class="tool-cta-label">Convert this color</span>
+        </a>
+        <a href={toolLinks.gradientGenerator(color.hex, '#ffffff')} class="tool-cta-card">
+          <span class="tool-cta-icon">🌊</span>
+          <span class="tool-cta-label">Use as gradient start</span>
+        </a>
+      </div>
+    </section>
+
     <!-- Related Colors -->
     <section class="related-colors">
       <h2>Related Colors</h2>
@@ -238,6 +296,22 @@ const webAppSchema = {
       ]}
     />
   </ToolLayout>
+
+  <script>
+    import { copyToClipboard } from '../../utils/color';
+
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const value = btn.getAttribute('data-copy-value');
+        if (!value) return;
+        await copyToClipboard(value);
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = orig; }, 1500);
+      });
+    });
+  </script>
 
   <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
 </BaseLayout>
@@ -532,5 +606,78 @@ const webAppSchema = {
   }
   .related-tools a:hover {
     text-decoration: underline;
+  }
+
+  /* Copy buttons */
+  .value-card {
+    position: relative;
+  }
+  .copy-btn {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .copy-btn:hover {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+  }
+  .copy-btn:active {
+    transform: scale(0.95);
+  }
+
+  /* Tool CTA section */
+  .tool-ctas {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .tool-ctas h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .tool-cta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
+  }
+  .tool-cta-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-alt);
+    text-decoration: none;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  }
+  .tool-cta-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+  }
+  .tool-cta-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+  .tool-cta-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text);
+    text-align: center;
+    line-height: 1.3;
   }
 </style>

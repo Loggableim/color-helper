@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import {
   isValidHex,
   normalizeHex,
@@ -9,7 +9,10 @@ import {
   meetsWcagAAA,
   hexToRgb,
   rgbToHex,
+  copyToClipboard,
 } from '../utils/color';
+import { getQueryParam, setQueryParams, parseHexParam } from '../utils/url';
+import { formatContrastSummary, addRecentColor } from '../utils/storage';
 
 /* ===== Design Tokens ===== */
 
@@ -242,6 +245,37 @@ export default function ContrastChecker() {
 
   const ratio = bothValid ? getContrastRatio(validFg!, validBg!) : null;
 
+  // --- URL param support: read initial values from URL ---
+  useEffect(() => {
+    const urlFg = parseHexParam(getQueryParam('fg'));
+    const urlBg = parseHexParam(getQueryParam('bg'));
+    if (urlFg) {
+      setFgHex(urlFg);
+      setFgInput(urlFg);
+    }
+    if (urlBg) {
+      setBgHex(urlBg);
+      setBgInput(urlBg);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // --- Sync colors to URL when they change ---
+  useEffect(() => {
+    if (validFg && validBg) {
+      setQueryParams({
+        fg: validFg.replace('#', ''),
+        bg: validBg.replace('#', ''),
+      });
+    }
+  }, [validFg, validBg]);
+
+  // --- Track recent colors ---
+  useEffect(() => {
+    if (validFg) addRecentColor(validFg);
+    if (validBg) addRecentColor(validBg);
+  }, [validFg, validBg]);
+
   const handleFgNative = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setFgHex(val);
@@ -297,46 +331,17 @@ export default function ContrastChecker() {
     setBgError(false);
   }, [fgHex, bgHex, fgInput, bgInput]);
 
-  /* ---- Accessible Text Color Suggestion ---- */
-  const suggestedTextColor = useMemo<{ hex: string; ratio: number; label: string } | null>(() => {
+  /* ---- Accessible Text Color Suggestion (Black vs White) ---- */
+  const blackWhiteContrast = useMemo(() => {
     if (!validBg) return null;
-
-    const candidates: { hex: string; label: string }[] = [
-      { hex: '#ffffff', label: 'White' },
-      { hex: '#000000', label: 'Black' },
-    ];
-
-    // If we have a valid foreground, also try darkened/lightened variants
-    if (validFg) {
-      const rgb = hexToRgb(validFg);
-      if (rgb) {
-        // Darkened: reduce luminance by 40%
-        const dark = rgbToHex(
-          Math.round(rgb.r * 0.4),
-          Math.round(rgb.g * 0.4),
-          Math.round(rgb.b * 0.4),
-        );
-        candidates.push({ hex: dark, label: 'Darker shade' });
-
-        // Lightened: blend with white (60% white)
-        const light = rgbToHex(
-          Math.round(rgb.r + (255 - rgb.r) * 0.6),
-          Math.round(rgb.g + (255 - rgb.g) * 0.6),
-          Math.round(rgb.b + (255 - rgb.b) * 0.6),
-        );
-        candidates.push({ hex: light, label: 'Lighter tint' });
-      }
-    }
-
-    let best = { hex: '#ffffff', ratio: 0, label: 'White' };
-    for (const c of candidates) {
-      const r = getContrastRatio(c.hex, validBg);
-      if (r > best.ratio) {
-        best = { hex: c.hex, ratio: r, label: c.label };
-      }
-    }
-    return best;
-  }, [validFg, validBg]);
+    const whiteRatio = getContrastRatio('#ffffff', validBg);
+    const blackRatio = getContrastRatio('#000000', validBg);
+    return {
+      white: { hex: '#ffffff', ratio: whiteRatio },
+      black: { hex: '#000000', ratio: blackRatio },
+      best: whiteRatio >= blackRatio ? 'white' : 'black',
+    };
+  }, [validBg]);
 
   const displayFg = validFg || fgHex.startsWith('#') ? fgHex : '#1e293b';
   const displayBg = validBg || bgHex.startsWith('#') ? bgHex : '#ffffff';
@@ -369,6 +374,36 @@ export default function ContrastChecker() {
             }}
             aria-label="Foreground hex value"
           />
+          <button
+            type="button"
+            onClick={() => copyToClipboard(validFg || fgHex)}
+            style={{
+              padding: '0.375rem 0.5rem',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              lineHeight: 1,
+              border: `1px solid ${borderColor}`,
+              borderRadius: '8px',
+              cursor: 'pointer',
+              background: '#ffffff',
+              color: textSecondary,
+              fontFamily,
+              flexShrink: 0,
+              transition: 'all 0.15s ease',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLButtonElement).style.borderColor = primary;
+              (e.currentTarget as HTMLButtonElement).style.color = primary;
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLButtonElement).style.borderColor = borderColor;
+              (e.currentTarget as HTMLButtonElement).style.color = textSecondary;
+            }}
+            aria-label="Copy foreground color"
+            title="Copy color"
+          >
+            📋
+          </button>
         </div>
 
         {/* Background */}
@@ -393,6 +428,36 @@ export default function ContrastChecker() {
             }}
             aria-label="Background hex value"
           />
+          <button
+            type="button"
+            onClick={() => copyToClipboard(validBg || bgHex)}
+            style={{
+              padding: '0.375rem 0.5rem',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              lineHeight: 1,
+              border: `1px solid ${borderColor}`,
+              borderRadius: '8px',
+              cursor: 'pointer',
+              background: '#ffffff',
+              color: textSecondary,
+              fontFamily,
+              flexShrink: 0,
+              transition: 'all 0.15s ease',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLButtonElement).style.borderColor = primary;
+              (e.currentTarget as HTMLButtonElement).style.color = primary;
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLButtonElement).style.borderColor = borderColor;
+              (e.currentTarget as HTMLButtonElement).style.color = textSecondary;
+            }}
+            aria-label="Copy background color"
+            title="Copy color"
+          >
+            📋
+          </button>
         </div>
 
         {/* Swap Button */}
@@ -440,12 +505,34 @@ export default function ContrastChecker() {
             backgroundColor: displayBg,
           }}
         >
-          <div>
+          <div style={{ width: '100%' }}>
+            <h3
+              style={{
+                fontSize: '1.375rem',
+                fontWeight: 700,
+                color: displayFg,
+                margin: '0 0 0.75rem 0',
+                lineHeight: 1.3,
+                letterSpacing: '-0.02em',
+              }}
+            >
+              Heading: Lorem Ipsum Dolor Sit Amet
+            </h3>
             <p style={styles.previewText}>
               The quick brown fox jumps over the lazy dog
             </p>
             <p style={styles.previewSub}>
               ABCDEFGHIJKLMNOPQRSTUVWXYZ • abcdefghijklmnopqrstuvwxyz • 0123456789
+            </p>
+            <p
+              style={{
+                ...styles.previewSub,
+                marginTop: '0.75rem',
+                opacity: 0.85,
+                fontSize: '0.9375rem',
+              }}
+            >
+              This is body text demonstrating how paragraphs look against the selected background. Sufficient contrast ensures readability for all users, including those with low vision.
             </p>
           </div>
         </div>
@@ -492,60 +579,185 @@ export default function ContrastChecker() {
             14pt (19px) bold.
           </div>
 
-          {/* Suggest Accessible Text Color */}
-          {suggestedTextColor && (
+          {/* Suggest Accessible Text Color - Black vs White */}
+          {blackWhiteContrast && (
             <>
               <hr style={styles.divider} />
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: textPrimary, flex: 1, minWidth: '140px' }}>
-                  Suggested Text Color
-                </div>
+              <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: textPrimary, marginBottom: '0.75rem' }}>
+                Suggested Text Colors for This Background
+              </div>
+              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                {/* White option */}
                 <div
                   style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: '8px',
-                    border: `1.5px solid ${borderColor}`,
-                    background: suggestedTextColor.hex,
-                    flexShrink: 0,
-                  }}
-                />
-                <div style={{ fontFamily: monoFont, fontSize: '0.8125rem', color: textPrimary, fontWeight: 600 }}>
-                  {suggestedTextColor.hex}
-                </div>
-                <div style={{ fontSize: '0.75rem', color: textSecondary, fontWeight: 500 }}>
-                  {suggestedTextColor.ratio.toFixed(2)}:1 · {suggestedTextColor.label}
-                </div>
-                <button
-                  type="button"
-                  style={{
-                    ...styles.swapBtn,
-                    marginBottom: 0,
-                    padding: '0.375rem 0.75rem',
-                    fontSize: '0.75rem',
-                  }}
-                  onMouseEnter={e => {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = primary;
-                    (e.currentTarget as HTMLButtonElement).style.color = primary;
-                    (e.currentTarget as HTMLButtonElement).style.background = '#eef2ff';
-                  }}
-                  onMouseLeave={e => {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = borderColor;
-                    (e.currentTarget as HTMLButtonElement).style.color = textPrimary;
-                    (e.currentTarget as HTMLButtonElement).style.background = '#ffffff';
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.5rem 0.75rem',
+                    borderRadius: '10px',
+                    border: blackWhiteContrast.best === 'white' ? `2px solid ${primary}` : `1px solid ${borderColor}`,
+                    background: blackWhiteContrast.best === 'white' ? '#eef2ff' : bgSubtle,
+                    flex: 1,
+                    minWidth: '160px',
+                    cursor: 'pointer',
                   }}
                   onClick={() => {
-                    setFgHex(suggestedTextColor.hex);
-                    setFgInput(suggestedTextColor.hex);
+                    setFgHex(blackWhiteContrast.white.hex);
+                    setFgInput(blackWhiteContrast.white.hex);
                     setFgError(false);
                   }}
-                  aria-label="Apply suggested text color"
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLDivElement).style.borderColor = primary;
+                    (e.currentTarget as HTMLDivElement).style.background = '#eef2ff';
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLDivElement).style.borderColor = blackWhiteContrast.best === 'white' ? primary : borderColor;
+                    (e.currentTarget as HTMLDivElement).style.background = blackWhiteContrast.best === 'white' ? '#eef2ff' : bgSubtle;
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Apply white as text color"
                 >
-                  Apply
-                </button>
+                  <div
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: '6px',
+                      border: `1.5px solid ${borderColor}`,
+                      background: '#ffffff',
+                      flexShrink: 0,
+                    }}
+                  />
+                  <div>
+                    <div style={{ fontFamily: monoFont, fontSize: '0.8125rem', color: textPrimary, fontWeight: 600 }}>
+                      White
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: textSecondary, fontWeight: 500 }}>
+                      {blackWhiteContrast.white.ratio.toFixed(2)}:1
+                    </div>
+                  </div>
+                  {blackWhiteContrast.best === 'white' && (
+                    <span style={{ fontSize: '0.625rem', fontWeight: 700, color: primary, marginLeft: 'auto', textTransform: 'uppercase' }}>
+                      Best
+                    </span>
+                  )}
+                </div>
+
+                {/* Black option */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.5rem 0.75rem',
+                    borderRadius: '10px',
+                    border: blackWhiteContrast.best === 'black' ? `2px solid ${primary}` : `1px solid ${borderColor}`,
+                    background: blackWhiteContrast.best === 'black' ? '#eef2ff' : bgSubtle,
+                    flex: 1,
+                    minWidth: '160px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    setFgHex(blackWhiteContrast.black.hex);
+                    setFgInput(blackWhiteContrast.black.hex);
+                    setFgError(false);
+                  }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLDivElement).style.borderColor = primary;
+                    (e.currentTarget as HTMLDivElement).style.background = '#eef2ff';
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLDivElement).style.borderColor = blackWhiteContrast.best === 'black' ? primary : borderColor;
+                    (e.currentTarget as HTMLDivElement).style.background = blackWhiteContrast.best === 'black' ? '#eef2ff' : bgSubtle;
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Apply black as text color"
+                >
+                  <div
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: '6px',
+                      border: `1.5px solid ${borderColor}`,
+                      background: '#000000',
+                      flexShrink: 0,
+                    }}
+                  />
+                  <div>
+                    <div style={{ fontFamily: monoFont, fontSize: '0.8125rem', color: textPrimary, fontWeight: 600 }}>
+                      Black
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: textSecondary, fontWeight: 500 }}>
+                      {blackWhiteContrast.black.ratio.toFixed(2)}:1
+                    </div>
+                  </div>
+                  {blackWhiteContrast.best === 'black' && (
+                    <span style={{ fontSize: '0.625rem', fontWeight: 700, color: primary, marginLeft: 'auto', textTransform: 'uppercase' }}>
+                      Best
+                    </span>
+                  )}
+                </div>
               </div>
             </>
           )}
+
+          {/* Action buttons row */}
+          <hr style={styles.divider} />
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <button
+              type="button"
+              style={styles.swapBtn}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLButtonElement).style.borderColor = primary;
+                (e.currentTarget as HTMLButtonElement).style.color = primary;
+                (e.currentTarget as HTMLButtonElement).style.background = '#eef2ff';
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLButtonElement).style.borderColor = borderColor;
+                (e.currentTarget as HTMLButtonElement).style.color = textPrimary;
+                (e.currentTarget as HTMLButtonElement).style.background = '#ffffff';
+              }}
+              onClick={() => {
+                const url = new URL(window.location.href);
+                url.searchParams.set('fg', (validFg || '').replace('#', ''));
+                url.searchParams.set('bg', (validBg || '').replace('#', ''));
+                copyToClipboard(url.toString());
+              }}
+              aria-label="Share this check"
+            >
+              🔗 Share Check
+            </button>
+            <button
+              type="button"
+              style={styles.swapBtn}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLButtonElement).style.borderColor = primary;
+                (e.currentTarget as HTMLButtonElement).style.color = primary;
+                (e.currentTarget as HTMLButtonElement).style.background = '#eef2ff';
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLButtonElement).style.borderColor = borderColor;
+                (e.currentTarget as HTMLButtonElement).style.color = textPrimary;
+                (e.currentTarget as HTMLButtonElement).style.background = '#ffffff';
+              }}
+              onClick={() => {
+                const summary = formatContrastSummary(
+                  validFg || '',
+                  validBg || '',
+                  ratio,
+                  meetsWcagAA(ratio, false),
+                  meetsWcagAAA(ratio, false),
+                  meetsWcagAA(ratio, true),
+                  meetsWcagAAA(ratio, true),
+                );
+                copyToClipboard(summary);
+              }}
+              aria-label="Export result summary"
+            >
+              📋 Export Summary
+            </button>
+          </div>
         </div>
       )}
     </div>
