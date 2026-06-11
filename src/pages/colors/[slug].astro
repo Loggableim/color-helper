@@ -82,7 +82,7 @@ const webAppSchema = {
   <ToolLayout {title} {description} {breadcrumbs}>
     <!-- Color Swatch -->
     <div class="color-hero">
-      <div class="color-swatch" style="background-color: {color.hex};">
+      <div class="color-swatch" style={{ backgroundColor: color.hex }}>
         <span class="color-hex-label">{color.hex}</span>
       </div>
     </div>
@@ -124,7 +124,7 @@ const webAppSchema = {
       <h2>Shades &amp; Tints of {color.name}</h2>
       <div class="palette-swatches">
         {tintsShades.colors.map(c => (
-          <div class="palette-swatch" title={c} style="background-color: {c};">
+          <div class="palette-swatch" title={c} style={{ backgroundColor: c }}>
             <span class="palette-swatch-label">{c}</span>
           </div>
         ))}
@@ -136,7 +136,7 @@ const webAppSchema = {
       <h2>Complementary Color</h2>
       <div class="palette-swatches palette-compact">
         {complementary.colors.map(c => (
-          <div class="palette-swatch" title={c} style="background-color: {c};">
+          <div class="palette-swatch" title={c} style={{ backgroundColor: c }}>
             <span class="palette-swatch-label">{c}</span>
           </div>
         ))}
@@ -148,7 +148,7 @@ const webAppSchema = {
       <h2>Analogous Colors</h2>
       <div class="palette-swatches">
         {analogous.colors.map(c => (
-          <div class="palette-swatch" title={c} style="background-color: {c};">
+          <div class="palette-swatch" title={c} style={{ backgroundColor: c }}>
             <span class="palette-swatch-label">{c}</span>
           </div>
         ))}
@@ -168,29 +168,29 @@ const webAppSchema = {
       <h2>Contrast Recommendations</h2>
       <div class="contrast-cards">
         <div class="contrast-card contrast-card-black">
-          <div class="contrast-preview" style="background-color: {color.hex}; color: #000000;">
+          <div class="contrast-preview" style={{ backgroundColor: color.hex, color: '#000000' }}>
             Black text on {color.name}
           </div>
           <div class="contrast-info">
             <span class="contrast-ratio">Ratio: {contrastBlack}:1</span>
-            <span class="contrast-pass {contrastBlack >= 4.5 ? 'pass' : 'fail'}">
+            <span class={`contrast-pass ${contrastBlack >= 4.5 ? 'pass' : 'fail'}`}>
               {contrastBlack >= 4.5 ? '✓ Passes AA' : '✗ Fails AA'}
             </span>
-            <span class="contrast-pass {contrastBlack >= 7 ? 'pass' : 'fail'}">
+            <span class={`contrast-pass ${contrastBlack >= 7 ? 'pass' : 'fail'}`}>
               {contrastBlack >= 7 ? '✓ Passes AAA' : '✗ Fails AAA'}
             </span>
           </div>
         </div>
         <div class="contrast-card contrast-card-white">
-          <div class="contrast-preview" style="background-color: {color.hex}; color: #ffffff;">
+          <div class="contrast-preview" style={{ backgroundColor: color.hex, color: '#ffffff' }}>
             White text on {color.name}
           </div>
           <div class="contrast-info">
             <span class="contrast-ratio">Ratio: {contrastWhite}:1</span>
-            <span class="contrast-pass {contrastWhite >= 4.5 ? 'pass' : 'fail'}">
+            <span class={`contrast-pass ${contrastWhite >= 4.5 ? 'pass' : 'fail'}`}>
               {contrastWhite >= 4.5 ? '✓ Passes AA' : '✗ Fails AA'}
             </span>
-            <span class="contrast-pass {contrastWhite >= 7 ? 'pass' : 'fail'}">
+            <span class={`contrast-pass ${contrastWhite >= 7 ? 'pass' : 'fail'}`}>
               {contrastWhite >= 7 ? '✓ Passes AAA' : '✗ Fails AAA'}
             </span>
           </div>
@@ -204,7 +204,7 @@ const webAppSchema = {
       <div class="related-colors-grid">
         {relatedColors.map(rel => (
           <a href={`/colors/${rel.slug}/`} class="related-color-card">
-            <div class="related-color-swatch" style="background-color: {rel.hex};"></div>
+            <div class="related-color-swatch" style={{ backgroundColor: rel.hex }}></div>
             <span class="related-color-name">{rel.name}</span>
           </a>
         ))}

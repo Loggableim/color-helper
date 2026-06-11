@@ -1,0 +1,4 @@
+# www → non-www redirect
+https://www.color-helper.com/* https://color-helper.com/:splat 301
+
+# Force HTTPS (handled by Cloudflare automatically, but belts and suspenders)
