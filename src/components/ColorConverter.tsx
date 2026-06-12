@@ -17,10 +17,10 @@ import { addRecentColor } from '../utils/storage';
 
 /* ===== Design Tokens ===== */
 const primary = '#6366f1';
-const borderColor = '#e2e8f0';
-const textPrimary = '#1e293b';
-const textSecondary = '#64748b';
-const bgAlt = '#f8fafc';
+const borderColor = 'var(--color-border)';
+const textPrimary = 'var(--color-text-primary)';
+const textSecondary = 'var(--color-text-secondary)';
+const bgAlt = 'var(--color-bg-alt)';
 const errorBg = '#fef2f2';
 const errorBorder = '#fecaca';
 const errorText = '#dc2626';
@@ -37,7 +37,7 @@ const s: Record<string, React.CSSProperties> = {
     fontFamily,
   },
   card: {
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     border: `1px solid ${borderColor}`,
     borderRadius: '14px',
     padding: '1.5rem',
@@ -72,7 +72,7 @@ const s: Record<string, React.CSSProperties> = {
     fontSize: '0.9375rem',
     fontFamily: monoFont,
     color: textPrimary,
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     border: `1.5px solid ${borderColor}`,
     borderRadius: '10px',
     outline: 'none',
@@ -593,7 +593,7 @@ export default function ColorConverter() {
 
   const bgColor = result?.rgba
     ? `rgba(${result.rgba.r}, ${result.rgba.g}, ${result.rgba.b}, ${result.rgba.a})`
-    : '#e2e8f0';
+    : 'var(--color-border)';
 
   // Determine text contrast for border
   const bgLum = result?.rgba

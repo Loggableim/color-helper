@@ -17,10 +17,10 @@ import { formatContrastSummary, addRecentColor } from '../utils/storage';
 /* ===== Design Tokens ===== */
 
 const primary = '#6366f1';
-const borderColor = '#e2e8f0';
-const textPrimary = '#1e293b';
-const textSecondary = '#64748b';
-const bgSubtle = '#f8fafc';
+const borderColor = 'var(--color-border)';
+const textPrimary = 'var(--color-text-primary)';
+const textSecondary = 'var(--color-text-secondary)';
+const bgSubtle = 'var(--color-bg-alt)';
 const fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif";
 const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace";
 
@@ -33,7 +33,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily,
   },
   card: {
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     border: `1px solid ${borderColor}`,
     borderRadius: '14px',
     padding: '1.5rem',
@@ -67,7 +67,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '0.9375rem',
     fontFamily: monoFont,
     color: textPrimary,
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     border: `1.5px solid ${borderColor}`,
     borderRadius: '10px',
     outline: 'none',
@@ -98,7 +98,7 @@ const styles: Record<string, React.CSSProperties> = {
     border: `1px solid ${borderColor}`,
     borderRadius: '10px',
     cursor: 'pointer',
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     color: textPrimary,
     fontFamily,
     marginBottom: '0',
@@ -238,10 +238,20 @@ export default function ContrastChecker() {
   const [bgInput, setBgInput] = useState('#ffffff');
   const [fgError, setFgError] = useState(false);
   const [bgError, setBgError] = useState(false);
+  const [lastValidFg, setLastValidFg] = useState('#1e293b');
+  const [lastValidBg, setLastValidBg] = useState('#ffffff');
 
   const validFg = isValidHex(fgHex) ? normalizeHex(fgHex) : null;
   const validBg = isValidHex(bgHex) ? normalizeHex(bgHex) : null;
   const bothValid = validFg && validBg;
+
+  // Keep lastValid synced with actual valid values
+  useEffect(() => {
+    if (validFg) setLastValidFg(validFg);
+  }, [validFg]);
+  useEffect(() => {
+    if (validBg) setLastValidBg(validBg);
+  }, [validBg]);
 
   const ratio = bothValid ? getContrastRatio(validFg!, validBg!) : null;
 
@@ -357,7 +367,7 @@ export default function ContrastChecker() {
           <span style={styles.label}>Text Color</span>
           <input
             type="color"
-            value={validFg && isValidHex(fgHex) ? normalizeHex(fgHex) : '#1e293b'}
+            value={validFg && isValidHex(fgHex) ? normalizeHex(fgHex) : lastValidFg}
             onChange={handleFgNative}
             style={styles.colorPicker}
             aria-label="Foreground color picker"
@@ -385,7 +395,7 @@ export default function ContrastChecker() {
               border: `1px solid ${borderColor}`,
               borderRadius: '8px',
               cursor: 'pointer',
-              background: '#ffffff',
+              background: 'var(--color-bg-card, #ffffff)',
               color: textSecondary,
               fontFamily,
               flexShrink: 0,
@@ -411,7 +421,7 @@ export default function ContrastChecker() {
           <span style={styles.label}>Background</span>
           <input
             type="color"
-            value={validBg && isValidHex(bgHex) ? normalizeHex(bgHex) : '#ffffff'}
+            value={validBg && isValidHex(bgHex) ? normalizeHex(bgHex) : lastValidBg}
             onChange={handleBgNative}
             style={styles.colorPicker}
             aria-label="Background color picker"
@@ -439,7 +449,7 @@ export default function ContrastChecker() {
               border: `1px solid ${borderColor}`,
               borderRadius: '8px',
               cursor: 'pointer',
-              background: '#ffffff',
+              background: 'var(--color-bg-card, #ffffff)',
               color: textSecondary,
               fontFamily,
               flexShrink: 0,
@@ -624,7 +634,7 @@ export default function ContrastChecker() {
                       height: 28,
                       borderRadius: '6px',
                       border: `1.5px solid ${borderColor}`,
-                      background: '#ffffff',
+                      background: 'var(--color-bg-card, #ffffff)',
                       flexShrink: 0,
                     }}
                   />

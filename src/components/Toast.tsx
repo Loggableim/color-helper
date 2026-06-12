@@ -14,7 +14,7 @@ const style: Record<string, React.CSSProperties> = {
     bottom: '1.5rem',
     left: '50%',
     transform: 'translateX(-50%)',
-    background: '#0F172A',
+    background: 'var(--color-bg-toast, #0F172A)',
     color: '#fff',
     padding: '0.625rem 1.25rem',
     borderRadius: '10px',

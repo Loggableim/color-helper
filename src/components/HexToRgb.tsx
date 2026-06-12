@@ -8,10 +8,10 @@ const EXAMPLE_COLORS = ['#ff6b6b', '#4ecdc4', '#6366f1', '#f59e0b', '#22c55e'];
 
 const primary = '#6366f1';
 const primaryGradient = 'linear-gradient(135deg, #6366f1, #4f46e5)';
-const borderColor = '#e2e8f0';
-const textPrimary = '#1e293b';
-const textSecondary = '#64748b';
-const bgSubtle = '#f8fafc';
+const borderColor = 'var(--color-border)';
+const textPrimary = 'var(--color-text-primary)';
+const textSecondary = 'var(--color-text-secondary)';
+const bgSubtle = 'var(--color-bg-alt)';
 const fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif";
 const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace";
 
@@ -23,7 +23,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: textPrimary,
   },
   card: {
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     border: `1px solid ${borderColor}`,
     borderRadius: '14px',
     padding: '1.5rem',
@@ -52,7 +52,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '0.9375rem',
     fontFamily: monoFont,
     color: textPrimary,
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     border: `1.5px solid ${borderColor}`,
     borderRadius: '10px',
     outline: 'none',

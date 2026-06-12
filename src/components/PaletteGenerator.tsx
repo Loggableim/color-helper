@@ -25,6 +25,7 @@ import {
   formatSCSSVariables,
 } from '../utils/storage';
 import { getQueryParam, parseHexParam, toolLinks } from '../utils/url';
+import ExportModal from './ExportModal';
 
 /* ===== Types ===== */
 
@@ -72,10 +73,10 @@ function generateRandomHex(): string {
 
 const primary = '#6366f1';
 const primaryGradient = 'linear-gradient(135deg, #6366f1, #4f46e5)';
-const borderColor = '#e2e8f0';
-const textPrimary = '#1e293b';
-const textSecondary = '#64748b';
-const bgSubtle = '#f8fafc';
+const borderColor = 'var(--color-border)';
+const textPrimary = 'var(--color-text-primary)';
+const textSecondary = 'var(--color-text-secondary)';
+const bgSubtle = 'var(--color-bg-alt)';
 const fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif";
 const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace";
 
@@ -124,7 +125,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '0.9rem',
     fontFamily: monoFont,
     outline: 'none',
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     color: textPrimary,
     transition: 'border-color 0.2s, box-shadow 0.2s',
   } as React.CSSProperties,
@@ -157,7 +158,7 @@ const styles: Record<string, React.CSSProperties> = {
     boxShadow: '0 2px 8px rgba(99, 102, 241, 0.3)',
   },
   btnSecondary: {
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     color: textPrimary,
     border: `1px solid ${borderColor}`,
   },
@@ -166,7 +167,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '0.375rem 0.75rem',
     borderRadius: '8px',
     border: `1px solid ${borderColor}`,
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     cursor: 'pointer',
     color: textSecondary,
     fontWeight: 600,
@@ -190,7 +191,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '0.5rem 0.875rem',
     borderRadius: '8px',
     border: `1.5px solid ${borderColor}`,
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     color: textSecondary,
     fontSize: '0.75rem',
     fontWeight: 600,
@@ -206,7 +207,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: primary,
   },
   card: {
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     borderRadius: '14px',
     padding: '1.25rem',
     marginBottom: '1rem',
@@ -277,7 +278,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '0.5rem 1rem',
     borderRadius: '10px',
     border: `1px solid ${primary}`,
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     transition: 'all 0.15s ease',
     cursor: 'pointer',
   },
@@ -308,6 +309,7 @@ export default function PaletteGenerator() {
   const [hexError, setHexError] = useState('');
   const [selectedType, setSelectedType] = useState<PaletteType>('all');
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [exportOpen, setExportOpen] = useState(false);
   const feedbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const initialLoadDone = useRef(false);
 
@@ -722,20 +724,40 @@ export default function PaletteGenerator() {
       ))}
 
       {/* Contrast Check Link */}
-      <a
-        href={contrastHref}
-        style={styles.contrastLink}
-        onMouseEnter={linkHoverIn}
-        onMouseLeave={linkHoverOut}
-        aria-label="Check contrast of base color"
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-          <path d="M2 12h20" />
-        </svg>
-        Check Contrast of {baseColor}
-      </a>
+      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center', marginTop: '0.5rem' }}>
+        <a
+          href={contrastHref}
+          style={styles.contrastLink}
+          onMouseEnter={linkHoverIn}
+          onMouseLeave={linkHoverOut}
+          aria-label="Check contrast of base color"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+            <path d="M2 12h20" />
+          </svg>
+          Check Contrast of {baseColor}
+        </a>
+        <button
+          type="button"
+          onClick={() => setExportOpen(true)}
+          style={{ ...styles.btnSmall, color: 'var(--color-primary)', borderColor: 'var(--color-primary)' }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLElement).style.background = '#eef2ff';
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLElement).style.background = '#ffffff';
+          }}
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Export All
+        </button>
+      </div>
 
       {/* Toast feedback */}
       <div
@@ -752,6 +774,14 @@ export default function PaletteGenerator() {
       >
         {feedback ?? '\u00A0'}
       </div>
+
+      {/* Export Modal */}
+      <ExportModal
+        colors={allPalettes.flatMap(p => p.colors)}
+        paletteName={`Palette - ${baseColor}`}
+        isOpen={exportOpen}
+        onClose={() => setExportOpen(false)}
+      />
     </div>
   );
 }

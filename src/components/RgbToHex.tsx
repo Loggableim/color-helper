@@ -22,10 +22,10 @@ const PRESETS: { label: string; r: number; g: number; b: number }[] = [
 const LABELS: Record<string, string> = { r: 'R', g: 'G', b: 'B' };
 
 const primary = '#6366f1';
-const borderColor = '#e2e8f0';
-const textPrimary = '#1e293b';
-const textSecondary = '#64748b';
-const bgSubtle = '#f8fafc';
+const borderColor = 'var(--color-border)';
+const textPrimary = 'var(--color-text-primary)';
+const textSecondary = 'var(--color-text-secondary)';
+const bgSubtle = 'var(--color-bg-alt)';
 const fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif";
 const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace";
 
@@ -37,7 +37,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: textPrimary,
   },
   card: {
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     borderRadius: '14px',
     padding: '1.5rem',
     boxShadow: '0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05)',
@@ -152,7 +152,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '0.5rem 1rem',
     borderRadius: '10px',
     border: `1px solid ${borderColor}`,
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     color: textSecondary,
     fontSize: '0.8125rem',
     fontWeight: 600,
@@ -189,7 +189,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '0.375rem 0.75rem',
     borderRadius: '20px',
     border: `1px solid ${borderColor}`,
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     fontSize: '0.75rem',
     fontWeight: 500,
     color: '#334155',
@@ -261,11 +261,15 @@ export default function RgbToHex() {
       setErrors(prev => ({ ...prev, [ch]: 'Must be a number' }));
       return;
     }
-    if (num < 0 || num > 255 || !Number.isInteger(num)) {
-      setErrors(prev => ({ ...prev, [ch]: null }));
-    } else {
-      setErrors(prev => ({ ...prev, [ch]: null }));
+    if (num < 0 || num > 255) {
+      setErrors(prev => ({ ...prev, [ch]: 'Must be 0–255' }));
+      return;
     }
+    if (!Number.isInteger(num)) {
+      setErrors(prev => ({ ...prev, [ch]: 'Must be a whole number' }));
+      return;
+    }
+    setErrors(prev => ({ ...prev, [ch]: null }));
     const clamped = clampRgb(num);
     setValues(prev => ({ ...prev, [ch]: clamped }));
   }, []);

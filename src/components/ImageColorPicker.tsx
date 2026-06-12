@@ -15,10 +15,10 @@ type ColorPick = {
 /* ===== Shared Design Tokens ===== */
 const primary = '#6366f1';
 const primaryGradient = 'linear-gradient(135deg, #6366f1, #4f46e5)';
-const borderColor = '#e2e8f0';
-const textPrimary = '#1e293b';
-const textSecondary = '#64748b';
-const bgSubtle = '#f8fafc';
+const borderColor = 'var(--color-border)';
+const textPrimary = 'var(--color-text-primary)';
+const textSecondary = 'var(--color-text-secondary)';
+const bgSubtle = 'var(--color-bg-alt)';
 const fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif";
 const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace";
 
@@ -32,7 +32,7 @@ const wrapperStyle: React.CSSProperties = {
 };
 
 const cardStyle: React.CSSProperties = {
-  background: '#ffffff',
+  background: 'var(--color-bg-card, #ffffff)',
   border: `1px solid ${borderColor}`,
   borderRadius: '14px',
   padding: '1.5rem',
@@ -105,7 +105,7 @@ const primaryBtnStyle: React.CSSProperties = {
 
 const secondaryBtnStyle: React.CSSProperties = {
   ...btnBase,
-  background: '#ffffff',
+  background: 'var(--color-bg-card, #ffffff)',
   color: textPrimary,
   border: `1px solid ${borderColor}`,
 };
@@ -148,7 +148,7 @@ const labelStyle: React.CSSProperties = {
 const valueStyle: React.CSSProperties = {
   fontFamily: monoFont,
   fontSize: '0.8125rem',
-  background: '#ffffff',
+  background: 'var(--color-bg-card, #ffffff)',
   padding: '4px 10px',
   borderRadius: '6px',
   border: `1px solid ${borderColor}`,
@@ -158,7 +158,7 @@ const valueStyle: React.CSSProperties = {
 
 const copyBtnStyle: React.CSSProperties = {
   ...btnBase,
-  background: '#ffffff',
+  background: 'var(--color-bg-card, #ffffff)',
   color: textSecondary,
   border: `1px solid ${borderColor}`,
   fontSize: '0.75rem',
@@ -225,6 +225,8 @@ export default function ImageColorPicker() {
   const [colorPick, setColorPick] = useState<ColorPick | null>(null);
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [dominantColors, setDominantColors] = useState<string[]>([]);
+  const [avgColor, setAvgColor] = useState<string | null>(null);
+  const [accentColor, setAccentColor] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
@@ -270,6 +272,8 @@ export default function ImageColorPicker() {
         setImageLoaded(true);
         setColorPick(null);
         setDominantColors([]);
+        setAvgColor(null);
+        setAccentColor(null);
       };
       img.src = url;
     };
@@ -390,43 +394,85 @@ export default function ImageColorPicker() {
     }
 
     setDominantColors(colors);
+
+    // --- Calculate average color ---
+    let sumR = 0, sumG = 0, sumB = 0;
+    for (const s of samples) {
+      sumR += s.r;
+      sumG += s.g;
+      sumB += s.b;
+    }
+    const avgR = Math.round(sumR / samples.length);
+    const avgG = Math.round(sumG / samples.length);
+    const avgB = Math.round(sumB / samples.length);
+    const avgHex = rgbToHex(avgR, avgG, avgB);
+    setAvgColor(avgHex);
+
+    // --- Calculate accent color: cluster farthest from average ---
+    let maxDist = -1;
+    let accentHex = avgHex;
+    for (const cluster of clusters) {
+      const dr = cluster.avg.r - avgR;
+      const dg = cluster.avg.g - avgG;
+      const db = cluster.avg.b - avgB;
+      const dist = dr * dr + dg * dg + db * db;
+      if (dist > maxDist) {
+        maxDist = dist;
+        accentHex = rgbToHex(cluster.avg.r, cluster.avg.g, cluster.avg.b);
+      }
+    }
+    setAccentColor(accentHex);
+
     showToast(`Extracted ${colors.length} dominant colors`);
   }, [showToast]);
 
   const handleSavePalette = useCallback(() => {
-    if (dominantColors.length === 0) {
+    const allColors = [...dominantColors];
+    if (avgColor && !allColors.includes(avgColor)) allColors.push(avgColor);
+    if (accentColor && !allColors.includes(accentColor)) allColors.push(accentColor);
+
+    if (allColors.length === 0) {
       if (colorPick) {
         savePalette(`Image Color - ${colorPick.hex}`, [colorPick.hex], 'image');
         showToast('Color saved!');
       }
       return;
     }
-    const name = `Image Palette ${new Date().toLocaleDateString()}`;
-    savePalette(name, dominantColors, 'image');
-    dominantColors.forEach(c => addRecentColor(c));
+    const name = `Image Palette ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
+    savePalette(name, allColors, 'image');
+    allColors.forEach(c => addRecentColor(c));
     showToast(`Palette "${name}" saved!`);
-  }, [dominantColors, colorPick, showToast]);
+  }, [dominantColors, avgColor, accentColor, colorPick, showToast]);
 
   const handleCopyAll = useCallback(async () => {
-    if (dominantColors.length === 0) return;
-    const text = dominantColors.join('\n');
+    const allColors = [...dominantColors];
+    if (avgColor && !allColors.includes(avgColor)) allColors.push(avgColor);
+    if (accentColor && !allColors.includes(accentColor)) allColors.push(accentColor);
+    if (allColors.length === 0) return;
+    const text = allColors.join('\n');
     await copyToClipboard(text);
     showToast('All colors copied!');
-  }, [dominantColors, showToast]);
+  }, [dominantColors, avgColor, accentColor, showToast]);
 
   const handleExportCSS = useCallback(async () => {
-    if (dominantColors.length === 0) return;
-    const css = ':root {\n' + formatCSSVariables(dominantColors, 'img') + '\n}';
+    const allColors = [...dominantColors];
+    if (avgColor && !allColors.includes(avgColor)) allColors.push(avgColor);
+    if (accentColor && !allColors.includes(accentColor)) allColors.push(accentColor);
+    if (allColors.length === 0) return;
+    const css = ':root {\n' + formatCSSVariables(allColors, 'img') + '\n}';
     await copyToClipboard(css);
     showToast('CSS variables copied!');
-  }, [dominantColors, showToast]);
+  }, [dominantColors, avgColor, accentColor, showToast]);
 
   const handleExportJSON = useCallback(async () => {
-    if (dominantColors.length === 0) return;
-    const json = formatJSON(dominantColors);
+    const allColors = [...dominantColors];
+    if (avgColor && !allColors.includes(avgColor)) allColors.push(avgColor);
+    if (accentColor && !allColors.includes(accentColor)) allColors.push(accentColor);
+    if (allColors.length === 0) return;
+    const json = formatJSON(allColors);
     await copyToClipboard(json);
     showToast('JSON copied!');
-  }, [dominantColors, showToast]);
+  }, [dominantColors, avgColor, accentColor, showToast]);
 
   return (
     <div style={wrapperStyle}>
@@ -436,6 +482,15 @@ export default function ImageColorPicker() {
       {/* Upload Card */}
       <div style={cardStyle}>
         <h2 style={cardTitleStyle}>Image Color Picker</h2>
+
+        {/* Hidden file input — always in DOM so Change Image button works */}
+        <input
+          id="image-upload-input-picker"
+          type="file"
+          accept="image/*"
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+        />
 
         {!imageLoaded && (
           <div
@@ -448,13 +503,6 @@ export default function ImageColorPicker() {
             onDragLeave={handleDragLeave}
             onClick={() => document.getElementById('image-upload-input-picker')?.click()}
           >
-            <input
-              id="image-upload-input-picker"
-              type="file"
-              accept="image/*"
-              style={{ display: 'none' }}
-              onChange={handleFileChange}
-            />
             <div style={{ fontSize: '40px', marginBottom: '12px', lineHeight: 1 }}>
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke={primary} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
@@ -636,6 +684,48 @@ export default function ImageColorPicker() {
               </div>
             )}
 
+            {/* Average & Accent colors */}
+            {(avgColor || accentColor) && (
+              <div style={{ marginTop: '0.75rem', display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
+                {avgColor && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div
+                      style={{
+                        ...dominantSwatch,
+                        background: avgColor,
+                        cursor: 'default',
+                        width: '36px',
+                        height: '36px',
+                      }}
+                      title={`Avg Color: ${avgColor}`}
+                    />
+                    <div>
+                      <div style={{ fontSize: '0.6875rem', color: textSecondary, fontWeight: 600 }}>Avg Color</div>
+                      <div style={{ fontSize: '0.6875rem', fontFamily: monoFont, color: textSecondary }}>{avgColor}</div>
+                    </div>
+                  </div>
+                )}
+                {accentColor && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div
+                      style={{
+                        ...dominantSwatch,
+                        background: accentColor,
+                        cursor: 'default',
+                        width: '36px',
+                        height: '36px',
+                      }}
+                      title={`Accent Color: ${accentColor}`}
+                    />
+                    <div>
+                      <div style={{ fontSize: '0.6875rem', color: textSecondary, fontWeight: 600 }}>Accent</div>
+                      <div style={{ fontSize: '0.6875rem', fontFamily: monoFont, color: textSecondary }}>{accentColor}</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Reset button */}
             <div style={{ textAlign: 'center', marginTop: '1rem' }}>
               <button
@@ -645,6 +735,8 @@ export default function ImageColorPicker() {
                   setImageUrl(null);
                   setColorPick(null);
                   setDominantColors([]);
+                  setAvgColor(null);
+                  setAccentColor(null);
                   imgRef.current = null;
                 }}
               >

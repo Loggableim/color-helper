@@ -6,7 +6,7 @@ import { savePalette, addRecentColor } from '../utils/storage';
 
 /* ===== Types ===== */
 
-type GradientType = 'linear' | 'radial';
+type GradientType = 'linear' | 'radial' | 'conic';
 
 interface ColorStop {
   color: string;
@@ -23,10 +23,10 @@ interface Preset {
 /* ===== Constants ===== */
 
 const primary = '#6366f1';
-const borderColor = '#e2e8f0';
-const textPrimary = '#1e293b';
-const textSecondary = '#64748b';
-const bgSubtle = '#f8fafc';
+const borderColor = 'var(--color-border)';
+const textPrimary = 'var(--color-text-primary)';
+const textSecondary = 'var(--color-text-secondary)';
+const bgSubtle = 'var(--color-bg-alt)';
 const fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif";
 const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace";
 
@@ -65,12 +65,15 @@ const PRESETS: Preset[] = [
   { name: 'Lavender', type: 'linear', colors: ['#7c3aed', '#a855f7', '#d8b4fe'], direction: '90deg' },
   { name: 'Radial Glow', type: 'radial', colors: ['#6366f1', '#a855f7', '#ec4899'], direction: 'center' },
   { name: 'Midnight', type: 'linear', colors: ['#0f172a', '#1e293b', '#475569'], direction: 'to bottom' },
+  { name: 'Conic Sunset', type: 'conic', colors: ['#ff6b6b', '#feca57', '#48dbfb'], direction: '0deg' },
 ];
 
 /* ===== Helpers ===== */
 
 function isValidHex(hex: string): boolean {
-  return /^#[0-9a-fA-F]{6}$/.test(hex);
+  const h = hex.replace(/^#/, '');
+  if (h.length !== 3 && h.length !== 6) return false;
+  return /^[0-9a-fA-F]+$/.test(h);
 }
 
 function randomHex(): string {
@@ -95,6 +98,10 @@ function formatGradientCss(
     return `background: radial-gradient(${shapeDir}, ${stopStrings.join(', ')});`;
   }
 
+  if (type === 'conic') {
+    return `background: conic-gradient(from ${direction}, ${stopStrings.join(', ')});`;
+  }
+
   return `background: linear-gradient(${direction}, ${stopStrings.join(', ')});`;
 }
 
@@ -116,6 +123,10 @@ function formatPreviewBackground(
     return `radial-gradient(${shapeDir}, ${stopStrings.join(', ')})`;
   }
 
+  if (type === 'conic') {
+    return `conic-gradient(from ${direction}, ${stopStrings.join(', ')})`;
+  }
+
   return `linear-gradient(${direction}, ${stopStrings.join(', ')})`;
 }
 
@@ -129,7 +140,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: textPrimary,
   },
   card: {
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     borderRadius: '14px',
     padding: '1.5rem',
     boxShadow: '0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05)',
@@ -182,7 +193,7 @@ const styles: Record<string, React.CSSProperties> = {
     border: `1.5px solid ${borderColor}`,
     borderRadius: '10px',
     outline: 'none',
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     color: textPrimary,
     fontFamily: monoFont,
     transition: 'border-color 0.2s, box-shadow 0.2s',
@@ -206,7 +217,7 @@ const styles: Record<string, React.CSSProperties> = {
     border: `1.5px solid ${borderColor}`,
     borderRadius: '8px',
     outline: 'none',
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     color: textPrimary,
     fontFamily: monoFont,
     textAlign: 'center' as const,
@@ -264,7 +275,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '0.5rem 0.75rem',
     borderRadius: '8px',
     border: `1.5px solid ${borderColor}`,
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     color: textSecondary,
     fontSize: '0.75rem',
     fontWeight: 600,
@@ -301,7 +312,7 @@ const styles: Record<string, React.CSSProperties> = {
     lineHeight: 1,
   },
   typeBtnActive: {
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     color: primary,
     boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
   },
@@ -364,7 +375,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '0.5rem 0.875rem',
     borderRadius: '8px',
     border: `1.5px solid ${borderColor}`,
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     color: textSecondary,
     fontSize: '0.75rem',
     fontWeight: 600,
@@ -394,7 +405,7 @@ const styles: Record<string, React.CSSProperties> = {
     border: `1.5px solid ${borderColor}`,
     borderRadius: '10px',
     outline: 'none',
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     color: textPrimary,
     fontFamily,
     transition: 'border-color 0.2s, box-shadow 0.2s',
@@ -430,7 +441,7 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: 'pointer',
     border: `1.5px solid ${borderColor}`,
     transition: 'all 0.15s ease',
-    background: '#ffffff',
+    background: 'var(--color-bg-card, #ffffff)',
     textAlign: 'center' as const,
   },
   presetPreview: {
@@ -497,7 +508,7 @@ export default function GradientGenerator() {
       setStops(newStops);
     }
 
-    if (typeParam === 'radial' || typeParam === 'linear') {
+    if (typeParam === 'radial' || typeParam === 'linear' || typeParam === 'conic') {
       setType(typeParam);
     }
 
@@ -626,10 +637,15 @@ export default function GradientGenerator() {
     setStops(newStops);
     setErrors({});
 
-    // Randomly switch between linear and radial
-    if (Math.random() > 0.7) {
+    // Randomly switch between linear, radial, and conic
+    const rand = Math.random();
+    if (rand > 0.8) {
       setType('radial');
       setDirection(RADIAL_POSITIONS[Math.floor(Math.random() * RADIAL_POSITIONS.length)].value);
+    } else if (rand > 0.6) {
+      setType('conic');
+      const dirs = LINEAR_DIRECTIONS;
+      setDirection(dirs[Math.floor(Math.random() * dirs.length)].value);
     } else {
       setType('linear');
       const dirs = LINEAR_DIRECTIONS;
@@ -704,6 +720,20 @@ export default function GradientGenerator() {
             }}
           >
             Radial
+          </button>
+          <button
+            onClick={() => {
+              setType('conic');
+              if (direction && !LINEAR_DIRECTIONS.find((d) => d.value === direction)) {
+                setDirection('0deg');
+              }
+            }}
+            style={{
+              ...styles.typeBtn,
+              ...(type === 'conic' ? styles.typeBtnActive : {}),
+            }}
+          >
+            Conic
           </button>
         </div>
 
@@ -824,10 +854,10 @@ export default function GradientGenerator() {
         {/* Direction Selector */}
         <div style={styles.directionSection}>
           <div style={styles.directionLabel}>
-            {type === 'linear' ? 'Direction / Angle' : 'Position'}
+            {type === 'radial' ? 'Position' : 'Direction / Angle'}
           </div>
           <div style={styles.directionGrid}>
-            {(type === 'linear' ? LINEAR_DIRECTIONS : RADIAL_POSITIONS).map((opt) => (
+            {(type === 'radial' ? RADIAL_POSITIONS : LINEAR_DIRECTIONS).map((opt) => (
               <button
                 key={opt.value}
                 onClick={() => setDirection(opt.value)}
@@ -851,6 +881,8 @@ export default function GradientGenerator() {
               const bg =
                 preset.type === 'radial'
                   ? `radial-gradient(circle, ${stopStr})`
+                  : preset.type === 'conic'
+                  ? `conic-gradient(from ${preset.direction}, ${stopStr})`
                   : `linear-gradient(${preset.direction}, ${stopStr})`;
               return (
                 <div
