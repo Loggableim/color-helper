@@ -3,7 +3,16 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ToolLayout from '../../components/ToolLayout.astro';
 import { colors, getRelatedColors } from '../../data/colors';
 import type { ColorData } from '../../data/colors';
-import { generateTintsAndShades, generateComplementaryPalette, generateAnalogousPalette, rgbToHsl, copyToClipboard } from '../../utils/color';
+import {
+  generateTintsAndShades,
+  generateComplementaryPalette,
+  generateAnalogousPalette,
+  generateTriadicPalette,
+  generateSplitComplementaryPalette,
+  generateTetradicPalette,
+  rgbToHsl,
+  getContrastRatio,
+} from '../../utils/color';
 import { toolLinks } from '../../utils/url';
 import FAQ from '../../components/FAQ.astro';
 
@@ -20,11 +29,22 @@ export interface Props {
 
 const { color } = Astro.props;
 
-const title = `${color.name} Color`;
-const description = `Learn about ${color.name} (${color.hex}): its uses in web design, HEX/RGB/HSL values, complementary and analogous color schemes, tints and shades, and accessibility contrast recommendations.`;
-const canonical = `https://color-helper.com/colors/${color.slug}/`;
+// Cyan/Aqua and Fuchsia/Magenta are CSS-spec synonyms with identical hex values.
+// To avoid duplicate content, set canonical URL to the primary page.
+const canonicalSlug = (color.slug === 'aqua') ? 'cyan'
+  : (color.slug === 'magenta') ? 'fuchsia'
+  : color.slug;
+const canonical = `https://color-helper.com/colors/${canonicalSlug}/`;
+
+// Build description that includes synonym note for SEO clarity
+const synonymNote = (color.slug === 'aqua') ? ' Aqua is a CSS synonym for cyan.'
+  : (color.slug === 'magenta') ? ' Magenta is a CSS synonym for fuchsia.'
+  : '';
+
+const title = `${color.name} Color — HEX, RGB, HSL, Palettes & Contrast`;
+const description = `${color.name} (${color.hex}): Complete color reference with HEX, RGB, HSL values, tints & shades, complementary, analogous, triadic, split-complementary, and tetradic palettes, WCAG contrast recommendations, and ready-to-use CSS code.${synonymNote}`;
 const breadcrumbs = [
-  { label: 'Colors', href: '/color-names/' },
+  { label: 'Colors', href: '/colors/' },
   { label: color.name },
 ];
 
@@ -36,36 +56,43 @@ const hslStr = `${hsl.h}°, ${hsl.s}%, ${hsl.l}%`;
 const tintsShades = generateTintsAndShades(color.hex, 9);
 const complementary = generateComplementaryPalette(color.hex);
 const analogous = generateAnalogousPalette(color.hex);
+const triadic = generateTriadicPalette(color.hex);
+const splitComplementary = generateSplitComplementaryPalette(color.hex);
+const tetradic = generateTetradicPalette(color.hex);
 
 // Related colors
 const relatedColors = getRelatedColors(color);
 
-// Contrast check helpers
-function getRelativeLuminance(r: number, g: number, b: number): number {
-  const srgb = [r / 255, g / 255, b / 255].map(c =>
-    c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
-  );
-  return 0.2126 * srgb[0] + 0.7152 * srgb[1] + 0.0722 * srgb[2];
-}
-
-function getContrastRatio(hex1: string, hex2: string): number {
-  const h1 = hex1.replace('#', '');
-  const h2 = hex2.replace('#', '');
-  const r1 = parseInt(h1.substring(0, 2), 16);
-  const g1 = parseInt(h1.substring(2, 4), 16);
-  const b1 = parseInt(h1.substring(4, 6), 16);
-  const r2 = parseInt(h2.substring(0, 2), 16);
-  const g2 = parseInt(h2.substring(2, 4), 16);
-  const b2 = parseInt(h2.substring(4, 6), 16);
-  const l1 = getRelativeLuminance(r1, g1, b1);
-  const l2 = getRelativeLuminance(r2, g2, b2);
-  const lighter = Math.max(l1, l2);
-  const darker = Math.min(l1, l2);
-  return Math.round((lighter + 0.05) / (darker + 0.05) * 100) / 100;
-}
-
+// Contrast (using shared utils)
 const contrastBlack = getContrastRatio('#000000', color.hex);
 const contrastWhite = getContrastRatio('#ffffff', color.hex);
+
+// Choose label background/text based on which has better contrast
+const labelBg = contrastBlack > contrastWhite ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.7)';
+const labelFg = contrastBlack > contrastWhite ? '#ffffff' : '#000000';
+
+// Accessibility Score (0-100): combines contrast scores + brightness range
+// - Text on best-contrast (black or white) AA pass: 25 pts
+// - Text on best-contrast AAA pass: 25 pts
+// - Mid-luminance (versatile for backgrounds AND text): 25 pts
+// - Luminance is not too close to pure black/white: 25 pts
+const hslForScore = rgbToHsl(color.r, color.g, color.b);
+const bestContrast = Math.max(contrastBlack, contrastWhite);
+const aaPass = bestContrast >= 4.5;
+const aaaPass = bestContrast >= 7;
+const versatileLightness = hslForScore.l >= 20 && hslForScore.l <= 80; // not too dark/bright
+const notExtreme = hslForScore.l >= 5 && hslForScore.l <= 95; // not pure black/white
+let a11yScore = 0;
+if (aaPass) a11yScore += 30;
+if (aaaPass) a11yScore += 25;
+if (versatileLightness) a11yScore += 25;
+if (notExtreme) a11yScore += 20;
+let a11yGrade = 'Poor';
+let a11yGradeColor = '#ef4444';
+if (a11yScore >= 85) { a11yGrade = 'Excellent'; a11yGradeColor = '#22c55e'; }
+else if (a11yScore >= 70) { a11yGrade = 'Good'; a11yGradeColor = '#22c55e'; }
+else if (a11yScore >= 50) { a11yGrade = 'Fair'; a11yGradeColor = '#eab308'; }
+else if (a11yScore >= 25) { a11yGrade = 'Limited'; a11yGradeColor = '#f97316'; }
 
 const webAppSchema = {
   "@context": "https://schema.org",
@@ -76,7 +103,6 @@ const webAppSchema = {
   "applicationCategory": "BrowserApplication",
   "operatingSystem": "All"
 };
-
 ---
 
 <BaseLayout {title} {description} {canonical} {breadcrumbs}>
@@ -84,7 +110,7 @@ const webAppSchema = {
     <!-- Color Swatch -->
     <div class="color-hero">
       <div class="color-swatch" style={{ backgroundColor: color.hex }}>
-        <span class="color-hex-label">{color.hex}</span>
+        <span class="color-hex-label" style={{ background: labelBg, color: labelFg }}>{color.hex}</span>
       </div>
     </div>
 
@@ -186,12 +212,92 @@ const webAppSchema = {
       </div>
     </section>
 
+    <!-- Triadic Palette -->
+    <section class="palette-section">
+      <h2>Triadic Colors</h2>
+      <div class="palette-swatches">
+        {triadic.colors.map(c => (
+          <div class="palette-swatch" title={c} style={{ backgroundColor: c }}>
+            <span class="palette-swatch-label">{c}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Split Complementary Palette -->
+    <section class="palette-section">
+      <h2>Split Complementary</h2>
+      <div class="palette-swatches">
+        {splitComplementary.colors.map(c => (
+          <div class="palette-swatch" title={c} style={{ backgroundColor: c }}>
+            <span class="palette-swatch-label">{c}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Tetradic Palette -->
+    <section class="palette-section">
+      <h2>Tetradic Colors</h2>
+      <div class="palette-swatches">
+        {tetradic.colors.map(c => (
+          <div class="palette-swatch" title={c} style={{ backgroundColor: c }}>
+            <span class="palette-swatch-label">{c}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
     <!-- CSS Snippet -->
     <section class="css-snippet-section">
       <h2>CSS Code</h2>
       <pre class="css-snippet"><code>.{color.slug}-color &#123;
   color: {color.hex};
+  background-color: {color.hex};
+&#125;
+
+/* As a CSS custom property */
+:root &#123;
+  --color-{color.slug}: {color.hex};
 &#125;</code></pre>
+    </section>
+
+    <!-- Accessibility Score -->
+    <section class="a11y-score-section">
+      <h2>Accessibility Score</h2>
+      <div class="a11y-score-card">
+        <div class="a11y-score-circle" style={`background: conic-gradient(${a11yGradeColor} ${a11yScore * 3.6}deg, var(--color-bg-alt) 0deg);`}>
+          <div class="a11y-score-inner">
+            <span class="a11y-score-number" style={`color: ${a11yGradeColor};`}>{a11yScore}</span>
+            <span class="a11y-score-of">/ 100</span>
+          </div>
+        </div>
+        <div class="a11y-score-details">
+          <div class="a11y-grade-row">
+            <span class="a11y-grade-label">Rating:</span>
+            <span class="a11y-grade-value" style={`color: ${a11yGradeColor};`}>{a11yGrade}</span>
+          </div>
+          <div class="a11y-breakdown">
+            <div class={`a11y-check ${aaPass ? 'pass' : 'fail'}`}>
+              <span class="a11y-check-icon">{aaPass ? '✓' : '✗'}</span>
+              <span>AA contrast on best text color (30 pts)</span>
+            </div>
+            <div class={`a11y-check ${aaaPass ? 'pass' : 'fail'}`}>
+              <span class="a11y-check-icon">{aaaPass ? '✓' : '✗'}</span>
+              <span>AAA contrast on best text color (25 pts)</span>
+            </div>
+            <div class={`a11y-check ${versatileLightness ? 'pass' : 'fail'}`}>
+              <span class="a11y-check-icon">{versatileLightness ? '✓' : '✗'}</span>
+              <span>Versatile lightness for backgrounds & text (25 pts)</span>
+            </div>
+            <div class={`a11y-check ${notExtreme ? 'pass' : 'fail'}`}>
+              <span class="a11y-check-icon">{notExtreme ? '✓' : '✗'}</span>
+              <span>Not extreme black/white (20 pts)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="a11y-explainer">A combined score based on WCAG contrast compliance, lightness versatility, and usable range. Higher scores mean the color works well in more design contexts.</p>
     </section>
 
     <!-- Contrast Recommendations -->
@@ -229,33 +335,6 @@ const webAppSchema = {
       </div>
     </section>
 
-    <!-- Tool CTAs -->
-    <section class="tool-ctas">
-      <h2>Color Tools</h2>
-      <div class="tool-cta-grid">
-        <a href={toolLinks.colorPicker(color.hex)} class="tool-cta-card">
-          <span class="tool-cta-icon">🎨</span>
-          <span class="tool-cta-label">Open in Color Picker</span>
-        </a>
-        <a href={toolLinks.paletteGenerator(color.hex)} class="tool-cta-card">
-          <span class="tool-cta-icon">🎨</span>
-          <span class="tool-cta-label">Generate palette from this color</span>
-        </a>
-        <a href={toolLinks.contrastChecker(color.hex, '#ffffff')} class="tool-cta-card">
-          <span class="tool-cta-icon">🔍</span>
-          <span class="tool-cta-label">Check contrast with this color</span>
-        </a>
-        <a href={toolLinks.colorConverter(color.hex)} class="tool-cta-card">
-          <span class="tool-cta-icon">🔄</span>
-          <span class="tool-cta-label">Convert this color</span>
-        </a>
-        <a href={toolLinks.gradientGenerator(color.hex, '#ffffff')} class="tool-cta-card">
-          <span class="tool-cta-icon">🌊</span>
-          <span class="tool-cta-label">Use as gradient start</span>
-        </a>
-      </div>
-    </section>
-
     <!-- Related Colors -->
     <section class="related-colors">
       <h2>Related Colors</h2>
@@ -276,6 +355,8 @@ const webAppSchema = {
         <li><a href="/color-picker/">Color Picker</a> — Pick and save colors interactively</li>
         <li><a href="/color-palette-generator/">Palette Generator</a> — Create harmonious color schemes</li>
         <li><a href="/contrast-checker/">Contrast Checker</a> — Check WCAG accessibility ratios</li>
+        <li><a href="/color-converter/">Color Converter</a> — Convert between HEX, RGB, and HSL</li>
+        <li><a href="/gradient-generator/">Gradient Generator</a> — Create CSS gradients</li>
       </ul>
     </section>
 
@@ -291,21 +372,30 @@ const webAppSchema = {
         },
         {
           question: `What colors go with ${color.name}?`,
-          answer: `Colors that pair well with ${color.name} include ${color.related.slice(0, 5).join(', ')}. For a complementary scheme, try ${complementary.colors[1]}. For an analogous scheme, use ${analogous.colors[0]} and ${analogous.colors[2]}.`
+          answer: `Colors that pair well with ${color.name} include ${color.related.slice(0, 5).join(', ')}. For a complementary scheme, try ${complementary.colors[1]}. For an analogous scheme, use ${analogous.colors[0]} and ${analogous.colors[2]}. For a triadic scheme, combine with ${triadic.colors[1]} and ${triadic.colors[2]}.`
         }
       ]}
     />
   </ToolLayout>
 
   <script>
-    import { copyToClipboard } from '../../utils/color';
-
     document.querySelectorAll('.copy-btn').forEach(btn => {
       btn.addEventListener('click', async (e) => {
         e.preventDefault();
         const value = btn.getAttribute('data-copy-value');
         if (!value) return;
-        await copyToClipboard(value);
+        try {
+          await navigator.clipboard.writeText(value);
+        } catch {
+          const ta = document.createElement('textarea');
+          ta.value = value;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
         const orig = btn.textContent;
         btn.textContent = 'Copied!';
         setTimeout(() => { btn.textContent = orig; }, 1500);
@@ -334,7 +424,6 @@ const webAppSchema = {
     box-shadow: var(--shadow-md);
   }
   .color-hex-label {
-    background: rgba(0,0,0,0.6);
     color: #fff;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.875rem;
@@ -372,6 +461,64 @@ const webAppSchema = {
     font-size: 0.9375rem;
     color: var(--color-text);
   }
+  .copy-btn {
+    display: inline-block;
+    margin-top: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    transition: all 0.2s;
+  }
+  .copy-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: var(--color-primary-subtle);
+  }
+
+  .tool-ctas {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1.5rem 0;
+  }
+  .tool-ctas h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+  .tool-cta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.75rem;
+  }
+  .tool-cta-card {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.75rem 1rem;
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .tool-cta-card:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-1px);
+  }
+  .tool-cta-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+  .tool-cta-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
 
   .seo-content {
     max-width: 720px;
@@ -381,7 +528,7 @@ const webAppSchema = {
   .seo-content h2 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: var(--color-text-primary);
+    color: var(--color-text);
   }
   .seo-content p {
     margin-bottom: 1rem;
@@ -398,7 +545,7 @@ const webAppSchema = {
   .use-cases h2 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: var(--color-text-primary);
+    color: var(--color-text);
   }
   .use-cases-grid {
     display: flex;
@@ -422,7 +569,7 @@ const webAppSchema = {
   .palette-section h2 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: var(--color-text-primary);
+    color: var(--color-text);
   }
   .palette-swatches {
     display: flex;
@@ -469,7 +616,7 @@ const webAppSchema = {
   .css-snippet-section h2 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: var(--color-text-primary);
+    color: var(--color-text);
   }
   .css-snippet {
     background: var(--color-bg-alt);
@@ -483,6 +630,115 @@ const webAppSchema = {
     line-height: 1.6;
   }
 
+  /* ---- Accessibility Score ---- */
+  .a11y-score-section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1.5rem 0;
+  }
+  .a11y-score-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+  .a11y-score-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.25rem;
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    flex-wrap: wrap;
+  }
+  .a11y-score-circle {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .a11y-score-inner {
+    position: absolute;
+    inset: 8px;
+    background: var(--color-bg);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .a11y-score-number {
+    font-size: 2rem;
+    font-weight: 800;
+  }
+  .a11y-score-of {
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+    margin-top: 0.125rem;
+  }
+  .a11y-score-details {
+    flex: 1;
+    min-width: 200px;
+  }
+  .a11y-grade-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.625rem;
+    padding-bottom: 0.625rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .a11y-grade-label {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+  .a11y-grade-value {
+    font-size: 1.25rem;
+    font-weight: 800;
+  }
+  .a11y-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+  .a11y-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+  }
+  .a11y-check-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .a11y-check.pass .a11y-check-icon {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+  }
+  .a11y-check.fail .a11y-check-icon {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+  }
+  .a11y-explainer {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin-top: 0.75rem;
+    line-height: 1.5;
+  }
+
   .contrast-section {
     max-width: 720px;
     margin: 0 auto;
@@ -491,7 +747,7 @@ const webAppSchema = {
   .contrast-section h2 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: var(--color-text-primary);
+    color: var(--color-text);
   }
   .contrast-cards {
     display: flex;
@@ -500,32 +756,31 @@ const webAppSchema = {
   }
   .contrast-card {
     flex: 1;
-    min-width: 240px;
+    min-width: 280px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     overflow: hidden;
   }
   .contrast-preview {
-    padding: 2rem 1.5rem;
+    padding: 1.25rem;
     text-align: center;
-    font-weight: 700;
-    font-size: 1rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
   }
   .contrast-info {
     padding: 0.75rem 1rem;
-    background: var(--color-bg-alt);
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+    background: var(--color-bg-alt);
   }
   .contrast-ratio {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8125rem;
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 0.9375rem;
     color: var(--color-text);
   }
   .contrast-pass {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
   }
   .contrast-pass.pass {
@@ -538,32 +793,31 @@ const webAppSchema = {
   .related-colors {
     max-width: 720px;
     margin: 0 auto;
-    padding: 2rem 0;
+    padding: 1.5rem 0;
   }
   .related-colors h2 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: var(--color-text-primary);
+    color: var(--color-text);
   }
   .related-colors-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.5rem;
   }
   .related-color-card {
-    text-decoration: none;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.375rem;
-    padding: 0.75rem;
+    text-decoration: none;
+    padding: 0.625rem;
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    transition: border-color 0.2s, box-shadow 0.2s;
+    border-radius: var(--radius-sm);
+    transition: border-color 0.2s;
   }
   .related-color-card:hover {
     border-color: var(--color-primary);
-    box-shadow: var(--shadow-sm);
   }
   .related-color-swatch {
     width: 40px;
@@ -573,9 +827,9 @@ const webAppSchema = {
   }
   .related-color-name {
     font-size: 0.75rem;
-    color: var(--color-text-secondary);
+    color: var(--color-text);
+    font-weight: 500;
     text-align: center;
-    line-height: 1.2;
   }
 
   .related-tools {
@@ -586,7 +840,7 @@ const webAppSchema = {
   .related-tools h2 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: var(--color-text-primary);
+    color: var(--color-text);
   }
   .related-tools ul {
     list-style: none;
@@ -600,84 +854,11 @@ const webAppSchema = {
     font-size: 1.05rem;
   }
   .related-tools a {
-    color: #6366f1;
+    color: var(--color-primary);
     text-decoration: none;
     font-weight: 600;
   }
   .related-tools a:hover {
     text-decoration: underline;
-  }
-
-  /* Copy buttons */
-  .value-card {
-    position: relative;
-  }
-  .copy-btn {
-    display: inline-block;
-    margin-top: 0.5rem;
-    padding: 0.2rem 0.6rem;
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
-    background: var(--color-bg);
-    color: var(--color-text-muted);
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s, border-color 0.2s;
-  }
-  .copy-btn:hover {
-    background: var(--color-primary);
-    color: #fff;
-    border-color: var(--color-primary);
-  }
-  .copy-btn:active {
-    transform: scale(0.95);
-  }
-
-  /* Tool CTA section */
-  .tool-ctas {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 2rem 0;
-  }
-  .tool-ctas h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: var(--color-text-primary);
-  }
-  .tool-cta-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 0.75rem;
-  }
-  .tool-cta-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1rem 0.75rem;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: var(--color-bg-alt);
-    text-decoration: none;
-    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-  }
-  .tool-cta-card:hover {
-    border-color: var(--color-primary);
-    box-shadow: var(--shadow-sm);
-    transform: translateY(-2px);
-  }
-  .tool-cta-icon {
-    font-size: 1.5rem;
-    line-height: 1;
-  }
-  .tool-cta-label {
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: var(--color-text);
-    text-align: center;
-    line-height: 1.3;
   }
 </style>

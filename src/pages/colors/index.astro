@@ -3,74 +3,289 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ToolLayout from '../../components/ToolLayout.astro';
 import { colors, colorCategories } from '../../data/colors';
 import type { ColorData } from '../../data/colors';
+import FAQ from '../../components/FAQ.astro';
 
-export async function getStaticPaths() {
-  return [];
-}
-
-const title = 'Colors';
-const description = 'Browse all CSS named colors with HEX codes, RGB values, and detailed information.';
+const title = 'Color Encyclopedia — All CSS Named Colors';
+const description = 'Browse all 164 CSS named colors organized by category. Each color page includes HEX, RGB, HSL values, tints & shades, complementary palettes, contrast recommendations, and CSS code snippets.';
 const canonical = 'https://color-helper.com/colors/';
 const breadcrumbs = [{ label: 'Colors' }];
+
+const totalColors = colors.length;
+const totalCategories = colorCategories.length;
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
 ---
 
 <BaseLayout {title} {description} {canonical} {breadcrumbs}>
   <ToolLayout {title} {description} {breadcrumbs}>
-    <section class="seo-content">
-      <h2>All Colors</h2>
-      <p>Browse our complete collection of CSS named colors. Click on any color to view detailed information including HEX, RGB, HSL values, color schemes, and accessibility recommendations.</p>
-      <div class="category-grid">
-        {colorCategories.map(category => {
-          const categoryColors = colors.filter((c: ColorData) => c.category === category);
-          return (
-            <div class="category-group">
-              <h3>{category}</h3>
-              <div class="color-mini-grid">
-                {categoryColors.map((color: ColorData) => (
-                  <a href={`/colors/${color.slug}/`} class="color-mini-card" title={color.name}>
-                    <span class="color-mini-swatch" style="background-color: {color.hex};"></span>
-                    <span class="color-mini-name">{color.name}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          );
-        })}
+    <!-- Hero -->
+    <section class="colors-hero">
+      <div class="colors-hero-content">
+        <h2>Color Encyclopedia</h2>
+        <p>Explore all {totalColors} CSS named colors across {totalCategories} categories. Click any color for detailed information including HEX, RGB, HSL values, tints &amp; shades, complementary palettes, contrast recommendations, and ready-to-use CSS code.</p>
+        <div class="colors-hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-number">{totalColors}</span>
+            <span class="hero-stat-label">Named Colors</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-number">{totalCategories}</span>
+            <span class="hero-stat-label">Categories</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-number">148</span>
+            <span class="hero-stat-label">CSS Spec</span>
+          </div>
+        </div>
+        <div class="colors-hero-cta">
+          <a href="/color-names/" class="btn btn-secondary">View as Table →</a>
+        </div>
       </div>
     </section>
+
+    <!-- Search -->
+    <div class="filter-bar">
+      <input type="text" id="color-search" class="filter-input" placeholder="Search colors by name, hex, or category..." />
+      <select id="category-filter" class="filter-select">
+        <option value="">All Categories</option>
+        {colorCategories.map(cat => (
+          <option value={cat}>{cat}</option>
+        ))}
+      </select>
+    </div>
+    <p id="no-results" class="no-results" style="display: none;">No colors found matching your search.</p>
+
+    <!-- Category Grid -->
+    <div class="category-grid" id="category-grid">
+      {colorCategories.map(category => {
+        const categoryColors = colors.filter((c: ColorData) => c.category === category);
+        return (
+          <div class="category-group" data-category={category}>
+            <h3>{category} <span class="category-count">({categoryColors.length})</span></h3>
+            <div class="color-mini-grid">
+              {categoryColors.map((color: ColorData) => (
+                <a href={`/colors/${color.slug}/`} class="color-mini-card" title={`${color.name} — ${color.hex}`} data-name={color.name.toLowerCase()} data-hex={color.hex} data-category={color.category}>
+                  <span class="color-mini-swatch" style={`background-color: ${color.hex};`}></span>
+                  <span class="color-mini-name">{color.name}</span>
+                  <span class="color-mini-hex">{color.hex}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- SEO Content -->
+    <section class="seo-content">
+      <h2>CSS Named Colors — Complete Reference</h2>
+      <p>CSS named colors are predefined color keywords that can be used directly in stylesheets without needing hex codes or RGB values. The CSS Color Module Level 4 specification defines 148 named colors, ranging from common colors like "red" and "blue" to more specialized names like "blanchedalmond" and "rebeccapurple".</p>
+      <p>Our color encyclopedia goes beyond the 148 CSS spec colors — we include additional well-known web colors and organize them into 14 intuitive categories: Red, Pink, Purple, Blue, Cyan, Teal, Green, Lime, Yellow, Orange, Brown, White, Gray, and Black. Each color has its own dedicated page with comprehensive information.</p>
+      <p>On each color page you'll find: HEX, RGB, and HSL values with one-click copy; tints and shades for creating monochromatic palettes; complementary and analogous color schemes; WCAG contrast ratio checks against black and white; ready-to-use CSS code snippets; and links to related tools like the Color Picker, Palette Generator, and Contrast Checker.</p>
+      <p>Whether you're a web designer building a brand palette, a developer implementing a design system, or a student learning color theory, this encyclopedia gives you everything you need to work confidently with CSS colors.</p>
+    </section>
+
+    <!-- Related Tools -->
+    <section class="related-tools">
+      <h2>Related Tools</h2>
+      <ul>
+        <li><a href="/color-names/">Color Names Table</a> — Searchable, sortable table of all named colors</li>
+        <li><a href="/color-picker/">Color Picker</a> — Pick and save colors interactively</li>
+        <li><a href="/color-palette-generator/">Palette Generator</a> — Create harmonious color schemes</li>
+        <li><a href="/contrast-checker/">Contrast Checker</a> — Check WCAG accessibility ratios</li>
+        <li><a href="/hex-color-codes/">HEX Color Codes</a> — Learn how hex codes work</li>
+      </ul>
+    </section>
+
+    <FAQ
+      items={[
+        {
+          question: 'How many CSS named colors are there?',
+          answer: 'The CSS Color Module Level 4 specification defines 148 named colors. Our encyclopedia includes these plus additional well-known web colors, organized into 14 intuitive categories for easy browsing.'
+        },
+        {
+          question: 'What information is on each color page?',
+          answer: 'Each color page includes: HEX, RGB, and HSL values with copy buttons; tints and shades (9-step monochromatic scale); complementary and analogous color palettes; WCAG contrast ratio checks against black and white text; ready-to-use CSS code snippets; use cases and design recommendations; and links to related tools.'
+        },
+        {
+          question: 'How are the colors organized?',
+          answer: 'Colors are grouped into 14 categories: Red, Pink, Purple, Blue, Cyan, Teal, Green, Lime, Yellow, Orange, Brown, White, Gray, and Black. This categorization helps you quickly find colors with similar hues when building your color palette.'
+        },
+        {
+          question: 'Can I use named colors in production CSS?',
+          answer: 'Yes, CSS named colors are fully supported in all modern browsers. However, for brand colors and precise design requirements, most teams use hex codes. Named colors are excellent for prototyping, documentation, and quick styling.'
+        }
+      ]}
+    />
   </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
 </BaseLayout>
 
+<script>
+  const searchInput = document.getElementById('color-search');
+  const categoryFilter = document.getElementById('category-filter');
+  const noResults = document.getElementById('no-results');
+  const categoryGroups = document.querySelectorAll('.category-group');
+
+  function filterColors() {
+    const query = (searchInput?.value || '').toLowerCase().trim();
+    const category = categoryFilter?.value || '';
+    let visibleCount = 0;
+
+    categoryGroups.forEach(group => {
+      const groupCat = group.getAttribute('data-category') || '';
+      if (category && groupCat !== category) {
+        group.style.display = 'none';
+        return;
+      }
+
+      const cards = group.querySelectorAll('.color-mini-card');
+      let groupVisible = 0;
+
+      cards.forEach(card => {
+        const name = card.getAttribute('data-name') || '';
+        const hex = card.getAttribute('data-hex') || '';
+        const cat = card.getAttribute('data-category') || '';
+        const matchesSearch = !query || name.includes(query) || hex.includes(query) || cat.toLowerCase().includes(query);
+        card.style.display = matchesSearch ? '' : 'none';
+        if (matchesSearch) groupVisible++;
+      });
+
+      group.style.display = groupVisible > 0 ? '' : 'none';
+      visibleCount += groupVisible;
+    });
+
+    if (noResults) noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+  }
+
+  if (searchInput) searchInput.addEventListener('input', filterColors);
+  if (categoryFilter) categoryFilter.addEventListener('change', filterColors);
+</script>
+
 <style is:global>
-  .seo-content {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 2rem 0;
+  .colors-hero {
+    background: linear-gradient(135deg, var(--color-primary-subtle) 0%, var(--color-bg) 100%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
   }
-  .seo-content h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: var(--color-text-primary);
+  .colors-hero-content h2 {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-text);
   }
-  .seo-content p {
-    margin-bottom: 1rem;
-    line-height: 1.7;
+  .colors-hero-content p {
+    max-width: 640px;
+    margin: 0 auto 1.5rem;
     color: var(--color-text-secondary);
-    font-size: 1.05rem;
+    line-height: 1.7;
+    font-size: 1rem;
   }
+  .colors-hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    line-height: 1.2;
+  }
+  .hero-stat-label {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .colors-hero-cta {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .filter-bar {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .filter-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-size: 0.9375rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .filter-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  }
+  .filter-select {
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-size: 0.9375rem;
+    outline: none;
+    cursor: pointer;
+  }
+  .filter-select:focus {
+    border-color: var(--color-primary);
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 2rem;
+    color: var(--color-text-muted);
+    font-size: 1rem;
+  }
+
   .category-grid {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    margin-bottom: 2rem;
   }
   .category-group h3 {
     font-size: 1.125rem;
     margin-bottom: 0.75rem;
     color: var(--color-text);
+    display: flex;
+    align-items: baseline;
+    gap: 0.375rem;
+  }
+  .category-count {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    font-weight: 400;
   }
   .color-mini-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 0.5rem;
   }
   .color-mini-card {
@@ -79,28 +294,85 @@ const breadcrumbs = [{ label: 'Colors' }];
     align-items: center;
     gap: 0.25rem;
     text-decoration: none;
-    padding: 0.5rem;
+    padding: 0.625rem 0.5rem;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, transform 0.15s, box-shadow 0.15s;
+    background: var(--color-bg);
   }
   .color-mini-card:hover {
     border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
   }
   .color-mini-swatch {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--color-border);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.08);
   }
   .color-mini-name {
-    font-size: 0.625rem;
-    color: var(--color-text-secondary);
+    font-size: 0.6875rem;
+    color: var(--color-text);
     text-align: center;
-    line-height: 1.1;
+    line-height: 1.2;
+    font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
     white-space: nowrap;
+  }
+  .color-mini-hex {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.625rem;
+    color: var(--color-text-muted);
+  }
+
+  .seo-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .seo-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+  .seo-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+
+  .related-tools {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .related-tools h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+  .related-tools ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .related-tools li {
+    padding: 0.375rem 0;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  .related-tools a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .related-tools a:hover {
+    text-decoration: underline;
   }
 </style>

@@ -5,10 +5,13 @@ import { colors, colorCategories } from '../data/colors';
 import type { ColorData } from '../data/colors';
 import FAQ from '../components/FAQ.astro';
 
-const title = 'Color Names — CSS Named Colors';
-const description = 'Browse all 148 CSS named colors with HEX codes, RGB values, and categories. Use our searchable table to find the perfect color for your web design projects.';
+const title = 'Color Names — CSS Named Colors Table';
+const description = 'Browse all 164 CSS named colors in a searchable, filterable table with HEX codes, RGB values, and categories. Find the perfect color for your web design projects.';
 const canonical = 'https://color-helper.com/color-names/';
 const breadcrumbs = [{ label: 'Color Names' }];
+
+const totalColors = colors.length;
+const totalCategories = colorCategories.length;
 
 const webAppSchema = {
   "@context": "https://schema.org",
@@ -23,7 +26,32 @@ const webAppSchema = {
 
 <BaseLayout {title} {description} {canonical} {breadcrumbs}>
   <ToolLayout {title} {description} {breadcrumbs}>
-    <!-- Search / Filter -->
+    <!-- Hero -->
+    <section class="names-hero">
+      <div class="names-hero-content">
+        <h2>CSS Named Colors Reference Table</h2>
+        <p>All {totalColors} named colors in a searchable, filterable table. Search by name, HEX code, or filter by category. Click any color name to view its detailed encyclopedia page with palettes, contrast checks, and CSS snippets.</p>
+        <div class="names-hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-number">{totalColors}</span>
+            <span class="hero-stat-label">Colors</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-number">{totalCategories}</span>
+            <span class="hero-stat-label">Categories</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-number">148</span>
+            <span class="hero-stat-label">CSS Spec</span>
+          </div>
+        </div>
+        <div class="names-hero-cta">
+          <a href="/colors/" class="btn btn-secondary">Browse by Category →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Search / Filter / Sort / Visual Preset -->
     <div class="filter-bar">
       <input type="text" id="color-search" class="filter-input" placeholder="Search colors by name, hex, or category..." />
       <select id="category-filter" class="filter-select">
@@ -32,6 +60,24 @@ const webAppSchema = {
           <option value={cat}>{cat}</option>
         ))}
       </select>
+      <select id="sort-by" class="filter-select" title="Sort by">
+        <option value="name-asc">Name A→Z</option>
+        <option value="name-desc">Name Z→A</option>
+        <option value="hex-asc">HEX 000→FFF</option>
+        <option value="hex-desc">HEX FFF→000</option>
+        <option value="luminance-asc">Lightness Dark→Light</option>
+        <option value="luminance-desc">Lightness Light→Dark</option>
+        <option value="category">By Category</option>
+      </select>
+    </div>
+    <div class="preset-bar" role="group" aria-label="Visual presets">
+      <span class="preset-label">Mood:</span>
+      <button type="button" class="preset-chip" data-preset="all">All</button>
+      <button type="button" class="preset-chip preset-warm" data-preset="warm">Warm 🔥</button>
+      <button type="button" class="preset-chip preset-cool" data-preset="cool">Cool ❄️</button>
+      <button type="button" class="preset-chip preset-bright" data-preset="bright">Bright ☀️</button>
+      <button type="button" class="preset-chip preset-dark" data-preset="dark">Dark 🌙</button>
+      <button type="button" class="preset-chip preset-neutral" data-preset="neutral">Neutral ⚪</button>
     </div>
 
     <!-- Color Table -->
@@ -52,14 +98,14 @@ const webAppSchema = {
             {colorCategories.map(category => (
               <>
                 <tr class="category-header-row">
-                  <td colspan="6" class="category-header">{category}</td>
+                  <td colspan="6" class="category-header">{category} ({colors.filter(c => c.category === category).length})</td>
                 </tr>
                 {colors
                   .filter(c => c.category === category)
                   .map(color => (
-                    <tr class="color-row" data-name={color.name.toLowerCase()} data-hex={color.hex} data-category={color.category}>
+                    <tr class="color-row" data-name={color.name.toLowerCase()} data-hex={color.hex} data-category={color.category} data-r={color.r} data-g={color.g} data-b={color.b}>
                       <td>
-                        <span class="swatch-dot" style="background-color: {color.hex};" title={color.hex}></span>
+                        <span class="swatch-dot" style={`background-color: ${color.hex};`} title={color.hex}></span>
                       </td>
                       <td>
                         <a href={`/colors/${color.slug}/`} class="color-name-link">{color.name}</a>
@@ -74,7 +120,7 @@ const webAppSchema = {
                         <span class="category-badge">{color.category}</span>
                       </td>
                       <td>
-                        <button class="copy-btn" data-hex={color.hex} title="Copy {color.hex}">📋</button>
+                        <button class="copy-btn" data-hex={color.hex} title={`Copy ${color.hex}`}>📋</button>
                       </td>
                     </tr>
                   ))}
@@ -92,7 +138,7 @@ const webAppSchema = {
     <section class="seo-content">
       <h2>Complete Guide to CSS Named Colors</h2>
       <p>CSS named colors are predefined color keywords that can be used in stylesheets without needing hex codes or RGB values. There are 148 named colors in the CSS Color Module Level 4 specification, ranging from common colors like "red" and "blue" to more obscure names like "blanchedalmond" and "rebeccapurple". These named colors provide a convenient way to reference colors in your CSS code with readable, semantic names.</p>
-      <p>The most widely used CSS named colors include the 17 original HTML colors: aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, purple, red, silver, teal, white, yellow, and of course orange (added later). Modern CSS supports all 148 named colors, making it easy to write readable stylesheets without memorizing hex codes for common colors.</p>
+      <p>The most widely used CSS named colors include the 17 original HTML colors: aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, purple, red, silver, teal, white, yellow, and orange (added later). Modern CSS supports all 148 named colors, making it easy to write readable stylesheets without memorizing hex codes for common colors.</p>
       <p>Each named color has a corresponding hex code, RGB value, and category grouping. The colors are organized into categories like Red, Pink, Purple, Blue, Cyan, Teal, Green, Lime, Yellow, Orange, Brown, White, Gray, and Black. This categorization helps you quickly find colors with similar hues when building your color palette.</p>
       <p>While named colors are convenient, they have limitations. The selection is fixed — you cannot create custom named colors — and some names like "lightgray" and "lightgrey" are synonyms that resolve to the same hex value. For precise color control, most professional designers use hex codes, but named colors remain an excellent starting point for prototyping and learning CSS.</p>
     </section>
@@ -101,6 +147,7 @@ const webAppSchema = {
     <section class="related-tools">
       <h2>Related Tools</h2>
       <ul>
+        <li><a href="/colors/">Color Encyclopedia</a> — Browse colors by category with detailed pages</li>
         <li><a href="/hex-color-codes/">HEX Color Codes</a> — Learn how hex codes work</li>
         <li><a href="/hex-to-rgb/">HEX to RGB Converter</a> — Convert hex codes to RGB values</li>
         <li><a href="/color-converter/">Color Converter</a> — Convert between HEX, RGB, and HSL</li>
@@ -138,46 +185,132 @@ const webAppSchema = {
 </BaseLayout>
 
 <script>
-  // Client-side search and copy functionality
   const searchInput = document.getElementById('color-search');
   const categoryFilter = document.getElementById('category-filter');
-  const colorRows = document.querySelectorAll('.color-row');
+  const sortBy = document.getElementById('sort-by');
+  const tableBody = document.querySelector('.color-table tbody');
+  const colorRows = Array.from(document.querySelectorAll('.color-row'));
+  const categoryHeaders = Array.from(document.querySelectorAll('.category-header-row'));
   const noResults = document.getElementById('no-results');
+  const presetChips = document.querySelectorAll('.preset-chip');
 
-  function filterColors() {
-    const query = (searchInput.value || '').toLowerCase().trim();
-    const category = categoryFilter.value || '';
+  // Compute luminance per row (WCAG relative luminance)
+  function getLuminance(row) {
+    const r = parseInt(row.getAttribute('data-r') || '0', 10);
+    const g = parseInt(row.getAttribute('data-g') || '0', 10);
+    const b = parseInt(row.getAttribute('data-b') || '0', 10);
+    const srgb = [r, g, b].map(v => {
+      v /= 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * srgb[0] + 0.7152 * srgb[1] + 0.0722 * srgb[2];
+  }
+
+  // Compute HSL from RGB
+  function getHsl(row) {
+    const r = parseInt(row.getAttribute('data-r') || '0', 10) / 255;
+    const g = parseInt(row.getAttribute('data-g') || '0', 10) / 255;
+    const b = parseInt(row.getAttribute('data-b') || '0', 10) / 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    const l = (max + min) / 2;
+    let h = 0, s = 0;
+    const d = max - min;
+    if (d !== 0) {
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      if (max === r) h = ((g - b) / d + (g < b ? 6 : 0));
+      else if (max === g) h = ((b - r) / d + 2);
+      else h = ((r - g) / d + 4);
+      h *= 60;
+    }
+    return { h, s, l };
+  }
+
+  // Visual preset matchers
+  function matchesPreset(row, preset) {
+    if (preset === 'all') return true;
+    const { h, s, l } = getHsl(row);
+    switch (preset) {
+      case 'warm': return (h >= 0 && h <= 60) || (h >= 300 && h <= 360);
+      case 'cool': return h >= 180 && h <= 280;
+      case 'bright': return l > 0.6 && s > 0.4;
+      case 'dark': return l < 0.3;
+      case 'neutral': return s < 0.15;
+      default: return true;
+    }
+  }
+
+  let activePreset = 'all';
+
+  function filterAndSort() {
+    const query = (searchInput?.value || '').toLowerCase().trim();
+    const category = categoryFilter?.value || '';
+    const sortKey = sortBy?.value || 'category';
     let visibleCount = 0;
 
-    // First pass: determine which rows are visible
     colorRows.forEach(row => {
       const name = row.getAttribute('data-name') || '';
       const hex = row.getAttribute('data-hex') || '';
       const cat = row.getAttribute('data-category') || '';
-      const matchesSearch = !query ||
-        name.includes(query) ||
-        hex.includes(query);
+      const matchesSearch = !query || name.includes(query) || hex.includes(query);
       const matchesCategory = !category || cat === category;
-      const visible = matchesSearch && matchesCategory;
+      const matchesPres = matchesPreset(row, activePreset);
+      const visible = matchesSearch && matchesCategory && matchesPres;
       row.style.display = visible ? '' : 'none';
       if (visible) visibleCount++;
     });
 
-    // Handle category header rows
-    document.querySelectorAll('.category-header-row').forEach(header => {
-      const category = header.querySelector('.category-header')?.textContent || '';
-      const rowsInCategory = document.querySelectorAll(
-        `.color-row[data-category="${category}"]`
-      );
-      const hasVisible = Array.from(rowsInCategory).some(r => r.style.display !== 'none');
-      header.style.display = hasVisible ? '' : 'none';
-    });
+    const sortFunctions = {
+      'name-asc': (a, b) => (a.getAttribute('data-name') || '').localeCompare(b.getAttribute('data-name') || ''),
+      'name-desc': (a, b) => (b.getAttribute('data-name') || '').localeCompare(a.getAttribute('data-name') || ''),
+      'hex-asc': (a, b) => (a.getAttribute('data-hex') || '').localeCompare(b.getAttribute('data-hex') || ''),
+      'hex-desc': (a, b) => (b.getAttribute('data-hex') || '').localeCompare(a.getAttribute('data-hex') || ''),
+      'luminance-asc': (a, b) => getLuminance(a) - getLuminance(b),
+      'luminance-desc': (a, b) => getLuminance(b) - getLuminance(a),
+      'category': (a, b) => (a.getAttribute('data-category') || '').localeCompare(b.getAttribute('data-category') || ''),
+    };
+    const sortFn = sortFunctions[sortKey] || sortFunctions['category'];
 
-    noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    if (sortKey === 'category') {
+      categoryHeaders.forEach(header => {
+        header.style.display = '';
+        const catName = header.querySelector('.category-header')?.textContent?.split(' (')[0] || '';
+        const rowsInCat = colorRows
+          .filter(r => (r.getAttribute('data-category') || '') === catName)
+          .sort((a, b) => sortFn(a, b));
+        header.after(...rowsInCat);
+      });
+    } else {
+      categoryHeaders.forEach(h => h.style.display = 'none');
+      const sortedRows = [...colorRows].sort(sortFn);
+      tableBody.append(...sortedRows);
+    }
+
+    if (sortKey === 'category') {
+      categoryHeaders.forEach(header => {
+        const catName = header.querySelector('.category-header')?.textContent?.split(' (')[0] || '';
+        const hasVisible = colorRows.some(r =>
+          r.getAttribute('data-category') === catName && r.style.display !== 'none'
+        );
+        header.style.display = hasVisible ? '' : 'none';
+      });
+    }
+
+    if (noResults) noResults.style.display = visibleCount === 0 ? 'block' : 'none';
   }
 
-  if (searchInput) searchInput.addEventListener('input', filterColors);
-  if (categoryFilter) categoryFilter.addEventListener('change', filterColors);
+  if (searchInput) searchInput.addEventListener('input', filterAndSort);
+  if (categoryFilter) categoryFilter.addEventListener('change', filterAndSort);
+  if (sortBy) sortBy.addEventListener('change', filterAndSort);
+
+  // Preset chips
+  presetChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      presetChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activePreset = chip.getAttribute('data-preset') || 'all';
+      filterAndSort();
+    });
+  });
 
   // Copy to clipboard
   document.querySelectorAll('.copy-btn').forEach(btn => {
@@ -193,7 +326,6 @@ const webAppSchema = {
           this.classList.remove('copied');
         }, 1500);
       } catch {
-        // Fallback
         const ta = document.createElement('textarea');
         ta.value = hex;
         ta.style.position = 'fixed';
@@ -215,6 +347,55 @@ const webAppSchema = {
 </script>
 
 <style is:global>
+  .names-hero {
+    background: linear-gradient(135deg, var(--color-primary-subtle) 0%, var(--color-bg) 100%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .names-hero-content h2 {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-text);
+  }
+  .names-hero-content p {
+    max-width: 640px;
+    margin: 0 auto 1.5rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    font-size: 1rem;
+  }
+  .names-hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    line-height: 1.2;
+  }
+  .hero-stat-label {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .names-hero-cta {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
   .filter-bar {
     display: flex;
     gap: 0.75rem;
@@ -250,6 +431,52 @@ const webAppSchema = {
   .filter-select:focus {
     border-color: var(--color-primary);
   }
+
+  /* ---- Visual Preset Bar ---- */
+  .preset-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-bottom: 1.5rem;
+  }
+  .preset-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin-right: 0.25rem;
+  }
+  .preset-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    background: var(--color-bg);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--font-sans);
+  }
+  .preset-chip:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: var(--color-primary-subtle);
+  }
+  .preset-chip.active {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+    font-weight: 600;
+  }
+  .preset-chip.preset-warm.active { background: #f97316; border-color: #f97316; }
+  .preset-chip.preset-cool.active { background: #06b6d4; border-color: #06b6d4; }
+  .preset-chip.preset-bright.active { background: #eab308; border-color: #eab308; color: #000; }
+  .preset-chip.preset-dark.active { background: #1e293b; border-color: #1e293b; }
+  .preset-chip.preset-neutral.active { background: #64748b; border-color: #64748b; }
 
   .color-table-section {
     margin-bottom: 2rem;
@@ -381,7 +608,7 @@ const webAppSchema = {
   .seo-content h2 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: var(--color-text-primary);
+    color: var(--color-text);
   }
   .seo-content p {
     margin-bottom: 1rem;
@@ -398,7 +625,7 @@ const webAppSchema = {
   .related-tools h2 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: var(--color-text-primary);
+    color: var(--color-text);
   }
   .related-tools ul {
     list-style: none;
@@ -412,7 +639,7 @@ const webAppSchema = {
     font-size: 1.05rem;
   }
   .related-tools a {
-    color: #6366f1;
+    color: var(--color-primary);
     text-decoration: none;
     font-weight: 600;
   }
