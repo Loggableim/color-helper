@@ -1,0 +1,80 @@
+---
+// BackToTop button — appears on scroll, smooth-scrolls to top
+---
+
+<button id="back-to-top" class="back-to-top" type="button" aria-label="Back to top" title="Back to top">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+
+<style is:global>
+  .back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 90;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    transition: opacity 0.25s var(--ease-out-expo), transform 0.25s var(--ease-out-expo), background 0.2s;
+  }
+  .back-to-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .back-to-top:hover {
+    background: var(--color-primary-dark, #4f46e5);
+    transform: translateY(-2px);
+  }
+  .back-to-top:focus-visible {
+    outline: 3px solid var(--color-primary-lighter, #a5b4fc);
+    outline-offset: 2px;
+  }
+  @media (max-width: 640px) {
+    .back-to-top {
+      bottom: 1.25rem;
+      right: 1.25rem;
+      width: 40px;
+      height: 40px;
+    }
+  }
+</style>
+
+<script>
+  const btn = document.getElementById('back-to-top');
+  if (btn) {
+    let ticking = false;
+    function updateVisibility() {
+      if (window.scrollY > 400) {
+        btn.classList.add('visible');
+      } else {
+        btn.classList.remove('visible');
+      }
+      ticking = false;
+    }
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(updateVisibility);
+        ticking = true;
+      }
+    }, { passive: true });
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    // Initial state
+    updateVisibility();
+  }
+</script>
