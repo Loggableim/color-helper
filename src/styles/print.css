@@ -1,0 +1,172 @@
+/* ===== Color Helper - Print Stylesheet ===== */
+/* Optimiert für Druck von /colors/[slug] Seiten */
+
+@media print {
+  /* Reset */
+  * {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Hide non-essential UI */
+  .site-header,
+  .site-footer,
+  .back-to-top,
+  .tool-ctas,
+  .related-tools,
+  .related-colors,
+  .related-tools,
+  nav,
+  .nav-toggle,
+  .theme-toggle,
+  .header-cta,
+  .hero,
+  .filter-bar,
+  .preset-bar,
+  .seo-content,
+  .contrast-section .contrast-card,
+  .css-snippet-section,
+  .use-cases,
+  .palette-section {
+    display: none !important;
+  }
+
+  /* Page layout */
+  @page {
+    size: A4 portrait;
+    margin: 1.5cm;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 11pt;
+    line-height: 1.4;
+    color: #000;
+  }
+
+  /* Show print-only content */
+  .print-only {
+    display: block !important;
+  }
+
+  /* Color swatch — large, prominent at top */
+  .color-hero {
+    margin: 0 0 1cm 0 !important;
+    page-break-after: avoid;
+  }
+  .color-swatch {
+    width: 100% !important;
+    height: 4cm !important;
+    border: 2pt solid #000 !important;
+    border-radius: 8pt !important;
+    page-break-inside: avoid;
+  }
+  .color-hex-label {
+    background: white !important;
+    color: black !important;
+    border: 1pt solid #000 !important;
+    font-size: 14pt !important;
+    padding: 4pt 8pt !important;
+  }
+
+  /* Color values */
+  .color-values {
+    display: flex !important;
+    gap: 0.5cm !important;
+    margin-bottom: 0.8cm !important;
+    page-break-after: avoid;
+  }
+  .value-card {
+    border: 1pt solid #000 !important;
+    background: white !important;
+    padding: 0.4cm !important;
+    flex: 1 !important;
+  }
+  .value-label {
+    color: #555 !important;
+    font-size: 9pt !important;
+  }
+  .value-code {
+    color: #000 !important;
+    font-size: 12pt !important;
+    font-weight: 600 !important;
+  }
+
+  /* Headings */
+  h1, h2, h3, h4 {
+    color: #000 !important;
+    page-break-after: avoid;
+  }
+  h1 { font-size: 24pt; margin-bottom: 0.5cm; }
+  h2 { font-size: 16pt; margin: 0.6cm 0 0.3cm; }
+  h3 { font-size: 13pt; }
+
+  /* Body text */
+  p, li {
+    color: #000 !important;
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* SEO content */
+  .seo-content {
+    padding: 0 !important;
+  }
+  .seo-content h2 {
+    margin-top: 0.8cm;
+  }
+  .seo-content p {
+    font-size: 10.5pt;
+    margin-bottom: 0.3cm;
+  }
+
+  /* FAQ */
+  .faq-item {
+    page-break-inside: avoid;
+    border: 1pt solid #999 !important;
+    margin-bottom: 0.3cm;
+    padding: 0.3cm !important;
+  }
+  .faq-question {
+    font-weight: 700 !important;
+    color: #000 !important;
+    margin-bottom: 0.2cm;
+  }
+  .faq-answer {
+    color: #333 !important;
+    font-size: 10pt;
+  }
+
+  /* Links */
+  a {
+    color: #000 !important;
+    text-decoration: underline;
+  }
+  a[href^="http"]:after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    color: #555;
+  }
+  a[href^="/"]:after {
+    content: " (color-helper.com" attr(href) ")";
+    font-size: 8pt;
+    color: #555;
+  }
+
+  /* Breadcrumbs */
+  .breadcrumbs {
+    font-size: 9pt;
+    color: #555 !important;
+    margin-bottom: 0.3cm;
+  }
+  .breadcrumbs a:after {
+    content: "" !important;
+  }
+}
+
+/* Print-only content (hidden on screen) */
+.print-only {
+  display: none;
+}

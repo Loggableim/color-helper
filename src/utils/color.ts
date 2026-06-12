@@ -10,10 +10,10 @@ export function normalizeHex(hex: string): string {
   if (h.length === 3) {
     h = h.split('').map(c => c + c).join('');
   }
-  if (h.length === 6) {
+  if (h.length === 6 && /^[0-9a-fA-F]+$/.test(h)) {
     return '#' + h.toLowerCase();
   }
-  return '#' + h.toLowerCase();
+  return hex;
 }
 
 export function isValidHex(hex: string): boolean {

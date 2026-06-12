@@ -2,3 +2,6 @@
 https://www.color-helper.com/* https://color-helper.com/:splat 301
 
 # Force HTTPS (handled by Cloudflare automatically, but belts and suspenders)
+
+# Mint page removed (duplicate of PaleGreen) → redirect to canonical
+/colors/mint/ /colors/palegreen/ 301
