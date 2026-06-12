@@ -44,3 +44,9 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist/ --project-name=color-helper --commit-dirty=true
           workingDirectory: .
+
+      - name: Submit URLs to IndexNow
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: node scripts/indexnow-submit.mjs
+        env:
+          INDEXNOW_KEY: a28f2699c1dd4b92bf5de35fa41cc70b
