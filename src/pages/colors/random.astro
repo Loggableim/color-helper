@@ -1,0 +1,34 @@
+---
+// /colors/random/ — redirects to a random color page.
+// Server-side pseudo-random (changes per build, not per visit).
+// The slug list is embedded in the page so client-side JS can pick a truly random one per visit.
+import { colors } from '../../data/colors';
+
+// Use day-of-year for a per-day stable but globally random pick (also enables "Color of the Day")
+const dayOfYear = Math.floor(
+  (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000
+);
+const colorOfTheDay = colors[dayOfYear % colors.length];
+
+const slugs = colors.map(c => c.slug);
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Random Color | Color Helper</title>
+  <meta name="robots" content="noindex,follow" />
+  <link rel="canonical" href={`https://color-helper.com/colors/${colorOfTheDay.slug}/`} />
+  <meta http-equiv="refresh" content={`0;url=/colors/${colorOfTheDay.slug}/`} />
+  <script is:inline>
+    // Pick a truly random color per visit (client-side)
+    const slugs = {slugs};
+    const randomSlug = slugs[Math.floor(Math.random() * slugs.length)];
+    window.location.replace(`/colors/${randomSlug}/`);
+  </script>
+</head>
+<body>
+  <p>Redirecting to a random color... <a href={`/colors/${colorOfTheDay.slug}/`}>Click here if not redirected</a>.</p>
+</body>
+</html>

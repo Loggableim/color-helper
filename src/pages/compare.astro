@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../components/ToolLayout.astro';
+import ColorComparison from '../components/ColorComparison';
+import FAQ from '../components/FAQ.astro';
+
+const title = 'Color Comparison Tool — Compare Two Colors Side-by-Side';
+const description = 'Compare any two colors side-by-side with HEX, RGB, HSL values, WCAG contrast ratio, hue/saturation/lightness difference, and live UI preview. Copy or share comparisons with URL params.';
+const canonical = 'https://color-helper.com/compare/';
+const breadcrumbs = [{ label: 'Color Comparison' }];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout {title} {description} {breadcrumbs}>
+    <ColorComparison client:load />
+
+    <section class="seo-content">
+      <h2>How to Compare Colors</h2>
+      <p>Color comparison is essential for designers and developers building accessible interfaces. Enter or pick two colors to see them side-by-side with full HEX, RGB, and HSL values, plus an instant WCAG contrast ratio check.</p>
+      <p>The contrast ratio tells you whether your color combination meets Web Content Accessibility Guidelines (WCAG) 2.2. AA requires 4.5:1 for normal text and 3:1 for large text. AAA is stricter at 7:1 and 4.5:1 respectively. Use the live preview to see how headlines and body text render on each background.</p>
+      <p>Beyond accessibility, this tool helps you understand the relationship between two colors. The hue/saturation/lightness difference shows how visually similar or distinct your colors are — useful for picking complementary pairs or avoiding muddy combinations.</p>
+    </section>
+
+    <section class="related-tools">
+      <h2>Related Tools</h2>
+      <ul>
+        <li><a href="/contrast-checker/">Contrast Checker</a> — Detailed WCAG analysis for two colors</li>
+        <li><a href="/color-mixer/">Color Mixer</a> — Mix two colors with a ratio slider</li>
+        <li><a href="/color-converter/">Color Converter</a> — Convert between HEX, RGB, HSL, and more</li>
+        <li><a href="/generate/color-wheel/">Color Wheel</a> — Find harmonious color pairs visually</li>
+      </ul>
+    </section>
+
+    <FAQ
+      items={[
+        {
+          question: 'What is a good color contrast ratio?',
+          answer: 'For WCAG AA compliance, normal text needs a 4.5:1 ratio and large text (18pt+ or 14pt bold) needs 3:1. For AAA compliance, normal text needs 7:1 and large text needs 4.5:1. Always aim for at least AA on body text.'
+        },
+        {
+          question: 'Why is the contrast ratio important?',
+          answer: 'About 8% of men and 0.5% of women have some form of color vision deficiency. Adequate contrast ensures your content is readable for users with low vision, in bright sunlight, on low-quality screens, or as they age. It is a legal requirement for many public-sector websites.'
+        },
+        {
+          question: 'Can I share color comparisons?',
+          answer: 'Yes! The URL updates with ?a=HEX1&b=HEX2 parameters. Anyone opening that link will see your exact comparison. Use the Copy button to grab the values for documentation.'
+        },
+        {
+          question: 'What does Δ Hue / Sat / Light mean?',
+          answer: 'Delta (Δ) values show the numerical difference between two colors in HSL space. A high hue delta means the colors are very different on the color wheel; a low hue delta with high lightness delta means the colors are similar but lighter/darker. This helps you pick colors with intentional contrast.'
+        }
+      ]}
+    />
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+</BaseLayout>
+
+<style is:global>
+  .seo-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .seo-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+  .seo-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  .related-tools {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .related-tools h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+  .related-tools ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .related-tools li {
+    padding: 0.375rem 0;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  .related-tools a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .related-tools a:hover {
+    text-decoration: underline;
+  }
+</style>

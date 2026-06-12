@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../components/ToolLayout.astro';
+import PaletteLibrary from '../components/PaletteLibrary';
+
+const title = 'My Palettes — Color Library & Saved Color Schemes';
+const description = 'Save, organize, rename, and export your personal color palettes. All palettes are stored locally in your browser — no account needed. Export as CSS Variables, SCSS, Tailwind, JSON, or Figma with one click.';
+const canonical = 'https://color-helper.com/palettes/';
+const breadcrumbs = [{ label: 'Palette Library' }];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout {title} {description} {breadcrumbs}>
+    <div class="tool-wrapper">
+      <PaletteLibrary client:load />
+    </div>
+
+    <section class="seo-content">
+      <h2>Your Saved Color Palettes</h2>
+      <p>All palettes you save from any Color Helper tool are stored in your browser's local storage. You can rename them, export them in multiple formats, copy all colors to your clipboard, or generate a share link. Palettes are private to your browser and persist between sessions.</p>
+      <p>Use the Export button to generate CSS Variables, SCSS, Tailwind Config, JSON Design Tokens, or Figma Variables from any saved palette.</p>
+    </section>
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+</BaseLayout>
+
+<style is:global>
+  .tool-wrapper { margin-bottom: 1.5rem; }
+  .seo-content { max-width: 720px; margin: 0 auto; padding: 2rem 0; }
+  .seo-content h2 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--color-text-primary); }
+  .seo-content p { margin-bottom: 1rem; line-height: 1.7; color: var(--color-text-secondary); font-size: 1.05rem; }
+</style>

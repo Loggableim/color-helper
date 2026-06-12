@@ -1,0 +1,107 @@
+[
+  {
+    "name": "Sunset Vibes",
+    "colors": ["#ff6b6b", "#feca57", "#48dbfb", "#ff9ff3", "#54a0ff"],
+    "category": "Warm",
+    "tags": ["sunset", "summer", "vibrant"],
+    "description": "A warm, inviting palette inspired by golden hour sunsets."
+  },
+  {
+    "name": "Ocean Deep",
+    "colors": ["#0c3483", "#a2b6df", "#6b8cce", "#1e3799", "#4a69bd"],
+    "category": "Cool",
+    "tags": ["ocean", "professional", "calm"],
+    "description": "Deep blues inspired by the ocean — perfect for corporate and finance."
+  },
+  {
+    "name": "Midnight Mint",
+    "colors": ["#0f172a", "#1e293b", "#475569", "#34d399", "#6ee7b7"],
+    "category": "Dark",
+    "tags": ["dark", "modern", "tech"],
+    "description": "A sleek dark mode palette with refreshing mint accents."
+  },
+  {
+    "name": "Lavender Dream",
+    "colors": ["#7c3aed", "#a855f7", "#d8b4fe", "#ede9fe", "#5b21b6"],
+    "category": "Purple",
+    "tags": ["creative", "luxury", "elegant"],
+    "description": "Rich purples from light lavender to deep violet — luxury branding."
+  },
+  {
+    "name": "Forest Floor",
+    "colors": ["#134e5e", "#71b280", "#a8e6cf", "#2d6a4f", "#40916c"],
+    "category": "Green",
+    "tags": ["nature", "organic", "calm"],
+    "description": "Earthy greens inspired by forest landscapes and natural textures."
+  },
+  {
+    "name": "Cotton Candy",
+    "colors": ["#ff6b9d", "#c44dff", "#ff9ff3", "#f368e0", "#be2edd"],
+    "category": "Pink",
+    "tags": ["playful", "feminine", "sweet"],
+    "description": "Soft, sweet pinks and purples — perfect for beauty and fashion."
+  },
+  {
+    "name": "Neon Nights",
+    "colors": ["#0f0f23", "#ff3366", "#00ff88", "#00ccff", "#ffcc00"],
+    "category": "Vibrant",
+    "tags": ["neon", "cyberpunk", "gaming"],
+    "description": "High-energy neon colors on a dark background — gaming and nightlife."
+  },
+  {
+    "name": "Sahara Sand",
+    "colors": ["#e9d8a6", "#d4a373", "#faedcd", "#ccd5ae", "#fefae0"],
+    "category": "Warm",
+    "tags": ["desert", "earthy", "minimal"],
+    "description": "Warm sands and earth tones — minimal, organic, and timeless."
+  },
+  {
+    "name": "Arctic Frost",
+    "colors": ["#e0f7fa", "#b2ebf2", "#80deea", "#4dd0e1", "#26c6da"],
+    "category": "Cool",
+    "tags": ["winter", "cold", "clean"],
+    "description": "Cool icy blues that feel fresh and clean — healthcare and wellness."
+  },
+  {
+    "name": "Ruby Red",
+    "colors": ["#dc2626", "#ef4444", "#fca5a5", "#fee2e2", "#991b1b"],
+    "category": "Red",
+    "tags": ["bold", "passion", "energy"],
+    "description": "Bold reds from vibrant ruby to soft blush — for confident branding."
+  },
+  {
+    "name": "Golden Hour",
+    "colors": ["#f59e0b", "#fbbf24", "#fcd34d", "#fde68a", "#d97706"],
+    "category": "Yellow",
+    "tags": ["warm", "optimistic", "sunny"],
+    "description": "Warm golden yellows that evoke optimism and sunny days."
+  },
+  {
+    "name": "Sleek Silver",
+    "colors": ["#f8fafc", "#e2e8f0", "#cbd5e1", "#94a3b8", "#64748b"],
+    "category": "Neutral",
+    "tags": ["minimal", "modern", "corporate"],
+    "description": "Clean, neutral slate tones — the foundation for any modern interface."
+  },
+  {
+    "name": "Tropical Paradise",
+    "colors": ["#ff6b6b", "#feca57", "#48dbfb", "#1dd1a1", "#ff9ff3"],
+    "category": "Vibrant",
+    "tags": ["tropical", "fun", "summer"],
+    "description": "Vibrant tropical colors — beaches, sunsets, and exotic flowers."
+  },
+  {
+    "name": "Berry Fresh",
+    "colors": ["#ec4899", "#f472b6", "#f9a8d4", "#fce7f3", "#db2777"],
+    "category": "Pink",
+    "tags": ["fresh", "youthful", "sweet"],
+    "description": "Juicy berry tones from strawberry to raspberry — fresh and fun."
+  },
+  {
+    "name": "Deep Space",
+    "colors": ["#0f172a", "#1e1b4b", "#312e81", "#4338ca", "#6366f1"],
+    "category": "Dark",
+    "tags": ["space", "premium", "mysterious"],
+    "description": "Deep indigos and blues evoking the cosmos — premium and sophisticated."
+  }
+]

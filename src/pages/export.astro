@@ -1,0 +1,191 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../components/ToolLayout.astro';
+import ExportModal from '../components/ExportModal';
+
+const title = 'Export Center';
+const description = 'Export your color palettes as CSS Variables, SCSS, Tailwind Config, JSON Design Tokens, or Figma Variables. Download or copy with one click.';
+const canonical = 'https://color-helper.com/export/';
+const breadcrumbs = [{ label: 'Export Center' }];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout {title} {description} {breadcrumbs}>
+    <div id="export-center-root" class="tool-wrapper">
+      <div class="card" style="padding: 1.5rem; max-width: 640px; margin: 0 auto;">
+        <p style="margin-bottom: 1.25rem; color: var(--color-text-secondary); line-height: 1.6;">
+          Paste a palette as comma-separated hex values or open any tool to export from there.
+        </p>
+
+        <div class="input-group" style="margin-bottom: 1.25rem;">
+          <label for="ec-input" class="input-label">Colors (comma-separated HEX)</label>
+          <input id="ec-input" type="text" class="input" placeholder="#6366f1, #a855f7, #ec4899, #f97316, #10b981" value="" />
+        </div>
+
+        <div id="ec-preview" style="display: flex; gap: 0.25rem; border-radius: 10px; overflow: hidden; height: 40px; margin-bottom: 1rem;"></div>
+
+        <div id="ec-export-root" style="min-height: 100px;"></div>
+
+        <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--color-border);">
+          <h3 style="font-size: 0.875rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--color-text-primary);">Quick Export from Tools</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.5rem;">
+            <a href="/color-palette-generator/" class="btn btn-secondary btn-sm" style="text-decoration: none;">Palette Generator</a>
+            <a href="/gradient-generator/" class="btn btn-secondary btn-sm" style="text-decoration: none;">Gradient Generator</a>
+            <a href="/color-picker/" class="btn btn-secondary btn-sm" style="text-decoration: none;">Color Picker</a>
+            <a href="/brand-color-palette-generator/" class="btn btn-secondary btn-sm" style="text-decoration: none;">Brand Palette</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live export component -->
+    <ExportModal colors={[]} isOpen={false} onClose={() => {}} />
+
+    <script>
+      (() => {
+        const input = document.getElementById('ec-input');
+        const preview = document.getElementById('ec-preview');
+        const root = document.getElementById('ec-export-root');
+
+        if (!input || !preview || !root) return;
+
+        function parseColors(text) {
+          return text.split(',')
+            .map(c => c.trim())
+            .filter(c => /^#[0-9a-fA-F]{6}$/.test(c) || /^[0-9a-fA-F]{6}$/.test(c))
+            .map(c => c.startsWith('#') ? c : '#' + c);
+        }
+
+        function updatePreview(colors) {
+          preview.innerHTML = '';
+          if (colors.length === 0) {
+            preview.innerHTML = '<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--color-text-dim);font-size:0.75rem;">Enter colors above</div>';
+            return;
+          }
+          colors.forEach(c => {
+            const swatch = document.createElement('div');
+            swatch.style.cssText = 'flex:1;min-height:100%;background:' + c + ';border-radius:0;';
+            swatch.title = c;
+            preview.appendChild(swatch);
+          });
+        }
+
+        function renderExportUI(colors) {
+          root.innerHTML = '';
+          if (colors.length === 0) return;
+
+          const exportFormats = [
+            { id: 'css', label: 'CSS Variables', icon: '🎨', ext: 'css' },
+            { id: 'scss', label: 'SCSS', icon: '💎', ext: 'scss' },
+            { id: 'tailwind', label: 'Tailwind', icon: '🌊', ext: 'js' },
+            { id: 'json', label: 'JSON', icon: '📋', ext: 'json' },
+            { id: 'figma', label: 'Figma', icon: '🖼️', ext: 'json' },
+          ];
+
+          const formatRow = document.createElement('div');
+          formatRow.style.cssText = 'display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;';
+          formatRow.setAttribute('id', 'ec-format-row');
+
+          let activeFormat = 'css';
+          const btns = exportFormats.map(fmt => {
+            const btn = document.createElement('button');
+            btn.textContent = fmt.icon + ' ' + fmt.label;
+            btn.type = 'button';
+            btn.style.cssText = 'padding:0.5rem 0.875rem;border-radius:10px;border:1.5px solid var(--color-border);background:transparent;color:var(--color-text-secondary);font-size:0.75rem;font-weight:600;cursor:pointer;font-family:inherit;line-height:1;transition:all 0.15s ease;';
+            btn.onclick = () => {
+              activeFormat = fmt.id;
+              renderCode();
+              btns.forEach(b => { b.style.borderColor = 'var(--color-border)'; b.style.background = 'transparent'; b.style.color = 'var(--color-text-secondary)'; });
+              btn.style.borderColor = 'var(--color-primary)'; btn.style.background = 'var(--color-primary-subtle)'; btn.style.color = 'var(--color-primary)';
+            };
+            formatRow.appendChild(btn);
+            return btn;
+          });
+          root.appendChild(formatRow);
+
+          const codeEl = document.createElement('pre');
+          codeEl.style.cssText = 'background:#0f172a;color:#e2e8f0;padding:1rem;border-radius:10px;font-size:0.75rem;font-family:monospace;line-height:20px;overflow:auto;max-height:200px;white-space:pre-wrap;word-break:break-all;margin:0 0 1rem 0;';
+          codeEl.setAttribute('id', 'ec-code');
+          root.appendChild(codeEl);
+
+          const actions = document.createElement('div');
+          actions.style.cssText = 'display:flex;gap:0.5rem;flex-wrap:wrap;';
+
+          function formatContent(format) {
+            const prefix = 'color';
+            const lines = colors.map((c, i) => {
+              switch (format) {
+                case 'css': return '  --' + prefix + '-' + (i+1) + ': ' + c + ';';
+                case 'scss': return '$' + prefix + '-' + (i+1) + ': ' + c + ';';
+                case 'json': return JSON.stringify(colors, null, 2);
+                case 'tailwind': return '  \'' + prefix + '-' + (i+1) + '\': \'' + c + '\'';
+                default: return colors.join(', ');
+              }
+            });
+            if (format === 'css') return ':root {\n' + lines.join('\n') + '\n}';
+            if (format === 'tailwind') return 'module.exports = {\n  colors: {\n' + lines.join(',\n') + '\n  }\n}';
+            if (format === 'figma') {
+              const vars = colors.map((c,i) => '{\n    "name": "' + prefix + '/' + (i+1) + '",\n    "type": "COLOR",\n    "value": ' + JSON.stringify(hexToFigma(c)) + ',\n    "scopes": ["ALL_SCOPES"]\n  }').join(',\n');
+              return '{\n  "variables": [\n' + vars + '\n  ]\n}';
+            }
+            return lines.join('\n');
+          }
+
+          function hexToFigma(hex) {
+            const h = hex.replace('#','');
+            return { r: Math.round(parseInt(h.substr(0,2),16)/255*1000)/1000, g: Math.round(parseInt(h.substr(2,2),16)/255*1000)/1000, b: Math.round(parseInt(h.substr(4,2),16)/255*1000)/1000, a: 1 };
+          }
+
+          function renderCode() {
+            codeEl.textContent = formatContent(activeFormat);
+          }
+          renderCode();
+
+          const copyBtn = document.createElement('button');
+          copyBtn.textContent = '📋 Copy';
+          copyBtn.type = 'button';
+          copyBtn.style.cssText = 'padding:0.625rem 1rem;border-radius:10px;border:none;font-size:0.8125rem;font-weight:600;cursor:pointer;background:var(--color-primary);color:#fff;font-family:inherit;line-height:1;box-shadow:0 2px 8px rgba(99,102,241,0.3);';
+          copyBtn.onclick = async () => {
+            try {
+              await navigator.clipboard.writeText(codeEl.textContent || '');
+              copyBtn.textContent = '✓ Copied!';
+              copyBtn.style.background = '#10b981';
+              setTimeout(() => { copyBtn.textContent = '📋 Copy'; copyBtn.style.background = 'var(--color-primary)'; }, 1500);
+            } catch {}
+          };
+          actions.appendChild(copyBtn);
+
+          root.appendChild(actions);
+        }
+
+        input.addEventListener('input', () => {
+          const colors = parseColors(input.value);
+          updatePreview(colors);
+          renderExportUI(colors);
+        });
+
+        // Set default example
+        input.value = '#6366f1, #a855f7, #ec4899, #f97316, #10b981';
+        input.dispatchEvent(new Event('input'));
+      })();
+    </script>
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+</BaseLayout>
+
+<style is:global>
+  .tool-wrapper {
+    margin-bottom: 1.5rem;
+  }
+</style>

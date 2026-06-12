@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolLayout from '../components/ToolLayout.astro';
+import PalettePreview from '../components/PalettePreview';
+
+const title = 'Palette Preview';
+const description = 'Test your color palette on real UI components — buttons, cards, dashboard, hero sections, and mobile app layouts. Live preview as you type.';
+const canonical = 'https://color-helper.com/preview/';
+const breadcrumbs = [{ label: 'Palette Preview' }];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout {title} {description} {breadcrumbs}>
+    <div class="tool-wrapper">
+      <PalettePreview client:load />
+    </div>
+
+    <section class="seo-content">
+      <h2>Why Use Palette Preview?</h2>
+      <p>Choosing colors is one thing — seeing them in context is another. Our Palette Preview system lets you test your color palette on real UI components before committing to a design decision. Enter comma-separated hex colors and instantly see how they look on buttons, cards, dashboard widgets, hero sections, and mobile app interfaces.</p>
+      <p>Switch between preview modes with one click. Each mode renders your palette on a different set of components, so you can evaluate how your colors perform across your entire design system. This is especially useful for designers building brand guidelines, developers setting up theme tokens, or anyone creating a new color scheme.</p>
+    </section>
+
+    <section class="related-tools">
+      <h2>Related Tools</h2>
+      <ul>
+        <li><a href="/color-palette-generator/">Palette Generator</a> — Create harmonious color schemes</li>
+        <li><a href="/color-wheel/">Color Wheel</a> — Visual harmony exploration</li>
+        <li><a href="/color-scale/">Color Scale Generator</a> — Tailwind-style 50–950 scales</li>
+        <li><a href="/contrast-checker/">Contrast Checker</a> — Check WCAG accessibility ratios</li>
+      </ul>
+    </section>
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+</BaseLayout>
+
+<style is:global>
+  .tool-wrapper { margin-bottom: 1.5rem; }
+  .seo-content { max-width: 720px; margin: 0 auto; padding: 2rem 0; }
+  .seo-content h2 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--color-text-primary); }
+  .seo-content p { margin-bottom: 1rem; line-height: 1.7; color: var(--color-text-secondary); font-size: 1.05rem; }
+  .related-tools { max-width: 720px; margin: 0 auto; padding: 2rem 0; }
+  .related-tools h2 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--color-text-primary); }
+  .related-tools ul { list-style: none; padding: 0; margin: 0; }
+  .related-tools li { padding: 0.375rem 0; line-height: 1.6; color: var(--color-text-secondary); font-size: 1.05rem; }
+  .related-tools a { color: #6366f1; text-decoration: none; font-weight: 600; }
+  .related-tools a:hover { text-decoration: underline; }
+</style>

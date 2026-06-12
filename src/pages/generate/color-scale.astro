@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolLayout from '../../components/ToolLayout.astro';
+import ColorScaleGenerator from '../../components/ColorScaleGenerator';
+import FAQ from '../../components/FAQ.astro';
+
+const title = 'Color Scale Generator';
+const description = 'Generate Tailwind CSS v3/v4-compatible color scales from a single base color. Get 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, and 950 steps with one click.';
+const canonical = 'https://color-helper.com/generate/color-scale/';
+const breadcrumbs = [
+  { label: 'Generate', href: '/tools/' },
+  { label: 'Color Scale Generator' },
+];
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title,
+  "description": description,
+  "url": canonical,
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "All"
+};
+---
+
+<BaseLayout {title} {description} {canonical} {breadcrumbs}>
+  <ToolLayout {title} {description} {breadcrumbs}>
+    <div class="tool-wrapper">
+      <ColorScaleGenerator client:load />
+    </div>
+
+    <section class="seo-content">
+      <h2>What Is a Color Scale?</h2>
+      <p>A color scale is a set of graduated color steps from light to dark derived from a single base color. Tailwind CSS popularized the 50–950 naming convention, where 50 is the lightest tint and 950 is the darkest shade. Our generator creates perceptually uniform steps by manipulating hue, saturation, and lightness in the HSL color space.</p>
+      <p>To use the generator, enter a base hex color or use the color picker. The tool automatically generates 11 color steps that you can copy individually or export as CSS variables, SCSS, Tailwind config, JSON design tokens, or Figma variables.</p>
+      <p>This is invaluable for building design systems, creating UI themes, or generating consistent color ramps for your Tailwind projects.</p>
+    </section>
+
+    <section class="related-tools">
+      <h2>Related Tools</h2>
+      <ul>
+        <li><a href="/color-palette-generator/">Palette Generator</a> — Create harmonious color schemes</li>
+        <li><a href="/color-converter/">Color Converter</a> — Convert between HEX, RGB, and HSL</li>
+        <li><a href="/gradient-generator/">Gradient Generator</a> — Create beautiful CSS gradients</li>
+        <li><a href="/contrast-checker/">Contrast Checker</a> — Check WCAG accessibility ratios</li>
+      </ul>
+    </section>
+
+    <FAQ
+      items={[
+        {
+          question: 'What is the 50–950 naming convention?',
+          answer: 'This convention was popularized by Tailwind CSS. 50 is the lightest shade (near white), 500 is typically the base or default color, and 950 is the darkest shade (near black). Each step represents a perceptually uniform increase in darkness.'
+        },
+        {
+          question: 'How does the scale generation work?',
+          answer: 'The generator works in HSL color space. It keeps the hue constant and adjusts lightness and saturation for each step. Middle steps (300–700) have higher saturation while extreme steps (50, 950) desaturate toward white and black respectively.'
+        },
+        {
+          question: 'Can I use these colors in Tailwind CSS?',
+          answer: 'Yes! Export as Tailwind Config format to generate the exact module.exports = { colors: { ... } } object that can be pasted into your tailwind.config.js file.'
+        },
+        {
+          question: 'What color formats are supported?',
+          answer: 'You can enter any valid hex color (3 or 6 digits, with or without the # prefix). The scale is generated and displayed in hex format with one-click copy for each step.'
+        },
+        {
+          question: 'How many steps does the scale generate?',
+          answer: 'The generator creates 11 steps: 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, and 950 — matching the Tailwind CSS v3/v4 scale exactly.'
+        }
+      ]}
+    />
+  </ToolLayout>
+
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+</BaseLayout>
+
+<style is:global>
+  .tool-wrapper {
+    margin-bottom: 1.5rem;
+  }
+  .seo-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .seo-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .seo-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  .related-tools {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  .related-tools h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  .related-tools ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .related-tools li {
+    padding: 0.375rem 0;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  .related-tools a {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .related-tools a:hover {
+    text-decoration: underline;
+  }
+</style>
