@@ -1,0 +1,15 @@
+# ads.txt — Google AdSense
+# Status: PENDING — Publisher-ID eintragen sobald AdSense-Konto genehmigt.
+#
+# Format pro Zeile:
+#   google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+#
+# Wichtig:
+#   - Datei MUSS unter https://color-helper.com/ads.txt erreichbar sein
+#   - AdSense-Crawler prüft sie bei jedem Review
+#   - FALSCHE IDs → Account-Sperrung möglich
+#
+# Nach AdSense-Genehmigung ersetzen mit:
+#   google.com, pub-DEINE-PUBLISHER-ID, DIRECT, f08c47fec0942fa0
+
+placeholder.google.com, pub-0000000000000000, placeholder, f08c47fec0942fa0
