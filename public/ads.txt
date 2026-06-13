@@ -12,4 +12,4 @@
 # Nach AdSense-Genehmigung ersetzen mit:
 #   google.com, pub-DEINE-PUBLISHER-ID, DIRECT, f08c47fec0942fa0
 
-placeholder.google.com, pub-0000000000000000, placeholder, f08c47fec0942fa0
+placeholder.google.com, pub-9094916118868532, DIRECT, f08c47fec0942fa0
