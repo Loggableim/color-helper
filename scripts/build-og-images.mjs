@@ -393,6 +393,9 @@ async function main() {
 
   const start = Date.now();
   let ok = 0, fail = 0;
+  // Seriell statt Promise.all: satori yielet intern, Resvg nutzt Multi-Threading
+  // und ein parallel gestarteter Build kann in GH-Action wegen Dateisystem-Race
+  // fehlschlagen. Sequentiell ist langsamer (~6s → ~10s) aber zuverlässig.
   for (const c of colors) {
     try {
       const svg = await satori(colorTemplate(c), { width: 1200, height: 630, fonts });
