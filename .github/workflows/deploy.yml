@@ -5,6 +5,14 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# GitHub deprecation warning: actions/checkout@v4, actions/setup-node@v4,
+# cloudflare/wrangler-action@v3 laufen auf Node 20, das ab 16.06.2026 deprecated.
+# FORCE_JAVASCRIPT_ACTIONS_TO_NODE24 erzwingt Node 24 auf allen Actions.
+# Sobald alle Actions Node 24 unterstützen (oder v5/v6 geupdatet werden), kann
+# dieser env-Wert entfernt werden.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 concurrency:
   group: pages-deploy
   cancel-in-progress: false
@@ -24,7 +32,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
           cache: 'npm'
@@ -38,7 +46,7 @@ jobs:
           NODE_ENV: production
 
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
