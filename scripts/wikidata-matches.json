@@ -1,0 +1,27 @@
+{
+  "white": {
+    "name": "White",
+    "qid": "Q23444",
+    "label": "white"
+  },
+  "red": {
+    "name": "Red",
+    "qid": "Q3142",
+    "label": "red"
+  },
+  "blue": {
+    "name": "Blue",
+    "qid": "Q1088",
+    "label": "blue"
+  },
+  "green": {
+    "name": "Green",
+    "qid": "Q3133",
+    "label": "green"
+  },
+  "yellow": {
+    "name": "Yellow",
+    "qid": "Q943",
+    "label": "yellow"
+  }
+}

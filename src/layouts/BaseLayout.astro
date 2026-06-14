@@ -89,18 +89,31 @@ const ogImageUrl = ogImage || defaultOgImage;
       })();
     </script>
 
-    <!-- JSON-LD: WebSite schema -->
+    <!-- JSON-LD: WebSite schema with Sitelinks Search Box -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Color Helper",
+      "alternateName": "Color Tools",
       "url": siteUrl,
       "description": "Free color tools for designers, developers and creators.",
+      "inLanguage": "en",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Color Helper",
+        "url": siteUrl,
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${siteUrl}/favicon.svg`,
+          "width": 32,
+          "height": 32
+        }
+      },
       "potentialAction": {
         "@type": "SearchAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": `${siteUrl}/?q={search_term_string}`
+          "urlTemplate": `${siteUrl}/colors/?q={search_term_string}`
         },
         "query-input": "required name=search_term_string"
       }

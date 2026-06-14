@@ -1,0 +1,1086 @@
+{
+  "Q23444": {
+    "label": "white",
+    "desc": "lightest color",
+    "hex": [
+      "ffffff"
+    ],
+    "instance_of": [
+      "Q1075",
+      "Q56053097"
+    ]
+  },
+  "Q3133": {
+    "label": "green",
+    "desc": "additive primary color, visible between blue and yellow",
+    "hex": [
+      "00ff00",
+      "008000"
+    ],
+    "instance_of": [
+      "Q166902",
+      "Q56053097",
+      "Q910300",
+      "Q376346"
+    ]
+  },
+  "Q3142": {
+    "label": "red",
+    "desc": "prismatic and primary color with longest visible wavelength in the electromagnetic spectrum",
+    "hex": [
+      "ff0000",
+      "ed0a3f"
+    ],
+    "instance_of": [
+      "Q376346",
+      "Q166902",
+      "Q56053097",
+      "Q910300",
+      "Q137796868"
+    ]
+  },
+  "Q943": {
+    "label": "yellow",
+    "desc": "primary color between green and orange in the light spectrum",
+    "hex": [
+      "ffff00"
+    ],
+    "instance_of": [
+      "Q376346",
+      "Q166902",
+      "Q56053097",
+      "Q910300",
+      "Q1796648"
+    ]
+  },
+  "Q1088": {
+    "label": "blue",
+    "desc": "primary color between purple and green in the spectrum",
+    "hex": [
+      "0000ff"
+    ],
+    "instance_of": [
+      "Q166902",
+      "Q56053097",
+      "Q910300",
+      "Q376346"
+    ]
+  },
+  "Q23457": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q17004678": {
+    "label": "",
+    "desc": "island in Zhejiang, People's Republic of China",
+    "hex": [],
+    "instance_of": [
+      "Q23442"
+    ]
+  },
+  "Q16502893": {
+    "label": "",
+    "desc": "lake in Åre Municipality, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16502944": {
+    "label": "",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16503307": {
+    "label": "Blåkulltjärnen",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16503479": {
+    "label": "Bockstenstjärnet",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q17004937": {
+    "label": "Rumyan Hovsepyan",
+    "desc": "Armenian footballer",
+    "hex": [],
+    "instance_of": [
+      "Q5"
+    ]
+  },
+  "Q17004939": {
+    "label": "El Paso Police Department",
+    "desc": "Law enforcement agency in El Paso, Texas",
+    "hex": [],
+    "instance_of": [
+      "Q732717",
+      "Q1758690"
+    ]
+  },
+  "Q867056": {
+    "label": "Chrysochraontini",
+    "desc": "tribe of grasshoppers",
+    "hex": [],
+    "instance_of": [
+      "Q16521"
+    ]
+  },
+  "Q17004875": {
+    "label": "Hope Channel Philippines",
+    "desc": "Philippine Protestant network",
+    "hex": [],
+    "instance_of": [
+      "Q2001305"
+    ]
+  },
+  "Q16503702": {
+    "label": "Bodtjärnen",
+    "desc": "lake in Ockelbo Municipality, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16503874": {
+    "label": "",
+    "desc": "Wikimedia category",
+    "hex": [],
+    "instance_of": [
+      "Q4167836"
+    ]
+  },
+  "Q16503993": {
+    "label": "Bosarydssjön",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q17004827": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": [
+      "Q5"
+    ]
+  },
+  "Q17004918": {
+    "label": "Suicidal Tendencies discography",
+    "desc": "Wikimedia band discography",
+    "hex": [],
+    "instance_of": [
+      "Q104635718"
+    ]
+  },
+  "Q16504097": {
+    "label": "Bottnanetjärnet",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16504132": {
+    "label": "Brakasjö",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q17005068": {
+    "label": "Francisca de Lebrija",
+    "desc": "Spanish rhetorician",
+    "hex": [],
+    "instance_of": [
+      "Q5"
+    ]
+  },
+  "Q16504918": {
+    "label": "Category:C-Class Vietnam articles",
+    "desc": "Wikimedia category",
+    "hex": [],
+    "instance_of": [
+      "Q4167836"
+    ]
+  },
+  "Q16504980": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16505086": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16505028": {
+    "label": "",
+    "desc": "Wikimedia category",
+    "hex": [],
+    "instance_of": [
+      "Q4167836"
+    ]
+  },
+  "Q16504966": {
+    "label": "Category:Lambeosaurini",
+    "desc": "Wikimedia category",
+    "hex": [],
+    "instance_of": [
+      "Q4167836"
+    ]
+  },
+  "Q16505114": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16505202": {
+    "label": "Blektjärnen",
+    "desc": "lake in Bräcke Municipality, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16505236": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": [
+      "Q23442"
+    ]
+  },
+  "Q16505265": {
+    "label": "virtue",
+    "desc": "morally positive trait or quality deemed to be morally good",
+    "hex": [],
+    "instance_of": [
+      "Q151885",
+      "Q2515887",
+      "Q129510955"
+    ]
+  },
+  "Q16505321": {
+    "label": "Skogsbo",
+    "desc": "settlement in Enköping Municipality, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q14839548"
+    ]
+  },
+  "Q16505225": {
+    "label": "",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16505355": {
+    "label": "",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16505367": {
+    "label": "Bredtjärn",
+    "desc": "lake in Älvdalen Municipality, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16505395": {
+    "label": "Bredträsket",
+    "desc": "lake in Skellefteå Municipality, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397",
+      "Q30092776"
+    ]
+  },
+  "Q16505412": {
+    "label": "Bredvattnet",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16505476": {
+    "label": "Brocksjön",
+    "desc": "",
+    "hex": [],
+    "instance_of": [
+      "Q23397",
+      "Q30092776"
+    ]
+  },
+  "Q16505523": {
+    "label": "Bromstjärn",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16505579": {
+    "label": "Brudsjön",
+    "desc": "",
+    "hex": [],
+    "instance_of": [
+      "Q23397",
+      "Q30092776"
+    ]
+  },
+  "Q16505598": {
+    "label": "Brunbergsdammet",
+    "desc": "lake in Bräcke Municipality, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16505629": {
+    "label": "Brunsbogöl",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16505650": {
+    "label": "Brutjärn",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q17004993": {
+    "label": "Athlunkard Street",
+    "desc": "street in Limerick city, Ireland",
+    "hex": [],
+    "instance_of": [
+      "Q79007"
+    ]
+  },
+  "Q16505735": {
+    "label": "Bräcketjärnen",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16505767": {
+    "label": "Brängen",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397",
+      "Q30092776"
+    ]
+  },
+  "Q17004895": {
+    "label": "Flavour",
+    "desc": "2012 single by Iyanya",
+    "hex": [],
+    "instance_of": [
+      "Q7366",
+      "Q134556"
+    ]
+  },
+  "Q16505851": {
+    "label": "",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16505900": {
+    "label": "Brännträsket",
+    "desc": "lake in Skellefteå Municipality, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397",
+      "Q30092776"
+    ]
+  },
+  "Q17005028": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16505663": {
+    "label": "Brynolf & Ljung",
+    "desc": "",
+    "hex": [],
+    "instance_of": [
+      "Q16334295"
+    ]
+  },
+  "Q17004880": {
+    "label": "St. Crispin's reef",
+    "desc": "elongate outer-shelf coral reef in the Great Barrier Reef, Queensland, Australia",
+    "hex": [],
+    "instance_of": [
+      "Q11292"
+    ]
+  },
+  "Q16506027": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q17005015": {
+    "label": "Layla",
+    "desc": "magazine published in Baghdad from 1923 onwards",
+    "hex": [],
+    "instance_of": [
+      "Q41298",
+      "Q1002697"
+    ]
+  },
+  "Q16506076": {
+    "label": "Bugsjön",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16505836": {
+    "label": "",
+    "desc": "lake in Örnsköldsvik Municipality, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16506134": {
+    "label": "Bumlingtjärnarna",
+    "desc": "lake in Älvdalen Municipality, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q17005040": {
+    "label": "Hurricane",
+    "desc": "song from Natalie Grant",
+    "hex": [],
+    "instance_of": [
+      "Q7366",
+      "Q134556"
+    ]
+  },
+  "Q16506197": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16506221": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16506241": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16506274": {
+    "label": "",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16506356": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16506379": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16506390": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16506418": {
+    "label": "Buvallssjön",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16506427": {
+    "label": "Byarumssjön",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16506439": {
+    "label": "",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16506472": {
+    "label": "Byggningstjärnen",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16506500": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16506518": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16506548": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16506578": {
+    "label": "",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16506601": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": [
+      "Q1193438"
+    ]
+  },
+  "Q16506632": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16505888": {
+    "label": "",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16506666": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16506683": {
+    "label": "Byvattsjön",
+    "desc": "lake in Örnsköldsvik Municipality, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397",
+      "Q30092776"
+    ]
+  },
+  "Q17005074": {
+    "label": "Elveskud",
+    "desc": "song",
+    "hex": [],
+    "instance_of": [
+      "Q105543609"
+    ]
+  },
+  "Q17004914": {
+    "label": "Surface properties of transition metal oxides",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16506749": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16506772": {
+    "label": "",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16506795": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16506818": {
+    "label": "Bålsjön",
+    "desc": "lake in Älvdalen Municipality, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16506842": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16506865": {
+    "label": "Bårgåjaure",
+    "desc": "lake in Norrbotten County, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397",
+      "Q30092776"
+    ]
+  },
+  "Q16506889": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16506914": {
+    "label": "Båthussjön",
+    "desc": "",
+    "hex": [],
+    "instance_of": [
+      "Q23397",
+      "Q30092776"
+    ]
+  },
+  "Q16506942": {
+    "label": "Båtlånningstjärnen",
+    "desc": "lake in Lycksele Municipality, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16506981": {
+    "label": "Båulonjauratj",
+    "desc": "",
+    "hex": [],
+    "instance_of": [
+      "Q23397",
+      "Q30092776"
+    ]
+  },
+  "Q16507002": {
+    "label": "Bäcke tjärn",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q17004957": {
+    "label": "Latter-day Saint Biographical Encyclopedia",
+    "desc": "book by Andrew Jenson",
+    "hex": [],
+    "instance_of": [
+      "Q7725634"
+    ]
+  },
+  "Q17004921": {
+    "label": "ASNET-AM",
+    "desc": "organization",
+    "hex": [],
+    "instance_of": [
+      "Q43229"
+    ]
+  },
+  "Q17005097": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16507162": {
+    "label": "Bärvattentjärnen",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q17004931": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16507212": {
+    "label": "",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16507175": {
+    "label": "Bästen",
+    "desc": "",
+    "hex": [],
+    "instance_of": [
+      "Q23397",
+      "Q30092776"
+    ]
+  },
+  "Q17005032": {
+    "label": "Hungarian Reformed Church in America",
+    "desc": "Reformed Protestant church in the U.S.",
+    "hex": [],
+    "instance_of": [
+      "Q13414953",
+      "Q43229"
+    ]
+  },
+  "Q16507244": {
+    "label": "Böckelstjärn",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16507301": {
+    "label": "",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16507312": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16507335": {
+    "label": "Casabianda-Aléria detention center",
+    "desc": "prison in Corsica",
+    "hex": [],
+    "instance_of": [
+      "Q319382",
+      "Q113834116"
+    ]
+  },
+  "Q16507359": {
+    "label": "Börtingstjärnen",
+    "desc": "lake in Bjurholm Municipality, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16507391": {
+    "label": "Bösstjärnen",
+    "desc": "lake in Älvdalen Municipality, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16507428": {
+    "label": "Martin Carboo",
+    "desc": "Swedish singer",
+    "hex": [],
+    "instance_of": [
+      "Q5"
+    ]
+  },
+  "Q17005021": {
+    "label": "Nalou Governor Headquarters",
+    "desc": "",
+    "hex": [],
+    "instance_of": [
+      "Q10300916"
+    ]
+  },
+  "Q16507297": {
+    "label": "Bölessjön",
+    "desc": "lake in Örnsköldsvik Municipality, Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  },
+  "Q16507537": {
+    "label": "Consulate General of France, Chengdu",
+    "desc": "",
+    "hex": [],
+    "instance_of": [
+      "Q372690"
+    ]
+  },
+  "Q16507567": {
+    "label": "Consulate-General of Spain, Montpellier",
+    "desc": "",
+    "hex": [],
+    "instance_of": [
+      "Q372690"
+    ]
+  },
+  "Q16507586": {
+    "label": "Consulate General of France in New Orleans",
+    "desc": "",
+    "hex": [],
+    "instance_of": [
+      "Q372690"
+    ]
+  },
+  "Q17005125": {
+    "label": "Fool #1",
+    "desc": "1961 song performed by Brenda Lee",
+    "hex": [],
+    "instance_of": [
+      "Q105543609"
+    ]
+  },
+  "Q16507618": {
+    "label": "Consulate General of Tunisia, Lyon",
+    "desc": "",
+    "hex": [],
+    "instance_of": [
+      "Q372690"
+    ]
+  },
+  "Q16507646": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q17004908": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q17005035": {
+    "label": "Ladies' National Football League",
+    "desc": "ladies' Gaelic football league in Ireland",
+    "hex": [],
+    "instance_of": [
+      "Q623109"
+    ]
+  },
+  "Q17004970": {
+    "label": "Biogeography-based optimization",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q17005059": {
+    "label": "Fly International Luxurious Art",
+    "desc": "2015 studio album by Raekwon",
+    "hex": [],
+    "instance_of": [
+      "Q482994"
+    ]
+  },
+  "Q16507754": {
+    "label": "Donna Cay",
+    "desc": "island in Turks and Caicos Islands, United Kingdom",
+    "hex": [],
+    "instance_of": [
+      "Q23442"
+    ]
+  },
+  "Q17004960": {
+    "label": "Bint al-sahn",
+    "desc": "Yemeni pastry",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q17005085": {
+    "label": "Illinois Emergency Management Agency",
+    "desc": "U.S. state government agency",
+    "hex": [],
+    "instance_of": [
+      "Q327333"
+    ]
+  },
+  "Q17005043": {
+    "label": "AzQTel",
+    "desc": "Azerbaijani telecommunications company",
+    "hex": [],
+    "instance_of": [
+      "Q4830453"
+    ]
+  },
+  "Q17004987": {
+    "label": "Gawler",
+    "desc": "former South Australian state electoral district",
+    "hex": [],
+    "instance_of": [
+      "Q5356185",
+      "Q66360526"
+    ]
+  },
+  "Q17004999": {
+    "label": "Axial fan design",
+    "desc": "cooling fan",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q16507837": {
+    "label": "Aryeh Neier",
+    "desc": "American activist",
+    "hex": [],
+    "instance_of": [
+      "Q5"
+    ]
+  },
+  "Q16507873": {
+    "label": "Forêt de Tusson",
+    "desc": "forest in France",
+    "hex": [],
+    "instance_of": [
+      "Q4421"
+    ]
+  },
+  "Q17005050": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q17005099": {
+    "label": "Emergency Unemployment Compensation Extension Act",
+    "desc": "",
+    "hex": [],
+    "instance_of": [
+      "Q686822"
+    ]
+  },
+  "Q17004871": {
+    "label": "S. Berugoda",
+    "desc": "38th Surveyor General of Sri Lanka",
+    "hex": [],
+    "instance_of": [
+      "Q5"
+    ]
+  },
+  "Q17005062": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q17005081": {
+    "label": "webcam blackmail",
+    "desc": "cybercrime",
+    "hex": [],
+    "instance_of": [
+      "Q29137"
+    ]
+  },
+  "Q17004891": {
+    "label": "",
+    "desc": "",
+    "hex": [],
+    "instance_of": []
+  },
+  "Q17004964": {
+    "label": "Janet Laurence",
+    "desc": "British writer",
+    "hex": [],
+    "instance_of": [
+      "Q5"
+    ]
+  },
+  "Q17004945": {
+    "label": "How Firm a Foundation",
+    "desc": "song",
+    "hex": [],
+    "instance_of": [
+      "Q105543609"
+    ]
+  },
+  "Q16508050": {
+    "label": "Gare de Montfavet",
+    "desc": "railway station in Avignon, France",
+    "hex": [],
+    "instance_of": [
+      "Q55488"
+    ]
+  },
+  "Q16508094": {
+    "label": "Gare du parc de Montsouris",
+    "desc": "railway station in Paris, France",
+    "hex": [],
+    "instance_of": [
+      "Q55488"
+    ]
+  },
+  "Q16503539": {
+    "label": "Bodflyttningstjärnen",
+    "desc": "lake in Sweden",
+    "hex": [],
+    "instance_of": [
+      "Q23397"
+    ]
+  }
+}
