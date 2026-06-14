@@ -23,6 +23,30 @@ const pageUrl = canonical || siteUrl;
 // Pro Page kann eine eigene ogImage via Prop überschrieben werden.
 const defaultOgImage = `${siteUrl}/og/default.png`;
 const ogImageUrl = ogImage || defaultOgImage;
+
+// SEO-Constraints:
+//   Title: max 60 Zeichen (Google SERPs schneiden ab ~60 ab, pi mal Daumen).
+//   Description: max 155 Zeichen (Google snippet cutoff ~155-160).
+//   Wir kürzen intelligent mit Ellipsis "…", nicht mit hard truncate.
+const MAX_TITLE = 60;
+const MAX_DESCRIPTION = 155;
+
+function buildFullTitle(t: string): string {
+  if (t.endsWith('Color Helper')) return t;
+  return `${t} | Color Helper`;
+}
+
+function truncate(s: string, max: number): string {
+  if (s.length <= max) return s;
+  // Cut at last word boundary within max-1 chars
+  const cut = s.slice(0, max - 1);
+  const lastSpace = cut.lastIndexOf(' ');
+  return (lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).trim() + '…';
+}
+
+const fullTitle = buildFullTitle(title);
+const finalTitle = truncate(fullTitle, MAX_TITLE);
+const finalDescription = truncate(description, MAX_DESCRIPTION);
 ---
 
 <!doctype html>
@@ -31,16 +55,16 @@ const ogImageUrl = ogImage || defaultOgImage;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="WyuJk7RUyxCj0kp7Xy7DwAyW8q5UZWjCmK3Gkhw-uso" />
-    <title>{title.endsWith('Color Helper') ? title : `${title} | Color Helper`}</title>
-    <meta name="description" content={description} />
+    <title>{finalTitle}</title>
+    <meta name="description" content={finalDescription} />
 
     <!-- Canonical -->
     <link rel="canonical" href={pageUrl} />
 
     <!-- OpenGraph -->
     <meta property="og:type" content={isTool ? 'website' : 'website'} />
-    <meta property="og:title" content={`${title} | Color Helper`} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={finalDescription} />
     <meta property="og:url" content={pageUrl} />
     <meta property="og:site_name" content="Color Helper" />
     <meta property="og:locale" content="en_US" />
@@ -52,8 +76,8 @@ const ogImageUrl = ogImage || defaultOgImage;
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={`${title} | Color Helper`} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={finalDescription} />
     <meta name="twitter:image" content={ogImageUrl} />
     <meta name="twitter:image:alt" content={title} />
 

@@ -518,7 +518,7 @@ export default function PaletteGenerator() {
   /* ---- Render ---- */
   return (
     <div style={styles.wrapper}>
-      <h1 style={styles.title}>Color Palette Generator</h1>
+      {/* H1 wird vom ToolLayout gerendert (Single Source of Truth) */}
       <p style={styles.subtitle}>
         Pick a base color and explore harmony palettes. Click any swatch to copy its hex value.
       </p>
