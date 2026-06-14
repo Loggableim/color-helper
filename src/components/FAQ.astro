@@ -7,11 +7,18 @@ export interface FAQItem {
 export interface Props {
   items: FAQItem[];
   title?: string;
+  /**
+   * Wenn true, wird KEIN FAQPage JSON-LD im Component gerendert.
+   * Nützlich wenn die Page die FAQ in einem übergeordneten @graph-Block
+   * konsolidiert (z.B. color-picker.astro, das WebApplication + FAQPage
+   * + BreadcrumbList in einem einzigen Script haben will).
+   */
+  skipJsonLd?: boolean;
 }
 
-const { items, title = 'Frequently Asked Questions' } = Astro.props;
+const { items, title = 'Frequently Asked Questions', skipJsonLd = false } = Astro.props;
 
-// Build JSON-LD for FAQPage
+// Build JSON-LD for FAQPage (only if not skipped)
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -47,7 +54,7 @@ const faqSchema = {
   </div>
 </section>
 
-<script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+{!skipJsonLd && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>}
 
 <style is:global>
   .faq-section {
