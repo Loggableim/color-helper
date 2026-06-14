@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev --host",
-    "build": "npm run og:build && astro build",
+    "build": "astro build",
     "preview": "astro preview --host",
     "lint": "astro check",
-    "og:build": "node scripts/build-og-images.mjs"
+    "og:build": "node scripts/build-og-images.mjs",
+    "og:rebuild": "rm -rf public/og && node scripts/build-og-images.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^4.2.0",
