@@ -10,6 +10,11 @@
  *
  * Key-File muss unter https://color-helper.com/{key}.txt erreichbar sein
  * (statisch aus /public/{key}.txt deployed).
+ *
+ * Exit-Code: 0 bei Erfolg oder wenn Rate-Limited (best-effort), 1 nur bei
+ * lokalen Fehlern (Sitemap fehlt, key-File fehlt, etc).
+ * Dadurch schlägt der CI-Deploy nicht fehl, wenn die Search-Engines gerade
+ * nicht erreichbar sind — Build+Deploy ist wichtiger als IndexNow-Ping.
  */
 
 import { readFileSync, existsSync } from 'node:fs';
@@ -53,10 +58,11 @@ console.log(`📦 Split into ${chunks.length} batch(es) of up to 10,000 URLs eac
 
 let successCount = 0;
 let failCount = 0;
+let rateLimitCount = 0;
 
 const ENDPOINTS = [
-  'https://yandex.com/indexnow',
   'https://api.indexnow.org/indexnow',
+  'https://yandex.com/indexnow',
 ];
 
 for (const endpoint of ENDPOINTS) {
@@ -82,12 +88,18 @@ for (const endpoint of ENDPOINTS) {
       if (resp.status === 200 || resp.status === 202) {
         console.log(`✓ HTTP ${resp.status} — accepted`);
         successCount++;
+      } else if (resp.status === 429) {
+        // Rate limit — wir warten und versuchen den nächsten Endpoint.
+        // Wir zählen das NICHT als Fehler, damit der CI-Build nicht
+        // failed. IndexNow reicht's später.
+        console.warn(`⚠ HTTP 429 — rate limited (will retry next endpoint)`);
+        rateLimitCount++;
       } else {
-        console.error(`✗ HTTP ${resp.status} — ${body.slice(0, 200)}`);
+        console.warn(`⚠ HTTP ${resp.status} — ${body.slice(0, 200)}`);
         failCount++;
       }
     } catch (err) {
-      console.error(`✗ Network error: ${err.message}`);
+      console.warn(`⚠ Network error: ${err.message}`);
       failCount++;
     }
   }
@@ -95,8 +107,12 @@ for (const endpoint of ENDPOINTS) {
 
 console.log(`\n${'='.repeat(50)}`);
 console.log(`✓ Successful batches: ${successCount}`);
+console.log(`⚠ Rate-limited: ${rateLimitCount}`);
 console.log(`✗ Failed batches: ${failCount}`);
 console.log(`📊 Total URLs submitted: ${successCount > 0 ? urls.length : 0}`);
 console.log(`${'='.repeat(50)}`);
 
-process.exit(failCount > 0 ? 1 : 0);
+// Best-effort: IndexNow-Fehler brechen den Build NICHT ab, solange die Site
+// selbst erfolgreich deployed wurde. Nur lokale Fehler (Sitemap fehlt) exit 1.
+console.log('\n✓ IndexNow submission complete (build continues regardless).');
+process.exit(0);
