@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev --host",
+    "prebuild": "node scripts/build-og-images.mjs",
     "build": "astro build",
     "preview": "astro preview --host",
-    "lint": "astro check"
+    "lint": "astro check",
+    "og:build": "node scripts/build-og-images.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^4.2.0",
@@ -18,8 +20,11 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.0",
+    "@fontsource/inter": "^5.2.8",
+    "@resvg/resvg-js": "^2.6.2",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
+    "satori": "^0.26.0",
     "typescript": "^5.8.0"
   }
 }

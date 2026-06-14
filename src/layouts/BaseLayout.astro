@@ -19,6 +19,10 @@ export interface Props {
 const { title, description, canonical, ogImage, breadcrumbs, noIndex, isTool } = Astro.props;
 const siteUrl = 'https://color-helper.com';
 const pageUrl = canonical || siteUrl;
+// Default-OG-Image: 1200x630, brand-gradient.
+// Pro Page kann eine eigene ogImage via Prop überschrieben werden.
+const defaultOgImage = `${siteUrl}/og/default.png`;
+const ogImageUrl = ogImage || defaultOgImage;
 ---
 
 <!doctype html>
@@ -40,12 +44,18 @@ const pageUrl = canonical || siteUrl;
     <meta property="og:url" content={pageUrl} />
     <meta property="og:site_name" content="Color Helper" />
     <meta property="og:locale" content="en_US" />
-    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:image:type" content="image/png" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={`${title} | Color Helper`} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={title} />
 
     <!-- Robots -->
     {noIndex && <meta name="robots" content="noindex,nofollow" />}
