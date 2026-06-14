@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev --host",
-    "prebuild": "node scripts/build-og-images.mjs",
-    "build": "astro build",
+    "build": "npm run og:build && astro build",
     "preview": "astro preview --host",
     "lint": "astro check",
     "og:build": "node scripts/build-og-images.mjs"

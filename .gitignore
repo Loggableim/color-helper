@@ -5,4 +5,7 @@ dist/
 .DS_Store
 *.log
 seo-refresh*.json
-public/og/
+# public/og/ bleibt im Repo (Pre-built Artefakte, ~6.6MB)
+# Nicht in .gitignore — werden via `npm run og:build` lokal erzeugt und committed
+# Damit umgehen wir Build-Zeit-Probleme in GH-Action
+
