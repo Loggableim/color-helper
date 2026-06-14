@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import GradientGenerator from '../components/GradientGenerator';
 import FAQ from '../components/FAQ.astro';
@@ -26,12 +27,18 @@ const webAppSchema = {
       <GradientGenerator client:load />
     </div>
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>How to Create Stunning CSS Gradients</h2>
       <p>Our gradient generator makes it easy to create beautiful gradient backgrounds for your web projects. Choose between linear or radial gradient types, pick two or more colors with position controls, and adjust the direction or angle to get the perfect look. The preview updates in real time so you can see exactly what your gradient will look like.</p>
       <p>Linear gradients transition colors along a straight line. You can control the direction by setting an angle (0–360 degrees) or using predefined directions like top-to-bottom or left-to-right. Radial gradients radiate outward from a center point, with support for ellipse and circle shapes at custom positions. Each type creates a different visual effect suitable for different design contexts.</p>
       <p>Once you're happy with your gradient, simply copy the generated CSS code and paste it into your stylesheet. The tool outputs standard CSS background-image syntax that works in all modern browsers. You can also add multiple color stops for more complex gradients, adjust the stop positions, use preset gradients, save your favorites, share via URL parameters, and preview how the gradient looks as a full-page background.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>

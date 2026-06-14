@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import PaletteLibrary from '../components/PaletteLibrary';
 
@@ -24,6 +25,9 @@ const webAppSchema = {
     <div class="tool-wrapper">
       <PaletteLibrary client:load />
     </div>
+
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
 
     <section class="seo-content">
       <h2>Your Saved Color Palettes</h2>

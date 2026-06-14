@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import MonetizationSlot from '../../components/MonetizationSlot.astro';
 import ToolLayout from '../../components/ToolLayout.astro';
 import { colors, getRelatedColors } from '../../data/colors';
 import type { ColorData } from '../../data/colors';
@@ -161,6 +162,9 @@ const webAppSchema = {
     </section>
 
     <!-- Description -->
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>About {color.name} Color</h2>
       <p>{color.description}</p>
@@ -349,6 +353,9 @@ const webAppSchema = {
     </section>
 
     <!-- Related Tools -->
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
+
     <section class="related-tools">
       <h2>Related Tools</h2>
       <ul>

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import ColorPicker from '../components/ColorPicker';
 import FAQ from '../components/FAQ.astro';
@@ -26,12 +27,18 @@ const webAppSchema = {
       <ColorPicker client:load />
     </div>
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>How to Use the Color Picker</h2>
       <p>Our interactive color picker lets you explore millions of colors with ease. Simply click or drag on the color canvas to select a color, then fine-tune it using the sliders or input fields. You can switch between HEX, RGB, and HSL formats to see your color in different representations.</p>
       <p>Once you've found the perfect color, click the save button to add it to your saved colors list. Your saved colors are stored locally in your browser, so you can access them even after closing the page. This is perfect for building a palette of brand colors, tracking project color schemes, or just keeping your favorite shades handy.</p>
       <p>The color preview area shows your selected color in a large swatch, making it easy to evaluate. You can also copy the color value to your clipboard with a single click. Whether you're a designer, developer, or hobbyist, this tool makes color selection fast and intuitive.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>

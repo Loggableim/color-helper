@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import MonetizationSlot from '../../components/MonetizationSlot.astro';
 import ToolLayout from '../../components/ToolLayout.astro';
 import ColorScaleGenerator from '../../components/ColorScaleGenerator';
 import FAQ from '../../components/FAQ.astro';
@@ -29,12 +30,18 @@ const webAppSchema = {
       <ColorScaleGenerator client:load />
     </div>
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>What Is a Color Scale?</h2>
       <p>A color scale is a set of graduated color steps from light to dark derived from a single base color. Tailwind CSS popularized the 50–950 naming convention, where 50 is the lightest tint and 950 is the darkest shade. Our generator creates perceptually uniform steps by manipulating hue, saturation, and lightness in the HSL color space.</p>
       <p>To use the generator, enter a base hex color or use the color picker. The tool automatically generates 11 color steps that you can copy individually or export as CSS variables, SCSS, Tailwind config, JSON design tokens, or Figma variables.</p>
       <p>This is invaluable for building design systems, creating UI themes, or generating consistent color ramps for your Tailwind projects.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import PaletteGenerator from '../components/PaletteGenerator';
 import FAQ from '../components/FAQ.astro';
@@ -26,12 +27,18 @@ const webAppSchema = {
       <PaletteGenerator client:load />
     </div>
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>What Is a Color Palette?</h2>
       <p>A color palette is a collection of colors that work together harmoniously. Designers and artists use palettes to establish a consistent visual identity across websites, branding materials, and artwork. A well-crafted palette typically includes a primary color, secondary colors, accent colors, and neutrals that complement each other.</p>
       <p>Our color palette generator uses established color harmony rules to create balanced palettes from any starting color. You can choose from complementary (colors opposite each other on the color wheel), analogous (colors adjacent to each other), triadic (three evenly spaced colors), or monochromatic (variations of a single hue) schemes.</p>
       <p>Each generated palette includes five color swatches with their HEX values displayed. You can copy any color to your clipboard, regenerate the palette with a new seed color, or lock individual colors to explore variations while keeping your favorites. This tool is ideal for web design, graphic design, interior design, and any creative project that needs cohesive color schemes.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>

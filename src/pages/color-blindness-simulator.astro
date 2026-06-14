@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import FAQ from '../components/FAQ.astro';
 
@@ -98,12 +99,18 @@ const webAppSchema = {
       </div>
     </div>
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>What Is a Color Blindness Simulator?</h2>
       <p>A color blindness simulator applies mathematical transformations to a chosen color to approximate how it would appear to someone with a color vision deficiency (CVD). About 8% of men and 0.5% of women worldwide have some form of color blindness. The most common types are protanopia (reduced sensitivity to red light), deuteranopia (reduced sensitivity to green light), tritanopia (reduced sensitivity to blue light), and achromatopsia (complete lack of color vision).</p>
       <p>This tool lets you pick any color — via a native color picker or by typing a hex code — and see five swatches side by side: the original color and four simulated versions. Each swatch is labeled with the condition name and a short description (e.g., "Red-blind"). The simulation uses a simple matrix-based transformation that converts the RGB values into the perceived color for each deficiency type.</p>
       <p>Using a color blindness simulator during the design process helps you build more inclusive interfaces. For example, a green "success" indicator and a red "error" indicator may look nearly identical to someone with deuteranopia. By catching these issues early, you can choose color combinations that remain distinguishable for all users, or add redundant cues like icons and text labels alongside color.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>

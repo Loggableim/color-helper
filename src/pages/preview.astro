@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import PalettePreview from '../components/PalettePreview';
 
@@ -25,11 +26,17 @@ const webAppSchema = {
       <PalettePreview client:load />
     </div>
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>Why Use Palette Preview?</h2>
       <p>Choosing colors is one thing — seeing them in context is another. Our Palette Preview system lets you test your color palette on real UI components before committing to a design decision. Enter comma-separated hex colors and instantly see how they look on buttons, cards, dashboard widgets, hero sections, and mobile app interfaces.</p>
       <p>Switch between preview modes with one click. Each mode renders your palette on a different set of components, so you can evaluate how your colors perform across your entire design system. This is especially useful for designers building brand guidelines, developers setting up theme tokens, or anyone creating a new color scheme.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>

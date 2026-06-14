@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import FAQ from '../components/FAQ.astro';
 
@@ -113,12 +114,18 @@ const webAppSchema = {
       </div>
     </div>
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>What Is a Color Mixer?</h2>
       <p>A color mixer blends two input colors together to produce a third color based on a specified ratio. This is essentially a weighted linear interpolation (lerp) between the two colors in RGB space. At 0% the result is pure Color A; at 100% it is pure Color B; at 50% it is an equal blend of both. Adjusting the slider lets you fine-tune the mixture to achieve exactly the mid-tone you want.</p>
       <p>The Color Mixer is a practical tool for designers building gradient-based UI elements, for artists exploring color transitions, and for developers who need a calculated mid-color for hover states, borders, or background layers. Each color is shown as a swatch along with its HEX code. The resulting mixed color is displayed prominently in the center with its HEX, RGB, and HSL values all available for copying.</p>
       <p>All blending is performed client-side using simple math: each RGB channel of the output is the weighted average of the corresponding channels of the two input colors. This gives smooth, predictable results. Use the tool alongside our Palette Generator and Gradient Generator to build complete color systems.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>

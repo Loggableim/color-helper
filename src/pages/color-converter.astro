@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import FAQ from '../components/FAQ.astro';
 import ColorConverter from '../components/ColorConverter.tsx';
@@ -37,12 +38,18 @@ const webAppSchema = {
       </div>
     </div>
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>What Is a Color Converter?</h2>
       <p>A color converter is a tool that transforms color values between different color models and formats — most commonly HEX, RGB, and HSL. Each format describes the same color but uses a different notation. HEX codes are compact six-character strings preceded by a hash (#RRGGBB) and are the standard in web development. RGB (Red, Green, Blue) represents colors with three decimal numbers from 0 to 255 and is the native language of digital screens. HSL (Hue, Saturation, Lightness) uses a cylindrical coordinate system that aligns more closely with how humans perceive and describe colors.</p>
       <p>Our universal color converter automatically detects which format you enter — whether it's a hex code like <code>#ff6600</code>, an RGB value like <code>rgb(255, 102, 0)</code> or <code>255, 102, 0</code>, or an HSL value like <code>hsl(30, 100%, 50%)</code> or <code>30, 100%, 50</code>. It instantly converts your input into all three formats, displays a live color preview, and even generates a ready-to-use CSS variable definition. This makes it the perfect tool for designers, front-end developers, and anyone working with colors on the web.</p>
       <p>Understanding how to convert between color formats is essential for building consistent color systems, matching brand guidelines, or troubleshooting CSS color issues. Bookmark this converter hub for quick access whenever you need to switch between HEX, RGB, and HSL.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>

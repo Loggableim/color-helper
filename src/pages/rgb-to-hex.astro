@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import RgbToHex from '../components/RgbToHex';
 import FAQ from '../components/FAQ.astro';
@@ -26,12 +27,18 @@ const webAppSchema = {
       <RgbToHex client:load />
     </div>
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>How to Convert RGB to HEX</h2>
       <p>Converting RGB values to hexadecimal color codes is simple with our converter. Enter the red, green, and blue values (each between 0 and 255) into the input fields, and the tool instantly generates the corresponding hex code. The conversion updates in real time as you adjust any of the three values.</p>
       <p>RGB is the native color model for digital screens, but hex codes are more compact and widely used in web development. Our converter handles the math for you — each decimal RGB value is converted to a two-digit hexadecimal number, and the three pairs are combined into the familiar #RRGGBB format.</p>
       <p>Whether you're extracting colors from a design mockup, converting CSS values, or building a color system for your project, this tool makes the RGB-to-HEX conversion instant and error-free. You can also copy the resulting hex code to your clipboard with a single click.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>

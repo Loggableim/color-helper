@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import FAQ from '../components/FAQ.astro';
 
@@ -90,12 +91,18 @@ const webAppSchema = {
       </div>
     </div>
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>What Is an RGBA Converter?</h2>
       <p>An RGBA converter takes a base color — in HEX or RGB format — and lets you attach an alpha (opacity) channel to produce a CSS RGBA value. RGBA stands for Red, Green, Blue, Alpha. The first three components define the color the same way as RGB, while the alpha value (a number between 0 and 1) controls transparency: 0 is fully transparent, 1 is fully opaque.</p>
       <p>This tool gives you two ways to specify the base color. You can type a HEX code like <code>#ff6600</code>, or you can use the three RGB number inputs to dial in exact red, green, and blue values. Both inputs stay in sync — change one and the other updates automatically. The opacity slider lets you scrub from 0% to 100% with live preview updates. Two swatches show the solid color (above) and the RGBA version over a checkerboard-like background (below) so you can see the transparency effect clearly.</p>
       <p>RGBA is essential for modern web design. Use it for semi-transparent overlays, subtle shadows, glassmorphism effects, or to make text readable over background images. Instead of guessing the opacity and writing the syntax by hand, this converter gives you the exact CSS <code>rgba()</code> value you can paste straight into your stylesheet.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>

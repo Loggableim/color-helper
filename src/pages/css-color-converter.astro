@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import FAQ from '../components/FAQ.astro';
 
@@ -110,12 +111,18 @@ const webAppSchema = {
       </div>
     </div>
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>What Is a CSS Color Converter?</h2>
       <p>A CSS color converter transforms a single color value into multiple CSS-ready formats so you can use it anywhere in your stylesheets. Instead of manually rewriting <code>#ff6600</code> as <code>rgba(255, 102, 0, 1)</code> or <code>hsla(30, 100%, 50%, 1)</code>, this tool generates all common CSS representations instantly. You get a color declaration, a background-color declaration, a CSS custom property (<code>--color-primary</code>), an RGBA value, and an HSLA value — each with its own copy button.</p>
       <p>This is especially useful when building design systems or component libraries where the same color appears in multiple CSS contexts. Just enter the color once and copy the exact syntax you need for each use case. The tool also works great for theming: the <code>--color-primary</code> output is ready to paste into a <code>:root</code> block, giving you a consistent base color across your entire project.</p>
       <p>All conversion happens entirely in your browser — no server round-trips, no data storage. Enter any valid HEX, RGB, or HSL value and the tool auto-detects the format, shows a live preview, and updates every output field in real time.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>

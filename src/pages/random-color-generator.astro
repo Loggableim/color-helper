@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import FAQ from '../components/FAQ.astro';
 
@@ -98,12 +99,18 @@ const webAppSchema = {
       </div>
     </div>
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>What Is a Random Color Generator?</h2>
       <p>A random color generator creates unpredictable color values — in HEX, RGB, and HSL formats — with a single click. It is a great source of inspiration for designers, front-end developers, and artists who want to break out of their usual color habits or quickly populate a design mockup with placeholder swatches. Each generated color is accompanied by its full specification so you can copy the format you need.</p>
       <p>This tool goes a step further by including a palette mode that generates five coordinated random colors at once. Each color swatch has a lock toggle: click the lock icon to prevent that color from changing when you generate a new palette. This lets you iteratively refine a palette — keep a base color you like and reshuffle the rest until everything clicks. Once you are happy with a set, hit "Save Palette" to store it in your browser's localStorage. Saved palettes persist between sessions, so you can build a personal collection of color schemes over time.</p>
       <p>Whether you are prototyping a UI, searching for a accent color, or just having fun exploring color space, this generator gives you an endless stream of fresh colors with zero friction. All generation runs client-side — nothing is sent to any server.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>

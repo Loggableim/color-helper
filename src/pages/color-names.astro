@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import { colors, colorCategories } from '../data/colors';
 import type { ColorData } from '../data/colors';
@@ -135,6 +136,9 @@ const webAppSchema = {
     <p id="no-results" class="no-results" style="display: none;">No colors found matching your search.</p>
 
     <!-- SEO Content -->
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>Complete Guide to CSS Named Colors</h2>
       <p>CSS named colors are predefined color keywords that can be used in stylesheets without needing hex codes or RGB values. There are 148 named colors in the CSS Color Module Level 4 specification, ranging from common colors like "red" and "blue" to more obscure names like "blanchedalmond" and "rebeccapurple". These named colors provide a convenient way to reference colors in your CSS code with readable, semantic names.</p>
@@ -144,6 +148,9 @@ const webAppSchema = {
     </section>
 
     <!-- Related Tools -->
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
+
     <section class="related-tools">
       <h2>Related Tools</h2>
       <ul>

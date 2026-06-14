@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import ColorComparison from '../components/ColorComparison';
 import FAQ from '../components/FAQ.astro';
@@ -24,12 +25,18 @@ const webAppSchema = {
   <ToolLayout {title} {description} {breadcrumbs}>
     <ColorComparison client:load />
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>How to Compare Colors</h2>
       <p>Color comparison is essential for designers and developers building accessible interfaces. Enter or pick two colors to see them side-by-side with full HEX, RGB, and HSL values, plus an instant WCAG contrast ratio check.</p>
       <p>The contrast ratio tells you whether your color combination meets Web Content Accessibility Guidelines (WCAG) 2.2. AA requires 4.5:1 for normal text and 3:1 for large text. AAA is stricter at 7:1 and 4.5:1 respectively. Use the live preview to see how headlines and body text render on each background.</p>
       <p>Beyond accessibility, this tool helps you understand the relationship between two colors. The hue/saturation/lightness difference shows how visually similar or distinct your colors are — useful for picking complementary pairs or avoiding muddy combinations.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>

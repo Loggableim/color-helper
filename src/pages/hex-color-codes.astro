@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import { colors } from '../data/colors';
 import FAQ from '../components/FAQ.astro';
@@ -51,6 +52,9 @@ const webAppSchema = {
 <BaseLayout {title} {description} {canonical} {breadcrumbs}>
   <ToolLayout {title} {description} {breadcrumbs}>
     <!-- Hero explanation -->
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>What Are HEX Color Codes?</h2>
       <p>A HEX color code is a six-digit hexadecimal number used in HTML, CSS, and design software to represent colors. The format is <code>#RRGGBB</code>, where <code>RR</code> is the red component, <code>GG</code> is the green component, and <code>BB</code> is the blue component. Each pair ranges from <code>00</code> (0 in decimal) to <code>FF</code> (255 in decimal), giving a total of 16,777,216 possible colors.</p>
@@ -146,6 +150,9 @@ const webAppSchema = {
     </section>
 
     <!-- Related Tools -->
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
+
     <section class="related-tools">
       <h2>Related Resources</h2>
       <ul>

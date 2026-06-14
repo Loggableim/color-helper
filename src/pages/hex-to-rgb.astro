@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import HexToRgb from '../components/HexToRgb';
 import FAQ from '../components/FAQ.astro';
@@ -26,12 +27,18 @@ const webAppSchema = {
       <HexToRgb client:load />
     </div>
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>How to Convert HEX to RGB</h2>
       <p>Converting hex color codes to RGB values is straightforward with our converter. Simply enter a hex color code (like #FF5733) into the input field, and the tool instantly displays the corresponding red, green, and blue values. You can type or paste the hex code, and the conversion happens in real time without any page reload.</p>
       <p>HEX codes are the standard way to represent colors in HTML and CSS. Each pair of hexadecimal digits represents one of the three primary color components: the first two for red, the middle two for green, and the last two for blue. Our converter handles both 3-digit and 6-digit hex formats, as well as codes with or without the leading hash symbol.</p>
       <p>Understanding the RGB equivalent of a hex color is useful when working with image editing software, design tools, or any application that uses the RGB color model. Bookmark this tool for quick conversions whenever you need to switch between color formats.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>

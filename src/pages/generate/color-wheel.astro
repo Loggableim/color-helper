@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import MonetizationSlot from '../../components/MonetizationSlot.astro';
 import ToolLayout from '../../components/ToolLayout.astro';
 import ColorWheel from '../../components/ColorWheel';
 import FAQ from '../../components/FAQ.astro';
@@ -29,12 +30,18 @@ const webAppSchema = {
       <ColorWheel client:load />
     </div>
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>How to Use the Color Wheel</h2>
       <p>Our interactive color wheel helps you explore color harmony principles visually. Click or drag on the wheel to select a base color, then choose a harmony type to generate a complete palette. The wheel updates in real time — drag to rotate and watch the palette change.</p>
       <p>Six harmony types are supported: <strong>Complementary</strong> (colors opposite each other for high contrast), <strong>Analogous</strong> (adjacent colors for harmony), <strong>Triadic</strong> (three evenly spaced colors for vibrancy), <strong>Split Complementary</strong> (softened contrast), <strong>Tetradic</strong> (two complementary pairs for richness), and <strong>Monochromatic</strong> (single hue at varying lightness).</p>
       <p>Each generated color can be copied individually by clicking its swatch, or export the entire palette as CSS Variables, SCSS, Tailwind Config, JSON, or Figma Variables.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>

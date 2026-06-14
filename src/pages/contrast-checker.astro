@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import ContrastChecker from '../components/ContrastChecker';
 import FAQ from '../components/FAQ.astro';
@@ -26,12 +27,18 @@ const webAppSchema = {
       <ContrastChecker client:load />
     </div>
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>Why Contrast Matters for Accessibility</h2>
       <p>Color contrast is a critical factor in web accessibility. Sufficient contrast between text and its background ensures that content is readable by people with visual impairments, including low vision and color blindness. The Web Content Accessibility Guidelines (WCAG) define specific contrast ratio thresholds that websites should meet to be accessible to the widest possible audience.</p>
       <p>Our contrast checker calculates the contrast ratio between any two colors and immediately tells you whether they pass WCAG AA or AAA standards. AA requires a ratio of at least 4.5:1 for normal text and 3:1 for large text. AAA is a higher standard, requiring 7:1 for normal text and 4.5:1 for large text.</p>
       <p>Using this tool is simple: enter a foreground and background color in HEX format, and the tool displays the contrast ratio along with pass/fail indicators for each WCAG level. The live preview shows exactly how your text will look against the chosen background. This is an essential tool for designers, developers, and content creators who want to build inclusive digital experiences.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>

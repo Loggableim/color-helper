@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
 import ImageColorPicker from '../components/ImageColorPicker';
 import FAQ from '../components/FAQ.astro';
@@ -26,12 +27,18 @@ const webAppSchema = {
       <ImageColorPicker client:load />
     </div>
 
+    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
+
     <section class="seo-content">
       <h2>How to Extract Colors from an Image</h2>
       <p>Our image color picker lets you extract precise colors from any image directly in your browser. Simply upload an image by clicking the upload area or dragging and dropping a file. Once loaded, click anywhere on the image to sample the exact color of that pixel. The tool instantly displays the color in HEX, RGB, and HSL formats.</p>
       <p>All image processing happens locally on your device — no files are uploaded to any server. This means your images remain private and secure, and the tool works even without an internet connection after the initial page load. You can upload JPG, PNG, GIF, WEBP, and other common image formats.</p>
       <p>The magnified preview area shows a zoomed-in view around your cursor, making it easy to select precise pixels. You can also see a list of recently picked colors and copy any color value to your clipboard with a single click. This tool is invaluable for designers extracting brand colors from logos, developers matching colors from mockups, or anyone who needs to identify colors in digital images.</p>
     </section>
+
+    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Tools</h2>
