@@ -33,6 +33,18 @@ const webAppSchema = {
       <h2>Your Saved Color Palettes</h2>
       <p>All palettes you save from any Color Helper tool are stored in your browser's local storage. You can rename them, export them in multiple formats, copy all colors to your clipboard, or generate a share link. Palettes are private to your browser and persist between sessions.</p>
       <p>Use the Export button to generate CSS Variables, SCSS, Tailwind Config, JSON Design Tokens, or Figma Variables from any saved palette.</p>
+
+      <h2>How local palette storage works</h2>
+      <p>The Color Helper palette library uses your browser's localStorage API to persist saved palettes across browser sessions. This means your palettes are stored on your own device — not on a remote server. Each palette can contain between 2 and 20 colors and is identified by a UUID. You can create unlimited palettes, reorder them by drag-and-drop, rename them, and delete them at any time. Nothing is uploaded to the cloud, which means clearing your browser data will permanently remove your palettes — so we recommend exporting important ones to CSS, SCSS, or JSON before clearing browser data.</p>
+
+      <h2>Export formats supported</h2>
+      <p>Every palette you save can be exported in five formats with one click: CSS Custom Properties (CSS Variables for use in stylesheets), SCSS variables (for Sass-based design systems), Tailwind CSS configuration (extending the default color palette), JSON design tokens (compatible with Style Dictionary, Theo, and other design-token pipelines), and Figma Variables (importable via the Figma Tokens plugin). Each export is generated client-side with no server round-trip and can be copied to clipboard or downloaded as a file.</p>
+
+      <h2>Privacy by design</h2>
+      <p>Because palettes live in localStorage, they never touch a server. This is intentional: Color Helper is designed as a privacy-first tool, and saving palettes through a cloud account would require uploading your color choices — which we explicitly don't do. The tradeoff is that palettes don't sync across devices, but for most design and development workflows, copying exported CSS or JSON between projects is straightforward.</p>
+
+      <h2>Sharing palettes with teammates</h2>
+      <p>To share a palette with a teammate, click the Share button next to any saved palette. This generates a URL containing the palette data as a base64-encoded fragment. The URL is shareable in chat, email, or design documents, and the recipient can import the palette into their own Color Helper library with one click. Shared URLs never include identifying information about the sender or recipient — they're just data.</p>
     </section>
   </ToolLayout>
 

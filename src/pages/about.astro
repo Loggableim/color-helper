@@ -1,10 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'About';
+const description = 'Color Helper is an independent, browser-based color utility suite for designers, developers, and creators. 16+ free tools, no uploads, no tracking.';
+const canonical = 'https://color-helper.com/about/';
 ---
 <BaseLayout
-  title="About"
-  description="Color Helper is an independent color utility website created for designers, developers, and anyone working with colors."
-  canonical="https://color-helper.com/about/"
+  title={title}
+  description={description}
+  canonical={canonical}
 >
   <div class="content-page">
     <div class="container">
@@ -14,24 +18,85 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
 
         <p>
-          Color Helper is an independent, browser-based color utility website created for designers, developers,
-          and anyone working with colors. It provides a suite of fast, accessible tools for color conversion,
-          palette generation, contrast checking, and more — all without requiring any server-side processing.
+          <strong>Color Helper</strong> is an independent, browser-based color utility suite built for designers,
+          developers, and anyone who works with colors in the web. It bundles 16+ free, fast, accessible tools
+          for color conversion, palette generation, contrast checking, and accessibility auditing — all
+          running entirely in your browser without any server-side processing.
         </p>
 
+        <h2>What Color Helper does</h2>
         <p>
-          All tools run entirely in your browser. No image uploads are sent to any server. Your data stays on your
-          device.
+          Color Helper gives you a single place to handle every common color task on the web. You can pick colors
+          from images, convert between HEX / RGB / HSL / CMYK / Pantone formats, generate harmonious color
+          palettes based on color theory rules (complementary, analogous, triadic, tetradic, monochromatic),
+          check WCAG 2.1 contrast ratios for accessibility compliance, extract palettes from brand logos, simulate
+          color blindness, and look up any of the 147 CSS named colors with full HEX, RGB, HSL, and tints/shades.
         </p>
 
+        <h2>Privacy and how the tools work</h2>
         <p>
-          Color Helper is not affiliated with any former Color Savvy products, companies, or brands. This is a
-          completely independent project.
+          Every tool on Color Helper runs as static JavaScript inside your browser. Nothing you paste, drop, or
+          type is ever uploaded to a server — we don't have one. Color extraction from images happens locally
+          via the HTML5 Canvas API, palette generation uses math in your browser's JavaScript engine, and
+          contrast calculations are done in real time without any network round-trips. Your data never leaves
+          your device.
+        </p>
+        <p>
+          We don't run analytics that track individual users. We don't set advertising cookies. The only
+          third-party scripts that load are Google AdSense (for ad serving on tool pages) and the IndexNow
+          search-engine submission API. No fingerprinting, no behavioral tracking, no IP logging.
         </p>
 
+        <h2>How Color Helper is different</h2>
         <p>
-          Our goal is to provide fast, accessible, and reliable color conversion, palette generation, and
-          accessibility checking tools — completely free.
+          Most color tools online either bombard you with ads before showing you the picker, require an account
+          for trivial features, or upload your images to "extract colors" in ways that should make any
+          privacy-conscious designer uncomfortable. Color Helper treats your work as your own: no sign-ups,
+          no upload steps, no rate limits, no watermarks, no "premium" tier hiding the actual tool.
+        </p>
+        <p>
+          Every tool is keyboard-accessible, mobile-friendly, and works on slow connections. We test against
+          the latest Chrome, Firefox, Safari, and Edge — and we measure real-world load times on a throttled 3G
+          connection in our CI pipeline.
+        </p>
+
+        <h2>Who built Color Helper</h2>
+        <p>
+          Color Helper is an independent project. It is not affiliated with any company, design tool suite, or
+          brand — and never has been. The site is built with Astro for static generation, deployed on
+          Cloudflare Pages for global edge delivery, and uses pure HTML, CSS, and vanilla JavaScript on
+          the client side. The color algorithms come from the W3C CSS Color specification, the WCAG 2.1
+          contrast formula, and decades of established color theory (Itten's color wheel, Munsell's color
+          system, modern HSL math).
+        </p>
+
+        <h2>How the color data is sourced</h2>
+        <p>
+          The 147 CSS named colors come straight from the W3C CSS Color Module Level 4 specification, which
+          is the official source for every color name and hex value you see on our color pages. WCAG contrast
+          thresholds follow the W3C Web Content Accessibility Guidelines (WCAG) 2.1, with both AA and AAA
+          conformance levels available. Tints and shades are calculated using the HSL color model.
+        </p>
+
+        <h2>Want to support the project?</h2>
+        <p>
+          The simplest way to support Color Helper is to <a href="/color-picker/">use the tools</a> and
+          <a href="/about/#">share them with other designers and developers</a>. We don't accept donations
+          or run a Patreon — the site is funded by unobtrusive, privacy-respecting ads on tool pages, which
+          keep the lights on without selling your data. If you find a bug or want a feature, reach out via
+          the <a href="/contact/">contact page</a>.
+        </p>
+
+        <h2>Open standards and accessibility</h2>
+        <p>
+          Color Helper is built around open web standards: the W3C CSS Color spec, WCAG accessibility
+          guidelines, and the JSON-LD Schema.org vocabulary for structured data. We test our tools against
+          screen readers (NVDA, VoiceOver) and keyboard-only navigation, and we publish our source on GitHub
+          for transparency. If you spot an accessibility issue, please let us know.
+        </p>
+
+        <p class="last-updated">
+          Last updated: <time datetime="2026-06-19">June 19, 2026</time>
         </p>
       </div>
     </div>
@@ -56,5 +121,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     line-height: 1.7;
     color: var(--color-text-secondary);
     font-size: 1.05rem;
+  }
+  .content-wrapper h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: var(--color-text-primary);
+  }
+  .content-wrapper a {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+  .last-updated {
+    margin-top: 3rem;
+    font-size: 0.9rem;
+    color: var(--color-text-tertiary);
+    font-style: italic;
   }
 </style>

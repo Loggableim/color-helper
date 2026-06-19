@@ -4,11 +4,15 @@
    spezifischere Pfade müssen vor generischeren kommen).
    Docs: https://developers.cloudflare.com/pages/configuration/headers/
 
-   Hinweis: '/' matched nur die exakte Root. '/foo' matched '/foo' und
-   '/foo/'. '/*' matched alles inklusive Sub-Paths.
-*/
+   Hinweis: '/' matched nur die exakte Root. '/*' matched alles inklusive
+   Sub-Paths. CF-Pages _headers unterstützt keine Negation in URL-Patterns.
 
-/* Spezifische Pfade zuerst (mehrere einzelne für korrekte Cache-Zeiten) */
+   WICHTIG: Jeder Header nur EINMAL pro URL setzen — doppelte Werte werden
+   zwar von CF joined, aber das verbraucht Bytes und kann zu unerwartetem
+   Verhalten führen. Daher: alle Security-Header auf '/*' (Catch-all), Root
+   '/' erbt dann automatisch. */
+
+/* Spezifische Pfade zuerst (Cache-Zeiten) */
 /robots.txt
   Cache-Control: public, max-age=3600
 /sitemap*.xml
@@ -20,21 +24,12 @@
 /_assets/*
   Cache-Control: public, max-age=31536000, immutable
 
-/* Default: alle HTML-Seiten — Security-Header + kurze Cache-Zeit.
-   '/*' matcht /color-picker/, /colors/red/, /404, etc. — alles ab Root.
-   Da die spezifischen Regeln oben bereits Cache-Control gesetzt haben,
-   werden sie durch nachfolgende Regeln nicht überschrieben (CF joinet). */
-/
-  X-Content-Type-Options: nosniff
-  X-Frame-Options: SAMEORIGIN
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
-  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  X-XSS-Protection: 0
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagservices.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https:; frame-src 'self' https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net; frame-ancestors 'self'; base-uri 'self'; form-action 'self'
-  Cache-Control: public, max-age=0, must-revalidate
-
-/* Wildcard für ALLE nicht-Root-Pages — Security-Header für jede HTML-Page. */
+/* Catch-all: ALLE Pages (inkl. Root '/' und alle Sub-Paths).
+   '/*' matcht '/', '/foo', '/foo/' — alles ab Root.
+   HTML-Content ändert sich bei jedem Build → max-age=300 (5min) + must-revalidate
+   gibt Google aktuellen Content ohne jedes Mal CF-Origin zu hitzen.
+   Stale-while-revalidate=86400 lässt Google stale Content 24h nutzen, falls
+   Origin kurz down ist. */
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
@@ -43,3 +38,4 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   X-XSS-Protection: 0
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagservices.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https:; frame-src 'self' https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net; frame-ancestors 'self'; base-uri 'self'; form-action 'self'
+  Cache-Control: public, max-age=300, must-revalidate, stale-while-revalidate=86400
