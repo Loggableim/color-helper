@@ -30,6 +30,10 @@ export interface Props {
 
 const { color } = Astro.props;
 
+// Hex→Slug-Lookup für interne Verlinkung der Palette-Swatches
+const colorByHex = new Map(colors.map(c => [c.hex.toLowerCase(), c.slug]));
+const getColorSlug = (hexCode) => colorByHex.get(hexCode.toLowerCase());
+
 // Cyan/Aqua and Fuchsia/Magenta are CSS-spec synonyms with identical hex values.
 // To avoid duplicate content, set canonical URL to the primary page.
 const canonicalSlug = (color.slug === 'aqua') ? 'cyan'
@@ -379,11 +383,13 @@ const colorSchemaGraph = {
     <section class="palette-section">
       <h2>Complementary Color</h2>
       <div class="palette-swatches palette-compact">
-        {complementary.colors.map(c => (
-          <div class="palette-swatch" title={c} style={{ backgroundColor: c }}>
-            <span class="palette-swatch-label">{c}</span>
-          </div>
-        ))}
+        {complementary.colors.map(c => {
+          const slug = getColorSlug(c);
+          const style = `background-color: ${c}`;
+          return slug && slug !== color.slug
+            ? <a href={`/colors/${slug}/`} class="palette-swatch palette-swatch-link" title={c} style={style}><span class="palette-swatch-label">{c}</span></a>
+            : <div class="palette-swatch" title={c} style={style}><span class="palette-swatch-label">{c}</span></div>;
+        })}
       </div>
     </section>
 
@@ -391,11 +397,13 @@ const colorSchemaGraph = {
     <section class="palette-section">
       <h2>Analogous Colors</h2>
       <div class="palette-swatches">
-        {analogous.colors.map(c => (
-          <div class="palette-swatch" title={c} style={{ backgroundColor: c }}>
-            <span class="palette-swatch-label">{c}</span>
-          </div>
-        ))}
+        {analogous.colors.map(c => {
+          const slug = getColorSlug(c);
+          const style = `background-color: ${c}`;
+          return slug && slug !== color.slug
+            ? <a href={`/colors/${slug}/`} class="palette-swatch palette-swatch-link" title={c} style={style}><span class="palette-swatch-label">{c}</span></a>
+            : <div class="palette-swatch" title={c} style={style}><span class="palette-swatch-label">{c}</span></div>;
+        })}
       </div>
     </section>
 
@@ -403,11 +411,13 @@ const colorSchemaGraph = {
     <section class="palette-section">
       <h2>Triadic Colors</h2>
       <div class="palette-swatches">
-        {triadic.colors.map(c => (
-          <div class="palette-swatch" title={c} style={{ backgroundColor: c }}>
-            <span class="palette-swatch-label">{c}</span>
-          </div>
-        ))}
+        {triadic.colors.map(c => {
+          const slug = getColorSlug(c);
+          const style = `background-color: ${c}`;
+          return slug && slug !== color.slug
+            ? <a href={`/colors/${slug}/`} class="palette-swatch palette-swatch-link" title={c} style={style}><span class="palette-swatch-label">{c}</span></a>
+            : <div class="palette-swatch" title={c} style={style}><span class="palette-swatch-label">{c}</span></div>;
+        })}
       </div>
     </section>
 
@@ -415,11 +425,13 @@ const colorSchemaGraph = {
     <section class="palette-section">
       <h2>Split Complementary</h2>
       <div class="palette-swatches">
-        {splitComplementary.colors.map(c => (
-          <div class="palette-swatch" title={c} style={{ backgroundColor: c }}>
-            <span class="palette-swatch-label">{c}</span>
-          </div>
-        ))}
+        {splitComplementary.colors.map(c => {
+          const slug = getColorSlug(c);
+          const style = `background-color: ${c}`;
+          return slug && slug !== color.slug
+            ? <a href={`/colors/${slug}/`} class="palette-swatch palette-swatch-link" title={c} style={style}><span class="palette-swatch-label">{c}</span></a>
+            : <div class="palette-swatch" title={c} style={style}><span class="palette-swatch-label">{c}</span></div>;
+        })}
       </div>
     </section>
 
@@ -427,11 +439,13 @@ const colorSchemaGraph = {
     <section class="palette-section">
       <h2>Tetradic Colors</h2>
       <div class="palette-swatches">
-        {tetradic.colors.map(c => (
-          <div class="palette-swatch" title={c} style={{ backgroundColor: c }}>
-            <span class="palette-swatch-label">{c}</span>
-          </div>
-        ))}
+        {tetradic.colors.map(c => {
+          const slug = getColorSlug(c);
+          const style = `background-color: ${c}`;
+          return slug && slug !== color.slug
+            ? <a href={`/colors/${slug}/`} class="palette-swatch palette-swatch-link" title={c} style={style}><span class="palette-swatch-label">{c}</span></a>
+            : <div class="palette-swatch" title={c} style={style}><span class="palette-swatch-label">{c}</span></div>;
+        })}
       </div>
     </section>
 
@@ -781,6 +795,13 @@ const colorSchemaGraph = {
     padding-bottom: 0.25rem;
     position: relative;
     transition: flex 0.2s;
+  }
+  .palette-swatch-link {
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .palette-swatch-link:hover .palette-swatch-label {
+    color: #fff;
   }
   .palette-swatch:hover {
     flex: 2;

@@ -179,6 +179,20 @@ const webAppSchema = {
         input.dispatchEvent(new Event('input'));
       })();
     </script>
+
+    <section class="seo-content">
+      <h2>Color Export Center — CSS, SCSS, Tailwind, JSON &amp; Figma</h2>
+      <p>The Color Helper Export Center lets you convert any color palette into the format your project needs — all in your browser, with zero server uploads. Paste a comma-separated list of hex values, see a live preview of the colors, and export them as CSS Custom Properties, SCSS variables, Tailwind CSS configuration, JSON design tokens, or Figma Variables. The export uses your browser's native clipboard API or file download, so you go from palette to production-ready code in seconds.</p>
+
+      <h2>Export formats that match your workflow</h2>
+      <p><strong>CSS Variables:</strong> Generates <code>:root &#123; --color-1: #hex; &#125;</code> declarations ready to paste into any stylesheet. Perfect for plain CSS projects. <strong>SCSS:</strong> Produces <code>$color-1: #hex;</code> variables for Sass-based projects. <strong>Tailwind Config:</strong> Creates a JavaScript module extending the default Tailwind color palette — drop it into your <code>tailwind.config.js</code> and use your colors as <code>bg-color-1</code>, <code>text-color-1</code>, etc. <strong>JSON:</strong> Exports the palette as a plain JSON array, compatible with design tokens, style dictionaries, and CI pipelines. <strong>Figma Variables:</strong> Produces a JSON file importable via the Figma Tokens plugin or Figma's REST API.</p>
+
+      <h2>How to export from any Color Helper tool</h2>
+      <p>Open the Color Picker, Palette Generator, Gradient Generator, Brand Color Palette Generator, or My Palettes — each has an Export button that opens the export UI with your current colors pre-loaded. This means you can iterate on a palette in the generator, then export it as Tailwind config without ever leaving the tool.</p>
+
+      <h2>Privacy guarantee</h2>
+      <p>Because the export runs entirely client-side, your colors never leave your device. The Export Center doesn't send HTTP requests, doesn't set cookies, and doesn't store your palette history on any server.</p>
+    </section>
   </ToolLayout>
 
   <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
