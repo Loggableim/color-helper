@@ -1,9 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { colors } from '../data/colors';
 
 const title = 'About';
-const description = 'Color Helper is an independent, browser-based color utility suite for designers, developers, and creators. 16+ free tools, no uploads, no tracking.';
+const description = 'Color Helper is an independent, browser-based color utility suite for designers, developers, and creators. Free tools, your images and palettes stay in your browser, no account required.';
 const canonical = 'https://color-helper.com/about/';
+
+// Source of truth: actual count from the colors data file.
+// 141 entries with two CSS-spec synonyms (aqua=cyan, fuchsia=magenta) which share HEX values.
+const totalColors = colors.length;
+const uniqueHex = new Set(colors.map((c) => c.hex.toLowerCase())).size;
 ---
 <BaseLayout
   title={title}
@@ -27,10 +33,10 @@ const canonical = 'https://color-helper.com/about/';
         <h2>What Color Helper does</h2>
         <p>
           Color Helper gives you a single place to handle every common color task on the web. You can pick colors
-          from images, convert between HEX / RGB / HSL / CMYK / Pantone formats, generate harmonious color
+          from images, convert between HEX / RGB / HSL formats, generate harmonious color
           palettes based on color theory rules (complementary, analogous, triadic, tetradic, monochromatic),
           check WCAG 2.1 contrast ratios for accessibility compliance, extract palettes from brand logos, simulate
-          color blindness, and look up any of the 147 CSS named colors with full HEX, RGB, HSL, and tints/shades.
+          color blindness, and look up any of the {totalColors} CSS named colors with full HEX, RGB, HSL, and tints/shades.
         </p>
 
         <h2>Privacy and how the tools work</h2>
@@ -42,9 +48,12 @@ const canonical = 'https://color-helper.com/about/';
           your device.
         </p>
         <p>
-          We don't run analytics that track individual users. We don't set advertising cookies. The only
-          third-party scripts that load are Google AdSense (for ad serving on tool pages) and the IndexNow
-          search-engine submission API. No fingerprinting, no behavioral tracking, no IP logging.
+          We don't run our own analytics. The only third-party scripts that load are Google AdSense
+          (for contextual ad serving on tool pages) and the IndexNow search-engine submission API.
+          AdSense may set its own cookies to serve and cap ads — you can manage this via the
+          cookie consent banner and at <a href="https://adssettings.google.com">adssettings.google.com</a>.
+          The image color picker, palette library, contrast checker, and every other tool run
+          entirely as client-side JavaScript. We never see your inputs.
         </p>
 
         <h2>How Color Helper is different</h2>
@@ -72,7 +81,7 @@ const canonical = 'https://color-helper.com/about/';
 
         <h2>How the color data is sourced</h2>
         <p>
-          The 147 CSS named colors come straight from the W3C CSS Color Module Level 4 specification, which
+          The {totalColors} CSS named colors come straight from the W3C CSS Color Module Level 4 specification, which
           is the official source for every color name and hex value you see on our color pages. WCAG contrast
           thresholds follow the W3C Web Content Accessibility Guidelines (WCAG) 2.1, with both AA and AAA
           conformance levels available. Tints and shades are calculated using the HSL color model.

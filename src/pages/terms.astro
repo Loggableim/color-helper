@@ -1,0 +1,178 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Terms of Use';
+const description = 'Terms of use for Color Helper — the free, browser-based color tools website. Read the rules for using our color picker, converter, palette generator and other utilities.';
+const canonical = 'https://color-helper.com/terms/';
+---
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+>
+  <div class="content-page">
+    <div class="container">
+      <div class="content-wrapper">
+        <h1>Terms of Use</h1>
+        <p class="last-updated">Last updated: <time datetime="2026-06-20">June 20, 2026</time></p>
+
+        <p>
+          These Terms of Use govern your access to and use of Color Helper
+          (the "Service", "we", "us", or "our"), operated as an independent,
+          free, browser-based color utility suite at <a href="/">color-helper.com</a>.
+          By accessing or using the Service, you agree to be bound by these Terms.
+          If you do not agree, please do not use the Service.
+        </p>
+
+        <h2>1. The Service</h2>
+        <p>
+          Color Helper provides a collection of free, browser-based color tools,
+          including but not limited to: a color picker, image color picker, color
+          format converter, palette generator, contrast checker, gradient generator,
+          color encyclopedia, and educational guides.
+        </p>
+        <p>
+          The Service is provided free of charge. All color processing happens
+          client-side in your browser. We do not require you to create an account
+          to use the tools.
+        </p>
+
+        <h2>2. Acceptable Use</h2>
+        <p>You agree not to:</p>
+        <ul>
+          <li>Use the Service for any unlawful purpose or in violation of any applicable laws.</li>
+          <li>Attempt to interfere with, disrupt, or compromise the integrity or security of the Service.</li>
+          <li>Use automated systems (bots, scrapers, crawlers) to access the Service at a rate that exceeds reasonable human use, or to extract content for the purpose of training commercial machine-learning models without our prior written consent.</li>
+          <li>Republish or commercially exploit content extracted from the Service (such as color definitions or encyclopedia entries) without attribution.</li>
+          <li>Misrepresent the source or ownership of content derived from the Service.</li>
+        </ul>
+
+        <h2>3. Intellectual Property</h2>
+        <p>
+          The source code of Color Helper's tooling is published on GitHub
+          under the repository's specified license. The color encyclopedia content
+          (color names, hex values, descriptions) is derived from the W3C CSS Color
+          Module Level 4 specification, which is a public standard.
+        </p>
+        <p>
+          The site's branding, layout, and tool implementations are owned by the
+          Color Helper project. You may link to Color Helper and use the tools
+          for personal or commercial work (e.g., picking colors for your own
+          designs). You may not republish the website's content as your own.
+        </p>
+
+        <h2>4. Third-Party Services and Ads</h2>
+        <p>
+          The Service displays advertisements served by Google AdSense. These
+          ads are provided by third parties and are not endorsements by us.
+          We do not control the content of third-party ads. Clicking an ad
+          will take you to the advertiser's site, which is governed by that
+          party's own terms and privacy policy.
+        </p>
+        <p>
+          We use Cloudflare Pages for hosting, and may use search-engine
+          submission services (such as IndexNow). See our
+          <a href="/privacy/">Privacy Policy</a> for details on each provider.
+        </p>
+
+        <h2>5. Disclaimer of Warranties</h2>
+        <p>
+          The Service is provided "as is" and "as available", without warranties
+          of any kind, either express or implied, including but not limited to
+          warranties of merchantability, fitness for a particular purpose,
+          non-infringement, or accuracy of results.
+        </p>
+        <p>
+          We do our best to ensure color conversions and contrast calculations
+          match established standards (W3C CSS Color Module, WCAG 2.1/2.2),
+          but we cannot guarantee that the output of the tools is always
+          error-free. Always verify critical color values against the relevant
+          specification.
+        </p>
+
+        <h2>6. Limitation of Liability</h2>
+        <p>
+          To the maximum extent permitted by law, Color Helper and its operators
+          shall not be liable for any indirect, incidental, special, consequential,
+          or punitive damages, including but not limited to loss of profits,
+          data, goodwill, or other intangible losses, resulting from your access
+          to or use of the Service.
+        </p>
+
+        <h2>7. Changes to These Terms</h2>
+        <p>
+          We may update these Terms from time to time. Any changes will be
+          posted on this page with an updated "Last updated" date. Material
+          changes will be communicated via a notice on the website. Your
+          continued use of the Service after changes take effect constitutes
+          acceptance of the revised Terms.
+        </p>
+
+        <h2>8. Governing Law</h2>
+        <p>
+          These Terms are governed by the laws applicable to the operator of
+          Color Helper, without regard to its conflict-of-laws principles. If
+          any provision of these Terms is held to be invalid or unenforceable,
+          the remaining provisions shall continue in full force and effect.
+        </p>
+
+        <h2>9. Contact</h2>
+        <p>
+          If you have questions about these Terms, please reach out via our
+          <a href="/contact/">contact page</a> or email
+          <a href="mailto:hello@color-helper.com">hello@color-helper.com</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .content-page {
+    padding: 2rem 0;
+  }
+  .content-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-primary);
+  }
+  .last-updated {
+    color: var(--color-text-tertiary);
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-bottom: 2rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-text-primary);
+  }
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+  ul {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+  li {
+    margin-bottom: 0.75rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+  }
+  a {
+    color: var(--color-accent, #3b82f6);
+    text-decoration: underline;
+  }
+  strong {
+    color: var(--color-text-primary);
+  }
+</style>

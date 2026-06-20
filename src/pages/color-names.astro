@@ -7,12 +7,13 @@ import type { ColorData } from '../data/colors';
 import FAQ from '../components/FAQ.astro';
 
 const title = 'Color Names — CSS Named Colors Table';
-const description = 'Browse all 164 CSS named colors in a searchable, filterable table with HEX codes, RGB values, and categories. Find the perfect color for your web design projects.';
+const description = `Browse all ${colors.length} CSS named colors in a searchable, filterable table with HEX codes, RGB values, and categories. Find the perfect color for your web design projects.`;
 const canonical = 'https://color-helper.com/color-names/';
 const breadcrumbs = [{ label: 'Color Names' }];
 
 const totalColors = colors.length;
 const totalCategories = colorCategories.length;
+const cssSpecCount = 148;
 
 const webAppSchema = {
   "@context": "https://schema.org",
@@ -42,7 +43,7 @@ const webAppSchema = {
             <span class="hero-stat-label">Categories</span>
           </div>
           <div class="hero-stat">
-            <span class="hero-stat-number">148</span>
+            <span class="hero-stat-number">{cssSpecCount}</span>
             <span class="hero-stat-label">CSS Spec</span>
           </div>
         </div>
@@ -136,7 +137,7 @@ const webAppSchema = {
     <p id="no-results" class="no-results" style="display: none;">No colors found matching your search.</p>
 
     <!-- SEO Content -->
-    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <!-- Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text -->
     <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
 
     <section class="seo-content">
@@ -148,7 +149,7 @@ const webAppSchema = {
     </section>
 
     <!-- Related Tools -->
-    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <!-- Ad: In-Content — nach SEO-Text, vor Related-Tools -->
     <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">

@@ -8,6 +8,10 @@
     "build": "astro build",
     "preview": "astro preview --host",
     "lint": "astro check",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
     "og:build": "node scripts/build-og-images.mjs",
     "og:rebuild": "rm -rf public/og && node scripts/build-og-images.mjs"
   },
@@ -25,7 +29,10 @@
     "@resvg/resvg-js": "^2.6.2",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
+    "@vitest/ui": "^2.1.9",
+    "jsdom": "^25.0.1",
     "satori": "^0.26.0",
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "vitest": "^2.1.9"
   }
 }

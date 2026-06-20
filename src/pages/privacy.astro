@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const title = 'Privacy Policy';
-const description = 'Privacy policy for Color Helper — learn how your data is handled when using our free browser-based color tools. No accounts, no tracking, no uploads.';
+const description = 'Privacy policy for Color Helper — your images and palettes stay in your browser. No account required, no image uploads, no server-side storage of your color data.';
 const canonical = 'https://color-helper.com/privacy/';
 ---
 <BaseLayout
@@ -14,28 +14,28 @@ const canonical = 'https://color-helper.com/privacy/';
     <div class="container">
       <div class="content-wrapper">
         <h1>Privacy Policy</h1>
-        <p class="last-updated">Last updated: <time datetime="2026-06-19">June 19, 2026</time></p>
+        <p class="last-updated">Last updated: <time datetime="2026-06-20">June 20, 2026</time></p>
 
         <h2>Our Privacy Promise</h2>
         <p>
-          Color Helper is built around a simple principle: <strong>your data stays on your device</strong>.
-          Every color tool on this website runs entirely as client-side JavaScript in your browser.
-          No account creation is required, no session data is tracked, and no personal information is
-          collected, stored, or transmitted.
-        </p>
-
-        <h2>What We Collect</h2>
-        <p>
-          Color Helper does <strong>not</strong> collect:
+          Color Helper is built around four concrete privacy guarantees:
         </p>
         <ul>
-          <li>Personal information (name, email address, phone number)</li>
+          <li><strong>Your images and palettes stay in your browser.</strong> Every tool runs as client-side JavaScript in your browser. Nothing you paste, drop, or type is uploaded to a server.</li>
+          <li><strong>No account required.</strong> You can use every tool without creating an account, signing up, or providing an email address.</li>
+          <li><strong>No image uploads.</strong> The Image Color Picker reads files from your device using the browser's local file system and processes them with the HTML5 Canvas API. Images never leave your device.</li>
+          <li><strong>No server-side storage of your color data.</strong> Color values, palettes, and tool inputs are not transmitted to or stored on any server. Saved palettes are kept in your browser's localStorage and can be cleared at any time.</li>
+        </ul>
+
+        <h2>What We Don't Collect</h2>
+        <p>Color Helper does <strong>not</strong> collect:</p>
+        <ul>
+          <li>Personal information (name, email, phone number)</li>
           <li>Account credentials (we don't have accounts)</li>
           <li>Browser fingerprints or device identifiers</li>
-          <li>Session data or behavioral analytics</li>
+          <li>Behavioral analytics (no Google Analytics, no Matomo, no Plausible)</li>
           <li>Your color palettes, images, or design data</li>
-          <li>IP addresses (beyond what Cloudflare's edge network requires to serve requests)</li>
-          <li>Cookies for tracking or advertising personalization</li>
+          <li>Cookies for tracking or analytics</li>
         </ul>
 
         <h2>Image Processing</h2>
@@ -92,7 +92,7 @@ const canonical = 'https://color-helper.com/privacy/';
           </li>
         </ul>
 
-        <h2>Advertising &amp; Opt-Out</h2>
+        <h2>Advertising, Cookies and Your Choices</h2>
         <p>
           Google AdSense is our sole source of revenue. We deliberately chose a contextual,
           privacy-respecting ad model. You can:
@@ -101,7 +101,16 @@ const canonical = 'https://color-helper.com/privacy/';
           <li>Opt out of personalized ads at <a href="https://adssettings.google.com">adssettings.google.com</a></li>
           <li>Use an ad-blocker if you prefer an ad-free experience</li>
           <li>Use the tools without clicking any ads — there is no paywall, no premium tier, no usage limit</li>
+          <li>Manage your consent at any time via the <a href="#" data-action="open-consent">Cookie settings</a> link in the footer (consent state is stored in your browser only)</li>
         </ul>
+        <p>
+          <strong>Note on tracking claims:</strong> we deliberately avoid blanket statements like
+          "we don't track you". AdSense, when active, does set cookies for ad selection and
+          frequency capping — that is part of how contextual advertising works. The precise
+          statement is: <em>we don't run our own analytics, we don't collect personal data, and
+          all tool inputs stay in your browser</em>. Any third-party cookies come exclusively
+          from AdSense on tool pages and can be controlled via the consent banner.
+        </p>
 
         <h2>Data Security</h2>
         <p>

@@ -10,6 +10,9 @@ const description = 'Learn what HEX color codes are, how they work, and how to r
 const canonical = 'https://color-helper.com/hex-color-codes/';
 const breadcrumbs = [{ label: 'HEX Color Codes' }];
 
+const cssSpecCount = 148; // CSS Color Module Level 4 spec count
+const totalColors = colors.length;
+
 // Featured colors for the reference table
 const featuredColors = [
   { name: 'Black', hex: '#000000', rgb: '0, 0, 0' },
@@ -52,7 +55,7 @@ const webAppSchema = {
 <BaseLayout {title} {description} {canonical} {breadcrumbs}>
   <ToolLayout {title} {description} {breadcrumbs}>
     <!-- Hero explanation -->
-    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <!-- Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text -->
     <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
 
     <section class="seo-content">
@@ -150,13 +153,13 @@ const webAppSchema = {
     </section>
 
     <!-- Related Tools -->
-    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <!-- Ad: In-Content — nach SEO-Text, vor Related-Tools -->
     <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
       <h2>Related Resources</h2>
       <ul>
-        <li><a href="/color-names/">CSS Named Colors</a> — Browse all 148 CSS color names with hex codes</li>
+        <li><a href="/color-names/">CSS Named Colors</a> — Browse all {cssSpecCount} CSS color names with hex codes</li>
         <li><a href="/color-converter/">Color Converter</a> — Convert between HEX, RGB, and HSL formats</li>
         <li><a href="/hex-to-rgb/">HEX to RGB Converter</a> — Instantly convert any hex color code</li>
         <li><a href="/color-palette-generator/">Color Palette Generator</a> — Create color schemes from any hex code</li>

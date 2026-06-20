@@ -23,17 +23,16 @@ export function isValidHex(hex: string): boolean {
 }
 
 export function hexToRgb(hex: string): RGB | null {
-  try {
-    const h = normalizeHex(hex);
-    const val = h.replace('#', '');
-    return {
-      r: parseInt(val.substring(0, 2), 16),
-      g: parseInt(val.substring(2, 4), 16),
-      b: parseInt(val.substring(4, 6), 16),
-    };
-  } catch {
-    return null;
-  }
+  const h = normalizeHex(hex);
+  // normalizeHex returns the input unchanged for invalid lengths/characters —
+  // guard against those here by re-checking the length and valid hex characters.
+  if (h.length !== 7 || !/^#[0-9a-fA-F]{6}$/.test(h)) return null;
+  const val = h.replace('#', '');
+  const r = parseInt(val.substring(0, 2), 16);
+  const g = parseInt(val.substring(2, 4), 16);
+  const b = parseInt(val.substring(4, 6), 16);
+  if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) return null;
+  return { r, g, b };
 }
 
 export function rgbToHex(r: number, g: number, b: number): string {
@@ -264,4 +263,81 @@ export async function copyToClipboard(text: string): Promise<boolean> {
     document.body.removeChild(ta);
     return true;
   }
+}
+
+/* ===== Color Blindness Simulation =====
+ * Linear sRGB transformation matrices.
+ * Source: established Brettel/Viénot/Mollon CVD simulation matrices.
+ */
+export type CVDType = 'protanopia' | 'deuteranopia' | 'tritanopia' | 'achromatopsia';
+
+const CVD_MATRICES: Record<CVDType, number[][]> = {
+  protanopia: [
+    [0.567, 0.433, 0],
+    [0.558, 0.442, 0],
+    [0, 0.242, 0.758],
+  ],
+  deuteranopia: [
+    [0.625, 0.375, 0],
+    [0.7, 0.3, 0],
+    [0, 0.3, 0.7],
+  ],
+  tritanopia: [
+    [0.95, 0.05, 0],
+    [0, 0.433, 0.567],
+    [0, 0.475, 0.525],
+  ],
+  achromatopsia: [
+    [0.299, 0.587, 0.114],
+    [0.299, 0.587, 0.114],
+    [0.299, 0.587, 0.114],
+  ],
+};
+
+function linearize(c: number): number {
+  return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+}
+
+function delinearize(c: number): number {
+  c = Math.min(1, Math.max(0, c));
+  return c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
+}
+
+/**
+ * Simulate how a color appears to someone with a given color vision deficiency.
+ * Returns the simulated RGB values and corresponding HEX.
+ */
+export function simulateCVD(hex: string, type: CVDType): { r: number; g: number; b: number; hex: string } | null {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return null;
+  return simulateCVDFromRgb(rgb.r, rgb.g, rgb.b, type);
+}
+
+/**
+ * Same as simulateCVD but operates directly on RGB values.
+ */
+export function simulateCVDFromRgb(r: number, g: number, b: number, type: CVDType): { r: number; g: number; b: number; hex: string } {
+  // Normalize to 0-1
+  const rr = r / 255, gg = g / 255, bb = b / 255;
+
+  // Linearize sRGB
+  const R = linearize(rr), G = linearize(gg), B = linearize(bb);
+
+  // Apply matrix
+  const matrix = CVD_MATRICES[type];
+  const r2 = matrix[0][0] * R + matrix[0][1] * G + matrix[0][2] * B;
+  const g2 = matrix[1][0] * R + matrix[1][1] * G + matrix[1][2] * B;
+  const b2 = matrix[2][0] * R + matrix[2][1] * G + matrix[2][2] * B;
+
+  // Delinearize (gamma encode)
+  const rout = Math.round(delinearize(r2) * 255);
+  const gout = Math.round(delinearize(g2) * 255);
+  const bout = Math.round(delinearize(b2) * 255);
+
+  return {
+    r: rout,
+    g: gout,
+    b: bout,
+    hex: rgbToHex(rout, gout, bout),
+  };
 }

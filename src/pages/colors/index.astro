@@ -7,12 +7,17 @@ import type { ColorData } from '../../data/colors';
 import FAQ from '../../components/FAQ.astro';
 
 const title = 'Color Encyclopedia — All CSS Named Colors';
-const description = 'Browse all 164 CSS named colors organized by category. Each color page includes HEX, RGB, HSL values, tints & shades, complementary palettes, contrast recommendations, and CSS code snippets.';
+const description = `Browse all ${colors.length} CSS named colors organized by category. Each color page includes HEX, RGB, HSL values, tints & shades, complementary palettes, contrast recommendations, and CSS code snippets.`;
 const canonical = 'https://color-helper.com/colors/';
 const breadcrumbs = [{ label: 'Colors' }];
 
+// Source of truth: actual count from the colors data file.
 const totalColors = colors.length;
 const totalCategories = colorCategories.length;
+// CSS Spec defines 148 named colors. Our dataset has 141 entries — the difference
+// is intentional: we keep 141 practical, well-documented colors instead of padding
+// with rarely-used ones, and we mark CSS-synonym pairs (aqua/cyan, fuchsia/magenta).
+const cssSpecCount = 148;
 
 const webAppSchema = {
   "@context": "https://schema.org",
@@ -42,7 +47,7 @@ const webAppSchema = {
             <span class="hero-stat-label">Categories</span>
           </div>
           <div class="hero-stat">
-            <span class="hero-stat-number">148</span>
+            <span class="hero-stat-number">{cssSpecCount}</span>
             <span class="hero-stat-label">CSS Spec</span>
           </div>
         </div>
@@ -86,19 +91,19 @@ const webAppSchema = {
     </div>
 
     <!-- SEO Content -->
-    {{/* Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text */}}
+    <!-- Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text -->
     <MonetizationSlot position="tool-bottom" adFormat="horizontal" />
 
     <section class="seo-content">
       <h2>CSS Named Colors — Complete Reference</h2>
-      <p>CSS named colors are predefined color keywords that can be used directly in stylesheets without needing hex codes or RGB values. The CSS Color Module Level 4 specification defines 148 named colors, ranging from common colors like "red" and "blue" to more specialized names like "blanchedalmond" and "rebeccapurple".</p>
-      <p>Our color encyclopedia goes beyond the 148 CSS spec colors — we include additional well-known web colors and organize them into 14 intuitive categories: Red, Pink, Purple, Blue, Cyan, Teal, Green, Lime, Yellow, Orange, Brown, White, Gray, and Black. Each color has its own dedicated page with comprehensive information.</p>
+      <p>CSS named colors are predefined color keywords that can be used directly in stylesheets without needing hex codes or RGB values. The CSS Color Module Level 4 specification defines {cssSpecCount} named colors, ranging from common colors like "red" and "blue" to more specialized names like "blanchedalmond" and "rebeccapurple".</p>
+      <p>Our color encyclopedia catalogs {totalColors} of the most-used CSS named colors, organized into {totalCategories} intuitive categories: Red, Pink, Purple, Blue, Cyan, Teal, Green, Lime, Yellow, Orange, Brown, White, Gray, and Black. Each color has its own dedicated page with comprehensive information.</p>
       <p>On each color page you'll find: HEX, RGB, and HSL values with one-click copy; tints and shades for creating monochromatic palettes; complementary and analogous color schemes; WCAG contrast ratio checks against black and white; ready-to-use CSS code snippets; and links to related tools like the Color Picker, Palette Generator, and Contrast Checker.</p>
       <p>Whether you're a web designer building a brand palette, a developer implementing a design system, or a student learning color theory, this encyclopedia gives you everything you need to work confidently with CSS colors.</p>
     </section>
 
     <!-- Related Tools -->
-    {{/* Ad: In-Content — nach SEO-Text, vor Related-Tools */}}
+    <!-- Ad: In-Content — nach SEO-Text, vor Related-Tools -->
     <MonetizationSlot position="in-content" adFormat="horizontal" />
 
     <section class="related-tools">
@@ -116,7 +121,7 @@ const webAppSchema = {
       items={[
         {
           question: 'How many CSS named colors are there?',
-          answer: 'The CSS Color Module Level 4 specification defines 148 named colors. Our encyclopedia includes these plus additional well-known web colors, organized into 14 intuitive categories for easy browsing.'
+          answer: 'The CSS Color Module Level 4 specification defines 148 named colors. Our encyclopedia catalogs the most-used subset across 14 intuitive categories for easy browsing. Note that CSS includes official synonym pairs (aqua/cyan, fuchsia/magenta) — both names refer to the same color value.'
         },
         {
           question: 'What information is on each color page?',

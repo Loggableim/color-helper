@@ -26,11 +26,16 @@ const dayOfYear = Math.floor(
   (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000
 );
 const colorOfTheDay = colors[dayOfYear % colors.length];
+
+// Source of truth for color counts — derived from the colors data.
+// 141 entries; 139 unique hex values (CSS-synonym pairs share: aqua=cyan, fuchsia=magenta).
+const totalColors = colors.length;
+const uniqueHex = new Set(colors.map((c) => c.hex.toLowerCase())).size;
 ---
 
 <BaseLayout
   title="Color Helper"
-  description="Free color tools for designers, developers and creators. Pick, convert, check and generate colors in your browser — no uploads, no accounts, no tracking."
+  description="Free color tools for designers, developers and creators. Pick, convert, check and generate colors in your browser — your images and palettes stay in your browser, no account required, no image uploads."
   canonical="https://color-helper.com/"
 >
   <!-- ================================================================
@@ -47,7 +52,7 @@ const colorOfTheDay = colors[dayOfYear % colors.length];
           <h1>Color tools that<br class="hide-mobile" /> stay out of your way</h1>
           <p class="hero-subtitle">
             Pick, convert, check and generate colors faster — all in your browser.
-            No uploads, no accounts, no tracking.
+            Your images and palettes stay on your device, no account required.
           </p>
           <div class="hero-actions">
             <a href="/color-picker/" class="btn btn-primary hero-cta-primary">Open Color Picker</a>
@@ -412,7 +417,7 @@ const colorOfTheDay = colors[dayOfYear % colors.length];
             </svg>
           </div>
           <h3>Privacy-First</h3>
-          <p>Everything runs in your browser. No uploads, no servers, no tracking. Your data never leaves your device.</p>
+          <p>Everything runs in your browser. Your images and palettes stay on your device — no account required, no image uploads, no server-side storage of your color data.</p>
         </div>
         <div class="benefit-card fade-in fade-in-delay-2">
           <div class="benefit-icon" style="background: rgba(6, 182, 212, 0.1); color: var(--color-accent-cyan);">
@@ -465,7 +470,7 @@ const colorOfTheDay = colors[dayOfYear % colors.length];
             </svg>
           </div>
           <span class="resource-card-title">CSS Color Names</span>
-          <span class="resource-card-desc">All 148 CSS named colors with swatches and hex values.</span>
+          <span class="resource-card-desc">All {totalColors} CSS named colors with swatches and hex values.</span>
           <span class="resource-card-arrow">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </span>
