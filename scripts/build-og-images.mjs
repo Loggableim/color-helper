@@ -18,11 +18,12 @@
  *   - Schneller (~50ms pro Image)
  */
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
+import sharp from 'sharp';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -87,13 +88,16 @@ async function renderPng(svgString, width = 1200, height = 630) {
     font: { loadSystemFonts: false },
   });
   const rendered = resvg.render();
-  // PNG mit Kompression + Palette für kleinere Files
-  return rendered.asPng({
-    palette: {
-      enabled: true,
-      maxColors: 256, // 8-bit indexed color
-    },
+  // PNG als Zwischenschritt → dann WebP (bessere Kompression + Alpha)
+  const pngBuffer = rendered.asPng({
+    palette: { enabled: true, maxColors: 256 },
   });
+  return sharp(pngBuffer).webp({ quality: 85, alphaQuality: 85, effort: 4 }).toBuffer();
+}
+
+// Hilfsfunktion: schreibt WebP-Datei (loggt nur bei Fehlern)
+async function writeWebP(path, buffer) {
+  writeFileSync(path, buffer);
 }
 
 // ─── Templates ──────────────────────────────────────────────
@@ -382,10 +386,10 @@ async function main() {
   mkdirSync(COLORS_DIR, { recursive: true });
 
   // 1) Default OG-Image
-  console.log('  ▸ default.png…');
+  console.log('  ▸ default.webp…');
   const defSvg = await satori(defaultTemplate(), { width: 1200, height: 630, fonts });
-  writeFileSync(join(OUT_DIR, 'default.png'), await renderPng(defSvg));
-  console.log('    ✓ default.png');
+  writeFileSync(join(OUT_DIR, 'default.webp'), await renderPng(defSvg));
+  console.log('    ✓ default.webp');
 
   // 2) Color OG-Images
   const colors = loadColors();
@@ -400,7 +404,7 @@ async function main() {
     try {
       const svg = await satori(colorTemplate(c), { width: 1200, height: 630, fonts });
       const png = await renderPng(svg);
-      writeFileSync(join(COLORS_DIR, `${c.slug}.png`), png);
+      writeFileSync(join(COLORS_DIR, `${c.slug}.webp`), png);
       ok++;
     } catch (e) {
       fail++;
@@ -413,8 +417,8 @@ async function main() {
   // 3) Stats
   const total = ok + 1; // +1 default
   const sampleSize = 12; // KB
-  const defSize = Math.round(readFileSync(join(OUT_DIR, 'default.png')).length / 1024);
-  const sample = readFileSync(join(COLORS_DIR, `${colors[0].slug}.png`)).length / 1024;
+  const defSize = Math.round(readFileSync(join(OUT_DIR, 'default.webp')).length / 1024);
+  const sample = readFileSync(join(COLORS_DIR, `${colors[0].slug}.webp`)).length / 1024;
   console.log(`\n  Generated ${total} OG-Images`);
   console.log(`  Sizes: default.png ~${defSize}KB, color ~${Math.round(sample)}KB`);
   console.log('▸ done.\n');
