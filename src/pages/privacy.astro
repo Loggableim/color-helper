@@ -1,56 +1,135 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Privacy Policy';
+const description = 'Privacy policy for Color Helper — learn how your data is handled when using our free browser-based color tools. No accounts, no tracking, no uploads.';
+const canonical = 'https://color-helper.com/privacy/';
 ---
 <BaseLayout
-  title="Privacy Policy"
-  description="Privacy policy for Color Helper — learn how your data is handled when using our color tools."
-  canonical="https://color-helper.com/privacy/"
+  title={title}
+  description={description}
+  canonical={canonical}
 >
   <div class="content-page">
     <div class="container">
       <div class="content-wrapper">
         <h1>Privacy Policy</h1>
+        <p class="last-updated">Last updated: <time datetime="2026-06-19">June 19, 2026</time></p>
 
-        <h2>Data Collection</h2>
+        <h2>Our Privacy Promise</h2>
         <p>
-          Color Helper does not collect, store, or transmit any personal data. All tools run entirely in your
-          browser using client-side JavaScript. No account creation is required and no session data is tracked.
+          Color Helper is built around a simple principle: <strong>your data stays on your device</strong>.
+          Every color tool on this website runs entirely as client-side JavaScript in your browser.
+          No account creation is required, no session data is tracked, and no personal information is
+          collected, stored, or transmitted.
         </p>
+
+        <h2>What We Collect</h2>
+        <p>
+          Color Helper does <strong>not</strong> collect:
+        </p>
+        <ul>
+          <li>Personal information (name, email address, phone number)</li>
+          <li>Account credentials (we don't have accounts)</li>
+          <li>Browser fingerprints or device identifiers</li>
+          <li>Session data or behavioral analytics</li>
+          <li>Your color palettes, images, or design data</li>
+          <li>IP addresses (beyond what Cloudflare's edge network requires to serve requests)</li>
+          <li>Cookies for tracking or advertising personalization</li>
+        </ul>
 
         <h2>Image Processing</h2>
         <p>
-          When you use the Image Color Picker, your image is processed locally on your device using the HTML5
-          Canvas API. No image data is uploaded to any server. The entire process happens within your browser.
+          When you use the Image Color Picker tool, your images are processed entirely within your browser
+          using the HTML5 Canvas API. Images are read from your local file system, processed pixel by pixel
+          in client-side JavaScript, and never uploaded to any server. The image data stays on your device
+          and is discarded when you close or reload the page.
         </p>
 
         <h2>Local Storage</h2>
         <p>
-          The Color Picker tool uses localStorage to save your custom color palette. This data never leaves your
-          browser and can be cleared at any time through your browser settings.
-        </p>
-
-        <h2>Analytics</h2>
-        <p>
-          This MVP does not include any analytics or tracking scripts. We do not use cookies, fingerprinting, or
-          any other tracking mechanisms.
+          The Palette Library ("My Palettes") tool uses the browser's localStorage API to persist saved
+          color palettes across sessions. This data is stored exclusively on your device, never sent to
+          any server, and can be cleared at any time through your browser settings (typically under
+          "Clear site data" or "Clear local storage"). We cannot access, view, or recover your saved
+          palettes — they are yours alone.
         </p>
 
         <h2>Third-Party Services</h2>
         <p>
-          We use Google Fonts for typography. Google may collect usage data such as your IP address when loading
-          fonts. Please refer to Google's privacy policy for more information.
+          Color Helper uses the following third-party services, each with a specific, limited purpose:
+        </p>
+        <ul>
+          <li>
+            <strong>Cloudflare Pages</strong> — Our hosting provider. Cloudflare handles CDN delivery,
+            DDoS protection, and edge caching. Cloudflare's network logs may include IP addresses and
+            request metadata for operational security. These logs are retained according to Cloudflare's
+            privacy policy and are not accessible to us for analytics purposes.
+          </li>
+          <li>
+            <strong>Google AdSense</strong> — We display non-intrusive, contextual advertisements on
+            tool pages to cover hosting costs. Google AdSense may use cookies and device identifiers
+            to serve personalized ads based on your browsing history. You can opt out of personalized
+            advertising at <a href="https://adssettings.google.com">adssettings.google.com</a>.
+            AdSense is loaded only on tool pages (color picker, palette generator, converter, etc.)
+            and not on guides, about, or privacy pages.
+          </li>
+          <li>
+            <strong>Google Fonts</strong> — We use Google Fonts for typography. When you load a page,
+            your browser requests font files from Google's servers. Google may log your IP address
+            for the purpose of serving these fonts. Refer to Google's privacy policy for details.
+          </li>
+          <li>
+            <strong>IndexNow (Bing / Yandex)</strong> — When a new deployment is published, we
+            optionally notify the IndexNow API to request re-indexing of our sitemap URLs. This
+            submission includes only the list of public URLs to index — no personal data.
+          </li>
+          <li>
+            <strong>GitHub</strong> — The source code for Color Helper is published on GitHub.
+            If you submit a bug report or feature request via GitHub Issues, your GitHub username
+            and the content of your submission will be publicly visible. This is optional and not
+            required to use the tools.
+          </li>
+        </ul>
+
+        <h2>Advertising &amp; Opt-Out</h2>
+        <p>
+          Google AdSense is our sole source of revenue. We deliberately chose a contextual,
+          privacy-respecting ad model. You can:
+        </p>
+        <ul>
+          <li>Opt out of personalized ads at <a href="https://adssettings.google.com">adssettings.google.com</a></li>
+          <li>Use an ad-blocker if you prefer an ad-free experience</li>
+          <li>Use the tools without clicking any ads — there is no paywall, no premium tier, no usage limit</li>
+        </ul>
+
+        <h2>Data Security</h2>
+        <p>
+          All connections to Color Helper are served over HTTPS via Cloudflare's edge network.
+          We use HTTP Strict Transport Security (HSTS) with preload to ensure browsers always
+          connect securely. Because we do not collect, store, or process personal data, there is
+          nothing to lose in a data breach.
         </p>
 
-        <h2>Changes</h2>
+        <h2>Changes to This Policy</h2>
         <p>
-          We may update this policy from time to time. Any changes will be posted on this page. We encourage you
-          to review this policy periodically.
+          We may update this policy from time to time to reflect changes in our practices or
+          applicable regulations (including the GDPR and ePrivacy Directive). Any changes will
+          be posted on this page with an updated "Last updated" date. We encourage you to review
+          this policy periodically. Material changes — such as the addition of analytics, tracking,
+          or user accounts — will be communicated via a notice on the website.
         </p>
 
         <h2>Contact</h2>
         <p>
-          If you have any questions about this privacy policy, please reach out to us at
-          hello@color-helper.com.
+          If you have any questions about this privacy policy, data handling practices, or
+          third-party services used on this site, please reach out:
+        </p>
+        <p>
+          Email: <a href="mailto:privacy@color-helper.com">privacy@color-helper.com</a>
+        </p>
+        <p>
+          We aim to respond within 5 business days.
         </p>
       </div>
     </div>
@@ -67,12 +146,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
   h1 {
     font-size: 2rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
     color: var(--color-text-primary);
+  }
+  .last-updated {
+    color: var(--color-text-tertiary);
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-bottom: 2rem;
   }
   h2 {
     font-size: 1.35rem;
-    margin-top: 2rem;
+    margin-top: 2.5rem;
     margin-bottom: 0.75rem;
     color: var(--color-text-primary);
   }
@@ -81,5 +166,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     line-height: 1.7;
     color: var(--color-text-secondary);
     font-size: 1.05rem;
+  }
+  ul {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+  li {
+    margin-bottom: 0.75rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+  }
+  a {
+    color: var(--color-accent, #3b82f6);
+    text-decoration: underline;
+  }
+  strong {
+    color: var(--color-text-primary);
   }
 </style>

@@ -9,6 +9,17 @@ const breadcrumbs = [
   { label: 'Web Design Color Tips' },
 ];
 
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        { "@type": "Question", "name": "First step in choosing colors?", "acceptedAnswer": { "@type": "Answer", "text": "Start with brand color and site purpose." } },
+        { "@type": "Question", "name": "How to maintain brand consistency?", "acceptedAnswer": { "@type": "Answer", "text": "Use CSS custom properties for your palette." } },
+        { "@type": "Question", "name": "How many colors for a website?", "acceptedAnswer": { "@type": "Answer", "text": "3 to 5 core colors." } },
+        { "@type": "Question", "name": "Light or dark mode first?", "acceptedAnswer": { "@type": "Answer", "text": "Design light mode first, adapt for dark." } }
+    ]
+};
+
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
@@ -291,6 +302,50 @@ const articleSchema = {
           </p>
         </section>
 
+            <section class="guide-tool-ctas">
+      <h2>Try These Color Tools</h2>
+      <p>Apply what you learned in this guide with our free browser-based tools:</p>
+      <div class="guide-tool-grid">
+        <a href="/color-palette-generator/" class="guide-tool-card">
+          <strong>Palette Generator</strong>
+          <span>Create cohesive web color palettes</span>
+        </a>
+        <a href="/contrast-checker/" class="guide-tool-card">
+          <strong>Contrast Checker</strong>
+          <span>Verify WCAG compliance for your UI</span>
+        </a>
+        <a href="/color-blindness-simulator/" class="guide-tool-card">
+          <strong>Color Blindness Simulator</strong>
+          <span>Check CVD accessibility</span>
+        </a>
+        <a href="/export/" class="guide-tool-card">
+          <strong>Export Center</strong>
+          <span>Export your palette as CSS, Tailwind, or Figma tokens</span>
+        </a>
+      </div>
+    </section>
+            <section class="guide-tool-ctas">
+      <h2>Try These Color Tools</h2>
+      <p>Apply what you learned in this guide with our free browser-based tools:</p>
+      <div class="guide-tool-grid">
+        <a href="/color-palette-generator/" class="guide-tool-card">
+          <strong>Palette Generator</strong>
+          <span>Create cohesive web color palettes</span>
+        </a>
+        <a href="/contrast-checker/" class="guide-tool-card">
+          <strong>Contrast Checker</strong>
+          <span>Verify WCAG compliance for your UI</span>
+        </a>
+        <a href="/color-blindness-simulator/" class="guide-tool-card">
+          <strong>Color Blindness Simulator</strong>
+          <span>Check CVD accessibility</span>
+        </a>
+        <a href="/export/" class="guide-tool-card">
+          <strong>Export Center</strong>
+          <span>Export your palette as CSS, Tailwind, or Figma tokens</span>
+        </a>
+      </div>
+    </section>
         <section id="faq" class="guide-faq">
           <h2>Frequently Asked Questions</h2>
           <div class="faq-item">
@@ -319,7 +374,8 @@ const articleSchema = {
   </article>
 </BaseLayout>
 
-<script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
 
 <style is:global>
   .guide-article {
@@ -461,5 +517,51 @@ const articleSchema = {
     font-size: 0.9375rem;
     margin: 0;
     line-height: 1.7;
+  }
+
+  /* Tool CTA section */
+  .guide-tool-ctas {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  .guide-tool-ctas h2 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+  }
+  .guide-tool-ctas p {
+    margin-bottom: 1.25rem;
+  }
+  .guide-tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+  }
+  .guide-tool-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .guide-tool-card:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .guide-tool-card strong {
+    font-size: 0.9375rem;
+    margin-bottom: 0.25rem;
+    color: var(--color-primary);
+  }
+  .guide-tool-card span {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
   }
 </style>

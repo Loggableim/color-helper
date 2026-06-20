@@ -9,6 +9,18 @@ const breadcrumbs = [
   { label: 'Accessibility Color Contrast' },
 ];
 
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        { "@type": "Question", "name": "AA vs AAA?", "acceptedAnswer": { "@type": "Answer", "text": "AA: 4.5:1 text. AAA: 7:1 text. AA is legal minimum." } },
+        { "@type": "Question", "name": "Does non-text need contrast?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, WCAG 2.1 requires 3:1 for UI components." } },
+        { "@type": "Question", "name": "How to fix failing contrast?", "acceptedAnswer": { "@type": "Answer", "text": "Darken foreground, lighten background, or increase font size." } },
+        { "@type": "Question", "name": "Can low-contrast work for large text?", "acceptedAnswer": { "@type": "Answer", "text": "Large text (>=18pt) needs 3:1 for AA. AAA still needs 4.5:1." } },
+        { "@type": "Question", "name": "Best way to check contrast?", "acceptedAnswer": { "@type": "Answer", "text": "Use the Contrast Checker during design." } }
+    ]
+};
+
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
@@ -242,6 +254,50 @@ const articleSchema = {
           </ul>
         </section>
 
+            <section class="guide-tool-ctas">
+      <h2>Try These Color Tools</h2>
+      <p>Apply what you learned in this guide with our free browser-based tools:</p>
+      <div class="guide-tool-grid">
+        <a href="/contrast-checker/" class="guide-tool-card">
+          <strong>Contrast Checker</strong>
+          <span>Check WCAG AA/AAA compliance</span>
+        </a>
+        <a href="/color-blindness-simulator/" class="guide-tool-card">
+          <strong>Color Blindness Simulator</strong>
+          <span>Test your designs for CVD accessibility</span>
+        </a>
+        <a href="/color-picker/" class="guide-tool-card">
+          <strong>Color Picker</strong>
+          <span>Find accessible color alternatives</span>
+        </a>
+        <a href="/preview/" class="guide-tool-card">
+          <strong>Palette Preview</strong>
+          <span>Test contrast on real UI components</span>
+        </a>
+      </div>
+    </section>
+            <section class="guide-tool-ctas">
+      <h2>Try These Color Tools</h2>
+      <p>Apply what you learned in this guide with our free browser-based tools:</p>
+      <div class="guide-tool-grid">
+        <a href="/contrast-checker/" class="guide-tool-card">
+          <strong>Contrast Checker</strong>
+          <span>Check WCAG AA/AAA compliance</span>
+        </a>
+        <a href="/color-blindness-simulator/" class="guide-tool-card">
+          <strong>Color Blindness Simulator</strong>
+          <span>Test your designs for CVD accessibility</span>
+        </a>
+        <a href="/color-picker/" class="guide-tool-card">
+          <strong>Color Picker</strong>
+          <span>Find accessible color alternatives</span>
+        </a>
+        <a href="/preview/" class="guide-tool-card">
+          <strong>Palette Preview</strong>
+          <span>Test contrast on real UI components</span>
+        </a>
+      </div>
+    </section>
         <section id="faq" class="guide-faq">
           <h2>Frequently Asked Questions</h2>
           <div class="faq-item">
@@ -274,7 +330,8 @@ const articleSchema = {
   </article>
 </BaseLayout>
 
-<script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
 
 <style is:global>
   .guide-article {
@@ -416,5 +473,51 @@ const articleSchema = {
     font-size: 0.9375rem;
     margin: 0;
     line-height: 1.7;
+  }
+
+  /* Tool CTA section */
+  .guide-tool-ctas {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  .guide-tool-ctas h2 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+  }
+  .guide-tool-ctas p {
+    margin-bottom: 1.25rem;
+  }
+  .guide-tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+  }
+  .guide-tool-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .guide-tool-card:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .guide-tool-card strong {
+    font-size: 0.9375rem;
+    margin-bottom: 0.25rem;
+    color: var(--color-primary);
+  }
+  .guide-tool-card span {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
   }
 </style>

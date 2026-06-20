@@ -9,6 +9,18 @@ const breadcrumbs = [
   { label: 'Color Theory Basics' },
 ];
 
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        { "@type": "Question", "name": "What is the 60-30-10 rule?", "acceptedAnswer": { "@type": "Answer", "text": "A balanced framework: 60% dominant, 30% secondary, 10% accent." } },
+        { "@type": "Question", "name": "How many colors should a palette have?", "acceptedAnswer": { "@type": "Answer", "text": "Typically 3 to 5: primary, secondary, accent, plus neutrals." } },
+        { "@type": "Question", "name": "What is the difference between tint, shade, and tone?", "acceptedAnswer": { "@type": "Answer", "text": "Tint: add white. Shade: add black. Tone: add gray." } },
+        { "@type": "Question", "name": "How do warm and cool colors affect design?", "acceptedAnswer": { "@type": "Answer", "text": "Warm colors energize. Cool colors calm. Balance both." } },
+        { "@type": "Question", "name": "How to start learning?", "acceptedAnswer": { "@type": "Answer", "text": "Start with the color wheel and Palette Generator." } }
+    ]
+};
+
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
@@ -275,6 +287,42 @@ const articleSchema = {
           </p>
         </section>
 
+            <section class="guide-tool-ctas">
+      <h2>Try These Color Tools</h2>
+      <p>Apply what you learned in this guide with our free browser-based tools:</p>
+      <div class="guide-tool-grid">
+        <a href="/color-palette-generator/" class="guide-tool-card">
+          <strong>Palette Generator</strong>
+          <span>Create palettes based on color theory harmonies</span>
+        </a>
+        <a href="/color-wheel/" class="guide-tool-card">
+          <strong>Color Wheel</strong>
+          <span>Visualize hue relationships</span>
+        </a>
+        <a href="/color-mixer/" class="guide-tool-card">
+          <strong>Color Mixer</strong>
+          <span>Blend colors subtractively</span>
+        </a>
+      </div>
+    </section>
+            <section class="guide-tool-ctas">
+      <h2>Try These Color Tools</h2>
+      <p>Apply what you learned in this guide with our free browser-based tools:</p>
+      <div class="guide-tool-grid">
+        <a href="/color-palette-generator/" class="guide-tool-card">
+          <strong>Palette Generator</strong>
+          <span>Create palettes based on color theory harmonies</span>
+        </a>
+        <a href="/color-wheel/" class="guide-tool-card">
+          <strong>Color Wheel</strong>
+          <span>Visualize hue relationships</span>
+        </a>
+        <a href="/color-mixer/" class="guide-tool-card">
+          <strong>Color Mixer</strong>
+          <span>Blend colors subtractively</span>
+        </a>
+      </div>
+    </section>
         <section id="faq" class="guide-faq">
           <h2>Frequently Asked Questions</h2>
           <div class="faq-item">
@@ -303,7 +351,8 @@ const articleSchema = {
   </article>
 </BaseLayout>
 
-<script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
 
 <style is:global>
   .guide-article {
@@ -437,5 +486,51 @@ const articleSchema = {
     font-size: 0.9375rem;
     margin: 0;
     line-height: 1.7;
+  }
+
+  /* Tool CTA section */
+  .guide-tool-ctas {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  .guide-tool-ctas h2 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+  }
+  .guide-tool-ctas p {
+    margin-bottom: 1.25rem;
+  }
+  .guide-tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+  }
+  .guide-tool-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .guide-tool-card:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .guide-tool-card strong {
+    font-size: 0.9375rem;
+    margin-bottom: 0.25rem;
+    color: var(--color-primary);
+  }
+  .guide-tool-card span {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
   }
 </style>

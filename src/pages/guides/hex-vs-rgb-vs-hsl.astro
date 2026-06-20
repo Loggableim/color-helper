@@ -9,6 +9,17 @@ const breadcrumbs = [
   { label: 'HEX vs RGB vs HSL' },
 ];
 
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        { "@type": "Question", "name": "Which format is best?", "acceptedAnswer": { "@type": "Answer", "text": "HEX for static, HSL for manipulation, RGB for precision." } },
+        { "@type": "Question", "name": "Can I use HSL in all browsers?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, supported since IE9." } },
+        { "@type": "Question", "name": "How to convert HEX to RGB?", "acceptedAnswer": { "@type": "Answer", "text": "Split into 3 pairs, convert base-16 to decimal." } },
+        { "@type": "Question", "name": "Why is HSL easier?", "acceptedAnswer": { "@type": "Answer", "text": "Separates hue, saturation, lightness. Tint = one number change." } }
+    ]
+};
+
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
@@ -214,6 +225,50 @@ const articleSchema = {
           </p>
         </section>
 
+            <section class="guide-tool-ctas">
+      <h2>Try These Color Tools</h2>
+      <p>Apply what you learned in this guide with our free browser-based tools:</p>
+      <div class="guide-tool-grid">
+        <a href="/color-converter/" class="guide-tool-card">
+          <strong>Color Converter</strong>
+          <span>Convert between HEX, RGB, HSL instantly</span>
+        </a>
+        <a href="/color-picker/" class="guide-tool-card">
+          <strong>Color Picker</strong>
+          <span>Pick and explore colors in all formats</span>
+        </a>
+        <a href="/hex-to-rgb/" class="guide-tool-card">
+          <strong>HEX to RGB</strong>
+          <span>Quick HEX-to-RGB conversion</span>
+        </a>
+        <a href="/rgb-to-hex/" class="guide-tool-card">
+          <strong>RGB to HEX</strong>
+          <span>Quick RGB-to-HEX conversion</span>
+        </a>
+      </div>
+    </section>
+            <section class="guide-tool-ctas">
+      <h2>Try These Color Tools</h2>
+      <p>Apply what you learned in this guide with our free browser-based tools:</p>
+      <div class="guide-tool-grid">
+        <a href="/color-converter/" class="guide-tool-card">
+          <strong>Color Converter</strong>
+          <span>Convert between HEX, RGB, HSL instantly</span>
+        </a>
+        <a href="/color-picker/" class="guide-tool-card">
+          <strong>Color Picker</strong>
+          <span>Pick and explore colors in all formats</span>
+        </a>
+        <a href="/hex-to-rgb/" class="guide-tool-card">
+          <strong>HEX to RGB</strong>
+          <span>Quick HEX-to-RGB conversion</span>
+        </a>
+        <a href="/rgb-to-hex/" class="guide-tool-card">
+          <strong>RGB to HEX</strong>
+          <span>Quick RGB-to-HEX conversion</span>
+        </a>
+      </div>
+    </section>
         <section id="faq" class="guide-faq">
           <h2>Frequently Asked Questions</h2>
           <div class="faq-item">
@@ -242,7 +297,8 @@ const articleSchema = {
   </article>
 </BaseLayout>
 
-<script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
 
 <style is:global>
   .guide-article {
@@ -384,5 +440,51 @@ const articleSchema = {
     font-size: 0.9375rem;
     margin: 0;
     line-height: 1.7;
+  }
+
+  /* Tool CTA section */
+  .guide-tool-ctas {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  .guide-tool-ctas h2 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+  }
+  .guide-tool-ctas p {
+    margin-bottom: 1.25rem;
+  }
+  .guide-tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+  }
+  .guide-tool-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .guide-tool-card:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .guide-tool-card strong {
+    font-size: 0.9375rem;
+    margin-bottom: 0.25rem;
+    color: var(--color-primary);
+  }
+  .guide-tool-card span {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
   }
 </style>
