@@ -6,6 +6,8 @@ import {
   rgbToHex,
   normalizeHex,
   copyToClipboard,
+  simulateCVDFromRgb,
+  type CVDType,
 } from '../utils/color';
 import Toast from './Toast';
 
@@ -19,80 +21,7 @@ const bgSubtle = 'var(--color-bg-alt)';
 const fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif";
 const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace";
 
-/* ===== CVD Simulation Matrices ===== */
-
-// Linear RGB transformation matrices for color blindness simulation
-// Applied to linearized sRGB values (0-1 range)
-const CVD_MATRICES: Record<string, number[][]> = {
-  protanopia: [
-    [0.567, 0.433, 0],
-    [0.558, 0.442, 0],
-    [0, 0.242, 0.758],
-  ],
-  deuteranopia: [
-    [0.625, 0.375, 0],
-    [0.7, 0.3, 0],
-    [0, 0.3, 0.7],
-  ],
-  tritanopia: [
-    [0.95, 0.05, 0],
-    [0, 0.433, 0.567],
-    [0, 0.475, 0.525],
-  ],
-  achromatopsia: [
-    [0.299, 0.587, 0.114],
-    [0.299, 0.587, 0.114],
-    [0.299, 0.587, 0.114],
-  ],
-};
-
-const CVD_TYPES = [
-  { id: 'protanopia', label: 'Protanopia', subtitle: 'Red-blind' },
-  { id: 'deuteranopia', label: 'Deuteranopia', subtitle: 'Green-blind' },
-  { id: 'tritanopia', label: 'Tritanopia', subtitle: 'Blue-blind' },
-  { id: 'achromatopsia', label: 'Achromatopsia', subtitle: 'Monochrome' },
-];
-
-/* ===== Helpers ===== */
-
-function linearize(c: number): number {
-  return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-}
-
-function delinearize(c: number): number {
-  c = Math.min(1, Math.max(0, c));
-  return c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
-}
-
-function simulate(r: number, g: number, b: number, type: string): { r: number; g: number; b: number; hex: string } {
-  // Normalize to 0-1
-  let rr = r / 255, gg = g / 255, bb = b / 255;
-
-  // Linearize sRGB
-  const R = linearize(rr), G = linearize(gg), B = linearize(bb);
-
-  // Apply matrix
-  const matrix = CVD_MATRICES[type];
-  if (!matrix) {
-    return { r, g, b, hex: rgbToHex(r, g, b) };
-  }
-
-  const r2 = matrix[0][0] * R + matrix[0][1] * G + matrix[0][2] * B;
-  const g2 = matrix[1][0] * R + matrix[1][1] * G + matrix[1][2] * B;
-  const b2 = matrix[2][0] * R + matrix[2][1] * G + matrix[2][2] * B;
-
-  // Delinearize (gamma encode)
-  const rout = Math.round(delinearize(r2) * 255);
-  const gout = Math.round(delinearize(g2) * 255);
-  const bout = Math.round(delinearize(b2) * 255);
-
-  return {
-    r: rout,
-    g: gout,
-    b: bout,
-    hex: rgbToHex(rout, gout, bout),
-  };
-}
+/* ===== CVD Simulation now lives in utils/color.ts (testable) ===== */
 
 /* ===== Inline Styles ===== */
 
@@ -230,6 +159,13 @@ const styles: Record<string, React.CSSProperties> = {
 
 /* ===== Component ===== */
 
+const CVD_TYPES: { id: CVDType; label: string; subtitle: string }[] = [
+  { id: 'protanopia', label: 'Protanopia', subtitle: 'Red-blind' },
+  { id: 'deuteranopia', label: 'Deuteranopia', subtitle: 'Green-blind' },
+  { id: 'tritanopia', label: 'Tritanopia', subtitle: 'Blue-blind' },
+  { id: 'achromatopsia', label: 'Achromatopsia', subtitle: 'Monochrome' },
+];
+
 export default function ColorBlindnessSimulator() {
   const [hexInput, setHexInput] = useState('#6366f1');
   const [color, setColor] = useState('#6366f1');
@@ -239,7 +175,7 @@ export default function ColorBlindnessSimulator() {
   const simulations = rgb
     ? CVD_TYPES.map(cvd => ({
         ...cvd,
-        ...simulate(rgb.r, rgb.g, rgb.b, cvd.id),
+        ...simulateCVDFromRgb(rgb.r, rgb.g, rgb.b, cvd.id),
       }))
     : [];
 

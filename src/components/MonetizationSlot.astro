@@ -6,6 +6,13 @@
  *
  * Echte Ad-Ins (display ads). AdSense Auto-Ads laufen separat im <head>.
  *
+ * States (Daten-Attribut data-ad-state, vom Client gesetzt):
+ *   - ad_loaded:    Ad hat erfolgreich gerendert
+ *   - ad_blocked:   Ad-Blocker hat das Ad versteckt
+ *   - no_consent:   User hat Consent noch nicht erteilt (nur EU-Traffic)
+ *   - disabled_on_page: Slot auf dieser Seite absichtlich deaktiviert
+ *   - pending:       noch nicht entschieden (initial)
+ *
  * Wichtig für AdSense-Compliance:
  *   - Mindestabstand 50px vom Tool / Eingabefeldern (AdSense-Policy)
  *   - Nicht im ersten Viewport direkt unter H1 (User Experience)
@@ -43,6 +50,7 @@ const style = formatStyles[adFormat] || formatStyles.auto;
 <div
   class={`monetization-slot monetization-slot--${position} ${className}`}
   data-monetization-position={position}
+  data-ad-state="pending"
   aria-label="Advertisement"
   role="complementary"
 >
@@ -58,8 +66,50 @@ const style = formatStyles[adFormat] || formatStyles.auto;
 </div>
 
 <script>
-  // Lazy-init: AdSense-Ins erst füllen, wenn Slot im Viewport sichtbar wird
+  // Ad-Slot States: pending → ad_loaded | ad_blocked | no_consent | disabled_on_page
+  // Wir beobachten ob das <ins> tatsächlich Inhalt bekommt oder leer bleibt
+  // (Ad-Blocker verstecken den Container, no_consent blockt den AdSense-Fetch).
+
   if (typeof window !== 'undefined') {
+    type AdState = 'pending' | 'ad_loaded' | 'ad_blocked' | 'no_consent' | 'disabled_on_page';
+
+    function setSlotState(slot: HTMLElement, state: AdState) {
+      slot.setAttribute('data-ad-state', state);
+    }
+
+    function detectConsent(): boolean {
+      // Prüfe localStorage nach unserem Consent-State
+      // Default: kein Consent erforderlich (kein EU-User) → AdSense laden
+      try {
+        const raw = localStorage.getItem('ch-consent');
+        if (raw === null) return true; // Noch keine Entscheidung = Default-Erlaubnis
+        const parsed = JSON.parse(raw);
+        return parsed?.ads === true;
+      } catch {
+        return true;
+      }
+    }
+
+    function saveConsent(ads: boolean) {
+      try {
+        localStorage.setItem(
+          'ch-consent',
+          JSON.stringify({ ads, ts: Date.now() })
+        );
+      } catch {
+        /* private mode etc. */
+      }
+    }
+
+    // Expose Consent-Manager global, damit Footer-Buttons ihn aufrufen können
+    (window as any).chConsent = {
+      grant: () => { saveConsent(true); window.location.reload(); },
+      deny: () => { saveConsent(false); document.querySelectorAll<HTMLElement>('.monetization-slot').forEach((s) => setSlotState(s, 'no_consent')); },
+      isGranted: detectConsent,
+    };
+
+    const consentGranted = detectConsent();
+
     const initSlots = () => {
       const slots = document.querySelectorAll<HTMLElement>('.monetization-slot:not([data-initialized])');
       if (!slots.length) return;
@@ -70,10 +120,40 @@ const style = formatStyles[adFormat] || formatStyles.auto;
             if (entry.isIntersecting) {
               const el = entry.target as HTMLElement;
               el.setAttribute('data-initialized', 'true');
+
+              if (!consentGranted) {
+                setSlotState(el, 'no_consent');
+                observer.unobserve(el);
+                return;
+              }
+
               try {
                 ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+                // Beobachte ob das <ins> Inhalt bekommt (nach kurzer Verzögerung)
+                setTimeout(() => {
+                  const ins = el.querySelector('ins.adsbygoogle');
+                  if (!ins) {
+                    setSlotState(el, 'ad_blocked');
+                    return;
+                  }
+                  // Wenn das <ins> nach Push immer noch leer ist (Höhe 0 oder unsichtbar),
+                  // wurde es wahrscheinlich von einem Blocker versteckt
+                  const rect = ins.getBoundingClientRect();
+                  const computed = window.getComputedStyle(ins);
+                  if (
+                    rect.height === 0 ||
+                    computed.display === 'none' ||
+                    computed.visibility === 'hidden' ||
+                    ins.innerHTML.trim() === ''
+                  ) {
+                    setSlotState(el, 'ad_blocked');
+                  } else {
+                    setSlotState(el, 'ad_loaded');
+                  }
+                }, 1500);
               } catch (e) {
                 console.warn('[MonetizationSlot] AdSense push failed', e);
+                setSlotState(el, 'ad_blocked');
               }
               observer.unobserve(el);
             }
@@ -82,7 +162,16 @@ const style = formatStyles[adFormat] || formatStyles.auto;
         { rootMargin: '200px 0px' }
       );
 
-      slots.forEach((s) => observer.observe(s));
+      slots.forEach((s) => {
+        // Pre-check: Wenn der Container bereits durch einen Blocker versteckt ist,
+        // direkt als blocked markieren und nicht beobachten
+        const computed = window.getComputedStyle(s);
+        if (computed.display === 'none' || computed.visibility === 'hidden') {
+          setSlotState(s, 'ad_blocked');
+          return;
+        }
+        observer.observe(s);
+      });
     };
 
     if (document.readyState === 'loading') {
@@ -130,6 +219,20 @@ const style = formatStyles[adFormat] || formatStyles.auto;
     color: var(--color-text-muted, #9ca3af);
     margin: 0.75rem 0 0;
     font-weight: 500;
+  }
+
+  /* ─── States ─────────────────────────────────────────────
+   * ad_loaded:    ad hat geladen → sichtbar lassen, Label ok
+   * ad_blocked:   Ad-Blocker aktiv → Container ausblenden, keine sichtbaren
+   *               technischen Artefakte (kein leerer Kasten, kein "Ad"-Label)
+   * no_consent:   User hat Consent verweigert → komplett ausblenden
+   * disabled_on_page: Slot ist absichtlich aus → komplett ausblenden
+   * pending:      noch nicht entschieden → Default sichtbar (Hülle)
+   */
+  .monetization-slot[data-ad-state="ad_blocked"],
+  .monetization-slot[data-ad-state="no_consent"],
+  .monetization-slot[data-ad-state="disabled_on_page"] {
+    display: none !important;
   }
 
   /* Dark-Mode-Anpassung */

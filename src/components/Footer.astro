@@ -21,12 +21,11 @@ const resourceLinks = [
   { href: '/palettes/', label: 'My Palettes' },
   { href: '/about/', label: 'About' },
   { href: '/contact/', label: 'Contact' },
-  { href: '/privacy/', label: 'Privacy' },
 ];
 
 const legalLinks = [
   { href: '/privacy/', label: 'Privacy Policy' },
-  { href: '/about/', label: 'Terms of Use' },
+  { href: '/terms/', label: 'Terms of Use' },
 ];
 ---
 
@@ -92,9 +91,111 @@ const legalLinks = [
 
     <div class="footer-bottom">
       <p>&copy; {new Date().getFullYear()} Color Helper. All rights reserved.</p>
+      <p class="footer-meta">
+        <a href="#" data-action="open-consent">Cookie settings</a> ·
+        <a href="/privacy/">Privacy</a> ·
+        <a href="/terms/">Terms</a>
+      </p>
     </div>
   </div>
 </footer>
+
+<script>
+  // Cookie-Settings Button: öffnet ein simples Consent-Banner mit Grant/Deny
+  (() => {
+    const STORAGE_KEY = 'ch-consent';
+
+    function readConsent(): { ads: boolean; ts: number } | null {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch {
+        return null;
+      }
+    }
+
+    function writeConsent(ads: boolean) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ ads, ts: Date.now() }));
+      } catch {
+        /* ignore */
+      }
+    }
+
+    function ensureBanner(): HTMLDivElement {
+      let banner = document.getElementById('ch-consent-banner') as HTMLDivElement | null;
+      if (banner) return banner;
+      banner = document.createElement('div');
+      banner.id = 'ch-consent-banner';
+      banner.setAttribute('role', 'dialog');
+      banner.setAttribute('aria-label', 'Cookie settings');
+      banner.innerHTML = `
+        <div class="ch-consent-inner">
+          <div class="ch-consent-text">
+            <strong>Cookie settings</strong>
+            <p>Color Helper uses Google AdSense to display ads on tool pages. AdSense may set cookies to serve and cap ads. Your tool inputs (colors, images) always stay in your browser.</p>
+          </div>
+          <div class="ch-consent-actions">
+            <button type="button" data-action="ch-consent-deny" class="ch-btn ch-btn-secondary">Deny</button>
+            <button type="button" data-action="ch-consent-grant" class="ch-btn ch-btn-primary">Allow ads</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(banner);
+
+      // Apply styles (inline so we don't depend on global CSS)
+      const style = document.createElement('style');
+      style.textContent = `
+        #ch-consent-banner { position: fixed; bottom: 1rem; left: 1rem; right: 1rem; max-width: 540px; margin: 0 auto; background: var(--color-bg-card, #fff); border: 1px solid var(--color-border, #e5e7eb); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 10px 30px rgba(0,0,0,.18); z-index: 10000; font-family: inherit; }
+        .ch-consent-inner { display: flex; flex-direction: column; gap: .75rem; }
+        .ch-consent-text strong { display: block; font-size: .95rem; margin-bottom: .25rem; }
+        .ch-consent-text p { margin: 0; font-size: .8125rem; line-height: 1.5; color: var(--color-text-secondary, #64748b); }
+        .ch-consent-actions { display: flex; gap: .5rem; justify-content: flex-end; }
+        .ch-btn { font-size: .8125rem; font-weight: 600; padding: .5rem 1rem; border-radius: 8px; cursor: pointer; border: 1px solid var(--color-border, #e5e7eb); background: var(--color-bg-card, #fff); color: var(--color-text-primary); }
+        .ch-btn-primary { background: var(--color-primary, #7C3AED); color: #fff; border-color: var(--color-primary, #7C3AED); }
+        :global([data-theme="dark"]) #ch-consent-banner { background: #1f2937; border-color: #374151; }
+      `;
+      document.head.appendChild(style);
+
+      banner.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        const action = target.getAttribute('data-action');
+        if (action === 'ch-consent-grant') {
+          writeConsent(true);
+          banner!.remove();
+          // AdSense re-evaluates on next page interaction; reload is the simplest UX.
+          window.location.reload();
+        } else if (action === 'ch-consent-deny') {
+          writeConsent(false);
+          // Mark all slots as no_consent immediately
+          document.querySelectorAll<HTMLElement>('.monetization-slot').forEach((s) => s.setAttribute('data-ad-state', 'no_consent'));
+          banner!.remove();
+        }
+      });
+      return banner;
+    }
+
+    function openBanner() {
+      const banner = ensureBanner();
+      banner.style.display = 'block';
+    }
+
+    // Wire up any element with data-action="open-consent" (footer link, privacy page link)
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.matches('[data-action="open-consent"]') || target.closest('[data-action="open-consent"]')) {
+        e.preventDefault();
+        openBanner();
+      }
+    });
+
+    // First-time visitors with no decision yet → show banner automatically after 4s
+    if (readConsent() === null) {
+      setTimeout(openBanner, 4000);
+    }
+  })();
+</script>
 
 <style is:global>
   .site-footer {
