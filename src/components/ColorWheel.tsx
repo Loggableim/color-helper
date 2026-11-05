@@ -21,7 +21,7 @@ const bgSubtle = 'var(--color-bg-alt)';
 const fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif";
 const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace";
 
-const s: Record<string, React.CSSProperties> = {
+const s = {
   wrapper: { maxWidth: '800px', margin: '0 auto', fontFamily, color: textPrimary },
   card: {
     background: 'var(--color-bg-card)', border: `1px solid ${borderColor}`,

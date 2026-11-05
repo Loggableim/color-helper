@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MonetizationSlot from '../components/MonetizationSlot.astro';
 import ToolLayout from '../components/ToolLayout.astro';
+import ColorMixer from '../components/ColorMixer';
 import FAQ from '../components/FAQ.astro';
 
 const title = 'Color Mixer';
@@ -23,95 +24,7 @@ const webAppSchema = {
 <BaseLayout {title} {description} {canonical} {breadcrumbs}>
   <ToolLayout title="Color Mixer" {description} {breadcrumbs}>
     <div class="tool-wrapper">
-      <div id="mixer-root">
-        <div class="converter-card">
-          <h2 class="converter-subtitle">Color Mixer</h2>
-          <p class="converter-desc">Pick two colors and blend them together with a custom ratio.</p>
-
-          <!-- Color Inputs -->
-          <div class="mixer-inputs">
-            <div class="mixer-color-group">
-              <label class="input-label">Color A</label>
-              <div class="mixer-color-row">
-                <input id="color-a-picker" type="color" class="native-picker" value="#6366f1" />
-                <input id="color-a-hex" type="text" class="color-input" value="#6366f1" spellcheck="false" />
-              </div>
-            </div>
-
-            <div class="mixer-color-group">
-              <label class="input-label">Color B</label>
-              <div class="mixer-color-row">
-                <input id="color-b-picker" type="color" class="native-picker" value="#f59e0b" />
-                <input id="color-b-hex" type="text" class="color-input" value="#f59e0b" spellcheck="false" />
-              </div>
-            </div>
-          </div>
-
-          <!-- Ratio Slider -->
-          <div class="input-group">
-            <div class="opacity-header">
-              <label class="input-label">Mix Ratio</label>
-              <span id="ratio-value" class="opacity-value">50% A / 50% B</span>
-            </div>
-            <input
-              id="ratio-slider"
-              type="range"
-              class="opacity-slider"
-              min="0"
-              max="100"
-              value="50"
-            />
-            <div class="ratio-labels">
-              <span>100% A</span>
-              <span>100% B</span>
-            </div>
-          </div>
-
-          <!-- Preview -->
-          <div class="mixer-previews">
-            <div class="mixer-preview-item">
-              <div class="preview-label-sm">Color A</div>
-              <div id="preview-a" class="mixer-swatch" style="background-color: #6366f1;"></div>
-              <code id="preview-a-hex" class="mixer-hex">#6366f1</code>
-            </div>
-            <div class="mixer-preview-item">
-              <div class="preview-label-sm">Mixed</div>
-              <div id="preview-mixed" class="mixer-swatch mixer-swatch-large" style="background-color: #ac8235;"></div>
-              <code id="preview-mixed-hex" class="mixer-hex">#ac8235</code>
-            </div>
-            <div class="mixer-preview-item">
-              <div class="preview-label-sm">Color B</div>
-              <div id="preview-b" class="mixer-swatch" style="background-color: #f59e0b;"></div>
-              <code id="preview-b-hex" class="mixer-hex">#f59e0b</code>
-            </div>
-          </div>
-
-          <!-- Output -->
-          <div id="mixer-results" class="results-card">
-            <div class="result-card">
-              <div class="result-label">HEX</div>
-              <div class="result-row">
-                <code id="result-hex" class="result-value">#ac8235</code>
-                <button class="copy-btn" data-copy="result-hex" title="Copy HEX">📋</button>
-              </div>
-            </div>
-            <div class="result-card">
-              <div class="result-label">RGB</div>
-              <div class="result-row">
-                <code id="result-rgb" class="result-value">rgb(172, 130, 53)</code>
-                <button class="copy-btn" data-copy="result-rgb" title="Copy RGB">📋</button>
-              </div>
-            </div>
-            <div class="result-card">
-              <div class="result-label">HSL</div>
-              <div class="result-row">
-                <code id="result-hsl" class="result-value">hsl(40, 53%, 44%)</code>
-                <button class="copy-btn" data-copy="result-hsl" title="Copy HSL">📋</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ColorMixer client:load />
     </div>
 
     <!-- Ad: Tool-Bottom — zwischen Tool-UI und SEO-Text -->

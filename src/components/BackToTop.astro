@@ -54,14 +54,15 @@
 </style>
 
 <script>
-  const btn = document.getElementById('back-to-top');
+  const btn = document.getElementById('back-to-top') as HTMLElement | null;
   if (btn) {
+    const el = btn;
     let ticking = false;
     function updateVisibility() {
       if (window.scrollY > 400) {
-        btn.classList.add('visible');
+        el.classList.add('visible');
       } else {
-        btn.classList.remove('visible');
+        el.classList.remove('visible');
       }
       ticking = false;
     }
@@ -71,7 +72,7 @@
         ticking = true;
       }
     }, { passive: true });
-    btn.addEventListener('click', () => {
+    el.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
     // Initial state

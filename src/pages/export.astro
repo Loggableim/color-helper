@@ -53,26 +53,26 @@ const webAppSchema = {
 
     <script>
       (() => {
-        const input = document.getElementById('ec-input');
-        const preview = document.getElementById('ec-preview');
-        const root = document.getElementById('ec-export-root');
+        const input = document.getElementById('ec-input') as HTMLInputElement;
+        const preview = document.getElementById('ec-preview') as HTMLElement;
+        const root = document.getElementById('ec-export-root') as HTMLElement;
 
         if (!input || !preview || !root) return;
 
-        function parseColors(text) {
+        function parseColors(text: string): string[] {
           return text.split(',')
-            .map(c => c.trim())
-            .filter(c => /^#[0-9a-fA-F]{6}$/.test(c) || /^[0-9a-fA-F]{6}$/.test(c))
-            .map(c => c.startsWith('#') ? c : '#' + c);
+            .map((c: string) => c.trim())
+            .filter((c: string) => /^#[0-9a-fA-F]{6}$/.test(c) || /^[0-9a-fA-F]{6}$/.test(c))
+            .map((c: string) => c.startsWith('#') ? c : '#' + c);
         }
 
-        function updatePreview(colors) {
+        function updatePreview(colors: string[]) {
           preview.innerHTML = '';
           if (colors.length === 0) {
             preview.innerHTML = '<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--color-text-dim);font-size:0.75rem;">Enter colors above</div>';
             return;
           }
-          colors.forEach(c => {
+          colors.forEach((c: string) => {
             const swatch = document.createElement('div');
             swatch.style.cssText = 'flex:1;min-height:100%;background:' + c + ';border-radius:0;';
             swatch.title = c;
@@ -80,11 +80,11 @@ const webAppSchema = {
           });
         }
 
-        function renderExportUI(colors) {
+        function renderExportUI(colors: string[]) {
           root.innerHTML = '';
           if (colors.length === 0) return;
 
-          const exportFormats = [
+          const exportFormats: { id: string; label: string; icon: string; ext: string }[] = [
             { id: 'css', label: 'CSS Variables', icon: '🎨', ext: 'css' },
             { id: 'scss', label: 'SCSS', icon: '💎', ext: 'scss' },
             { id: 'tailwind', label: 'Tailwind', icon: '🌊', ext: 'js' },
@@ -121,9 +121,9 @@ const webAppSchema = {
           const actions = document.createElement('div');
           actions.style.cssText = 'display:flex;gap:0.5rem;flex-wrap:wrap;';
 
-          function formatContent(format) {
+          function formatContent(format: string) {
             const prefix = 'color';
-            const lines = colors.map((c, i) => {
+            const lines = colors.map((c: string, i: number) => {
               switch (format) {
                 case 'css': return '  --' + prefix + '-' + (i+1) + ': ' + c + ';';
                 case 'scss': return '$' + prefix + '-' + (i+1) + ': ' + c + ';';
@@ -135,13 +135,13 @@ const webAppSchema = {
             if (format === 'css') return ':root {\n' + lines.join('\n') + '\n}';
             if (format === 'tailwind') return 'module.exports = {\n  colors: {\n' + lines.join(',\n') + '\n  }\n}';
             if (format === 'figma') {
-              const vars = colors.map((c,i) => '{\n    "name": "' + prefix + '/' + (i+1) + '",\n    "type": "COLOR",\n    "value": ' + JSON.stringify(hexToFigma(c)) + ',\n    "scopes": ["ALL_SCOPES"]\n  }').join(',\n');
+              const vars = colors.map((c: string, i: number) => '{\n    "name": "' + prefix + '/' + (i+1) + '",\n    "type": "COLOR",\n    "value": ' + JSON.stringify(hexToFigma(c)) + ',\n    "scopes": ["ALL_SCOPES"]\n  }').join(',\n');
               return '{\n  "variables": [\n' + vars + '\n  ]\n}';
             }
             return lines.join('\n');
           }
 
-          function hexToFigma(hex) {
+          function hexToFigma(hex: string) {
             const h = hex.replace('#','');
             return { r: Math.round(parseInt(h.substr(0,2),16)/255*1000)/1000, g: Math.round(parseInt(h.substr(2,2),16)/255*1000)/1000, b: Math.round(parseInt(h.substr(4,2),16)/255*1000)/1000, a: 1 };
           }

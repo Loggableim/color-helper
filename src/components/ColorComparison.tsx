@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { isValidHex, normalizeHex, hexToRgb, rgbToHsl, getContrastRatio, copyToClipboard } from '../utils/color';
+import { isValidHex, normalizeHex, hexToRgb, rgbToHsl, getContrastRatio, formatContrastRatio, copyToClipboard } from '../utils/color';
 import Toast from './Toast';
 
 /* ===== Design Tokens ===== */
@@ -165,7 +165,7 @@ export default function ColorComparison() {
     const rgbA = hexToRgb(colorA);
     const rgbB = hexToRgb(colorB);
     if (!rgbA || !rgbB) return;
-    const text = `Color A: ${colorA.toUpperCase()}  (rgb(${rgbA.r}, ${rgbA.g}, ${rgbA.b}))\nColor B: ${colorB.toUpperCase()}  (rgb(${rgbB.r}, ${rgbB.g}, ${rgbB.b}))\nContrast Ratio: ${contrast}:1`;
+    const text = `Color A: ${colorA.toUpperCase()}  (rgb(${rgbA.r}, ${rgbA.g}, ${rgbA.b}))\nColor B: ${colorB.toUpperCase()}  (rgb(${rgbB.r}, ${rgbB.g}, ${rgbB.b}))\nContrast Ratio: ${formatContrastRatio(contrast)}:1`;
     await copyToClipboard(text);
     setToast('Comparison copied to clipboard');
   }, [colorA, colorB, contrast]);
@@ -208,7 +208,7 @@ export default function ColorComparison() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 0', borderBottom: `1px solid ${borderColor}` }}>
           <span style={{ fontSize: '0.875rem', color: textSecondary }}>Contrast Ratio (A on B)</span>
           <span style={{ fontFamily: monoFont, fontSize: '1.125rem', fontWeight: 700, color: contrast >= 4.5 ? '#22c55e' : contrast >= 3 ? '#eab308' : '#ef4444' }}>
-            {contrast}:1
+            {formatContrastRatio(contrast)}:1
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.5rem 0', borderBottom: `1px solid ${borderColor}` }}>
@@ -287,7 +287,7 @@ export default function ColorComparison() {
         </button>
       </div>
 
-      {toast && <Toast message={toast} onDone={() => setToast(null)} />}
+      {toast && <Toast message={toast} onClose={() => setToast(null)} />}
     </div>
   );
 }

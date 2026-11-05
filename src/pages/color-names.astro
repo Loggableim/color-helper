@@ -193,17 +193,17 @@ const webAppSchema = {
 </BaseLayout>
 
 <script>
-  const searchInput = document.getElementById('color-search');
-  const categoryFilter = document.getElementById('category-filter');
-  const sortBy = document.getElementById('sort-by');
-  const tableBody = document.querySelector('.color-table tbody');
-  const colorRows = Array.from(document.querySelectorAll('.color-row'));
-  const categoryHeaders = Array.from(document.querySelectorAll('.category-header-row'));
-  const noResults = document.getElementById('no-results');
-  const presetChips = document.querySelectorAll('.preset-chip');
+  const searchInput = document.getElementById('color-search') as HTMLInputElement;
+  const categoryFilter = document.getElementById('category-filter') as HTMLSelectElement;
+  const sortBy = document.getElementById('sort-by') as HTMLSelectElement;
+  const tableBody = document.querySelector('.color-table tbody') as HTMLElement;
+  const colorRows = Array.from(document.querySelectorAll<HTMLElement>('.color-row'));
+  const categoryHeaders = Array.from(document.querySelectorAll<HTMLElement>('.category-header-row'));
+  const noResults = document.getElementById('no-results') as HTMLElement | null;
+  const presetChips = document.querySelectorAll<HTMLElement>('.preset-chip');
 
   // Compute luminance per row (WCAG relative luminance)
-  function getLuminance(row) {
+  function getLuminance(row: HTMLElement) {
     const r = parseInt(row.getAttribute('data-r') || '0', 10);
     const g = parseInt(row.getAttribute('data-g') || '0', 10);
     const b = parseInt(row.getAttribute('data-b') || '0', 10);
@@ -215,7 +215,7 @@ const webAppSchema = {
   }
 
   // Compute HSL from RGB
-  function getHsl(row) {
+  function getHsl(row: HTMLElement) {
     const r = parseInt(row.getAttribute('data-r') || '0', 10) / 255;
     const g = parseInt(row.getAttribute('data-g') || '0', 10) / 255;
     const b = parseInt(row.getAttribute('data-b') || '0', 10) / 255;
@@ -234,7 +234,7 @@ const webAppSchema = {
   }
 
   // Visual preset matchers
-  function matchesPreset(row, preset) {
+  function matchesPreset(row: HTMLElement, preset: string) {
     if (preset === 'all') return true;
     const { h, s, l } = getHsl(row);
     switch (preset) {
@@ -267,7 +267,7 @@ const webAppSchema = {
       if (visible) visibleCount++;
     });
 
-    const sortFunctions = {
+    const sortFunctions: Record<string, (a: HTMLElement, b: HTMLElement) => number> = {
       'name-asc': (a, b) => (a.getAttribute('data-name') || '').localeCompare(b.getAttribute('data-name') || ''),
       'name-desc': (a, b) => (b.getAttribute('data-name') || '').localeCompare(a.getAttribute('data-name') || ''),
       'hex-asc': (a, b) => (a.getAttribute('data-hex') || '').localeCompare(b.getAttribute('data-hex') || ''),
@@ -321,9 +321,9 @@ const webAppSchema = {
   });
 
   // Copy to clipboard
-  document.querySelectorAll('.copy-btn').forEach(btn => {
-    btn.addEventListener('click', async function() {
-      const hex = this.getAttribute('data-hex');
+  document.querySelectorAll<HTMLElement>('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async function(this: HTMLElement) {
+      const hex = this.getAttribute('data-hex') || '';
       try {
         await navigator.clipboard.writeText(hex);
         const originalText = this.textContent;

@@ -194,7 +194,7 @@ export function formatContrastSummary(
   aaLarge: boolean,
   aaaLarge: boolean
 ): string {
-  return `"${fg}" on "${bg}" contrast ratio: ${ratio}:1. ` +
+  return `"${fg}" on "${bg}" contrast ratio: ${ratio.toFixed(2)}:1. ` +
     `WCAG: AA (normal) ${aa ? 'PASS' : 'FAIL'}, ` +
     `AA (large) ${aaLarge ? 'PASS' : 'FAIL'}, ` +
     `AAA (normal) ${aaa ? 'PASS' : 'FAIL'}, ` +

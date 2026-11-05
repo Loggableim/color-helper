@@ -20,6 +20,7 @@ import {
   isValidHex,
   getRelativeLuminance,
   getContrastRatio,
+  formatContrastRatio,
   meetsWcagAA,
   meetsWcagAAA,
   generateComplementaryPalette,
@@ -207,6 +208,30 @@ describe('WCAG relative luminance and contrast', () => {
     expect(meetsWcagAA(4.4, false)).toBe(false);
     expect(meetsWcagAA(3, true)).toBe(true);
     expect(meetsWcagAA(2.9, true)).toBe(false);
+  });
+
+  it('compares WCAG thresholds against the unrounded ratio', () => {
+    // Each pair sits just below the threshold and would pass if the ratio
+    // were rounded to two decimals before the comparison.
+    const aaLarge = getContrastRatio('#959595', '#ffffff');
+    expect(aaLarge).toBeLessThan(3);
+    expect(Number(aaLarge.toFixed(2))).toBe(3);
+    expect(meetsWcagAA(aaLarge, true)).toBe(false);
+
+    const aaNormal = getContrastRatio('#070707', '#777777');
+    expect(aaNormal).toBeLessThan(4.5);
+    expect(Number(aaNormal.toFixed(2))).toBe(4.5);
+    expect(meetsWcagAA(aaNormal, false)).toBe(false);
+
+    const aaaNormal = getContrastRatio('#242424', '#aeaeae');
+    expect(aaaNormal).toBeLessThan(7);
+    expect(Number(aaaNormal.toFixed(2))).toBe(7);
+    expect(meetsWcagAAA(aaaNormal, false)).toBe(false);
+  });
+
+  it('formats the ratio for display without changing its value', () => {
+    expect(formatContrastRatio(4.478089453577214)).toBe('4.48');
+    expect(formatContrastRatio(21)).toBe('21.00');
   });
 
   it('meetsWcagAAA: 7:1 normal text, 4.5:1 large', () => {

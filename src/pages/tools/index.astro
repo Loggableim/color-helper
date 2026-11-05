@@ -212,20 +212,20 @@ const webAppSchema = {
 
 <script>
   (function () {
-    const searchInput = document.getElementById('tool-search');
-    const searchClear = document.getElementById('search-clear');
-    const filterBar = document.getElementById('filter-bar');
-    const filterPills = filterBar.querySelectorAll('.filter-pill');
-    const sections = document.querySelectorAll('.tool-category');
-    const noResults = document.getElementById('no-results');
-    const resetBtn = document.getElementById('reset-filters');
-    const toolsTotal = document.getElementById('tools-total');
-    const toolsVisible = document.getElementById('tools-visible');
-    const allCards = document.querySelectorAll('.category-card');
+    const searchInput = document.getElementById('tool-search') as HTMLInputElement;
+    const searchClear = document.getElementById('search-clear') as HTMLElement;
+    const filterBar = document.getElementById('filter-bar') as HTMLElement;
+    const filterPills = filterBar.querySelectorAll<HTMLElement>('.filter-pill');
+    const sections = document.querySelectorAll<HTMLElement>('.tool-category');
+    const noResults = document.getElementById('no-results') as HTMLElement;
+    const resetBtn = document.getElementById('reset-filters') as HTMLElement | null;
+    const toolsTotal = document.getElementById('tools-total') as HTMLElement;
+    const toolsVisible = document.getElementById('tools-visible') as HTMLElement;
+    const allCards = document.querySelectorAll<HTMLElement>('.category-card');
 
     let currentFilter = 'all';
     let currentQuery = '';
-    let debounceTimer = null;
+    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
     function getVisibleCount() {
       let count = 0;
@@ -278,7 +278,7 @@ const webAppSchema = {
 
       // Show/hide category sections based on whether they have any visible children
       sections.forEach(function (section) {
-        const cards = section.querySelectorAll('.category-card');
+        const cards = section.querySelectorAll<HTMLElement>('.category-card');
         let hasVisible = false;
         cards.forEach(function (c) {
           if (!c.hidden) hasVisible = true;
@@ -340,7 +340,7 @@ const webAppSchema = {
         pill.classList.add('active');
         pill.setAttribute('aria-pressed', 'true');
 
-        currentFilter = pill.getAttribute('data-filter');
+        currentFilter = pill.getAttribute('data-filter') || 'all';
         applyFilters();
       });
     });

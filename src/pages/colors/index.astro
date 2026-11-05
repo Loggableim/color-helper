@@ -143,10 +143,10 @@ const webAppSchema = {
 </BaseLayout>
 
 <script>
-  const searchInput = document.getElementById('color-search');
-  const categoryFilter = document.getElementById('category-filter');
-  const noResults = document.getElementById('no-results');
-  const categoryGroups = document.querySelectorAll('.category-group');
+  const searchInput = document.getElementById('color-search') as HTMLInputElement;
+  const categoryFilter = document.getElementById('category-filter') as HTMLSelectElement;
+  const noResults = document.getElementById('no-results') as HTMLElement | null;
+  const categoryGroups = document.querySelectorAll<HTMLElement>('.category-group');
 
   function filterColors() {
     const query = (searchInput?.value || '').toLowerCase().trim();
@@ -160,7 +160,7 @@ const webAppSchema = {
         return;
       }
 
-      const cards = group.querySelectorAll('.color-mini-card');
+      const cards = group.querySelectorAll<HTMLElement>('.color-mini-card');
       let groupVisible = 0;
 
       cards.forEach(card => {

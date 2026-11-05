@@ -98,7 +98,11 @@ export function getContrastRatio(hex1: string, hex2: string): number {
   const l2 = getRelativeLuminance(rgb2.r, rgb2.g, rgb2.b);
   const lighter = Math.max(l1, l2);
   const darker = Math.min(l1, l2);
-  return Math.round((lighter + 0.05) / (darker + 0.05) * 100) / 100;
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+export function formatContrastRatio(contrastRatio: number): string {
+  return contrastRatio.toFixed(2);
 }
 
 export function meetsWcagAA(contrastRatio: number, isLargeText: boolean): boolean {

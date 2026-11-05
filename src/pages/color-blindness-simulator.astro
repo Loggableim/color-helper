@@ -150,12 +150,12 @@ const webAppSchema = {
   (function() {
     'use strict';
 
-    const colorPicker = document.getElementById('color-picker');
-    const hexInput = document.getElementById('hex-input');
+    const colorPicker = document.getElementById('color-picker') as HTMLInputElement;
+    const hexInput = document.getElementById('hex-input') as HTMLInputElement;
 
-    function hexToRgb(hex) {
+    function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
       let h = hex.trim().replace(/^#/, '');
-      if (h.length === 3) h = h.split('').map(c => c + c).join('');
+      if (h.length === 3) h = h.split('').map((c: string) => c + c).join('');
       if (h.length !== 6) return null;
       return {
         r: parseInt(h.substring(0, 2), 16),
@@ -164,17 +164,17 @@ const webAppSchema = {
       };
     }
 
-    function rgbToHex(r, g, b) {
-      const clamp = n => Math.min(255, Math.max(0, Math.round(n)));
-      return '#' + [r, g, b].map(c => clamp(c).toString(16).padStart(2, '0')).join('');
+    function rgbToHex(r: number, g: number, b: number) {
+      const clamp = (n: number) => Math.min(255, Math.max(0, Math.round(n)));
+      return '#' + [r, g, b].map((c: number) => clamp(c).toString(16).padStart(2, '0')).join('');
     }
 
     // Simple simulation matrices based on Brettel-Vienot-Mollon models
-    function simulate(r, g, b, type) {
+    function simulate(r: number, g: number, b: number, type: string) {
       let rr = r / 255, gg = g / 255, bb = b / 255;
 
       // Linearize sRGB
-      const lin = c => c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+      const lin = (c: number) => c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
       const R = lin(rr), G = lin(gg), B = lin(bb);
 
       let r2, g2, b2;
@@ -218,7 +218,7 @@ const webAppSchema = {
       }
 
       // Delinearize (gamma)
-      const delin = c => {
+      const delin = (c: number) => {
         c = Math.min(1, Math.max(0, c));
         return c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
       };
@@ -230,15 +230,15 @@ const webAppSchema = {
       };
     }
 
-    function updateSwatches(hex) {
+    function updateSwatches(hex: string) {
       const rgb = hexToRgb(hex);
       if (!rgb) return;
 
-      const swatchOriginal = document.getElementById('swatch-original');
-      const swatchProtanopia = document.getElementById('swatch-protanopia');
-      const swatchDeuteranopia = document.getElementById('swatch-deuteranopia');
-      const swatchTritanopia = document.getElementById('swatch-tritanopia');
-      const swatchAchromatopsia = document.getElementById('swatch-achromatopsia');
+      const swatchOriginal = document.getElementById('swatch-original') as HTMLElement;
+      const swatchProtanopia = document.getElementById('swatch-protanopia') as HTMLElement;
+      const swatchDeuteranopia = document.getElementById('swatch-deuteranopia') as HTMLElement;
+      const swatchTritanopia = document.getElementById('swatch-tritanopia') as HTMLElement;
+      const swatchAchromatopsia = document.getElementById('swatch-achromatopsia') as HTMLElement;
 
       swatchOriginal.style.backgroundColor = hex;
 
@@ -255,18 +255,18 @@ const webAppSchema = {
       swatchAchromatopsia.style.backgroundColor = rgbToHex(a.r, a.g, a.b);
     }
 
-    colorPicker.addEventListener('input', function() {
+    colorPicker.addEventListener('input', function(this: HTMLInputElement) {
       hexInput.value = this.value;
       updateSwatches(this.value);
     });
 
-    hexInput.addEventListener('input', function() {
+    hexInput.addEventListener('input', function(this: HTMLInputElement) {
       let val = this.value.trim();
       if (!val.startsWith('#')) val = '#' + val;
       if (/^#[0-9a-fA-F]{3}$/.test(val) || /^#[0-9a-fA-F]{6}$/.test(val)) {
         // Normalize
         let h = val.replace(/^#/, '');
-        if (h.length === 3) h = h.split('').map(c => c + c).join('');
+        if (h.length === 3) h = h.split('').map((c: string) => c + c).join('');
         val = '#' + h.toLowerCase();
         colorPicker.value = val;
         updateSwatches(val);

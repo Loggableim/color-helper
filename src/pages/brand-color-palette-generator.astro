@@ -58,11 +58,11 @@ const breadcrumbs = [{ label: 'Brand Color Palette Generator' }];
         'use strict';
 
         /* ===== URL Params ===== */
-        function getParam(key) {
+        function getParam(key: string): string | null {
           const p = new URLSearchParams(window.location.search);
           return p.get(key);
         }
-        function setParam(key, value) {
+        function setParam(key: string, value: string | null) {
           const url = new URL(window.location.href);
           if (value) url.searchParams.set(key, value);
           else url.searchParams.delete(key);
@@ -70,14 +70,14 @@ const breadcrumbs = [{ label: 'Brand Color Palette Generator' }];
         }
 
         /* ===== Storage Helpers ===== */
-        function savePaletteToStorage(name, colors) {
+        function savePaletteToStorage(name: string, colors: string[]) {
           try {
             const raw = localStorage.getItem('color-helper:saved-palettes');
             const data = raw ? JSON.parse(raw) : { palettes: [], recentColors: [] };
             const palette = {
               id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
               name: name,
-              colors: colors.map(c => c.toLowerCase()),
+              colors: colors.map((c: string) => c.toLowerCase()),
               createdAt: new Date().toISOString(),
               updatedAt: new Date().toISOString(),
               source: 'brand',
@@ -88,29 +88,29 @@ const breadcrumbs = [{ label: 'Brand Color Palette Generator' }];
           } catch(e) { return false; }
         }
 
-        function addRecentColor(hex) {
+        function addRecentColor(hex: string) {
           try {
             const raw = localStorage.getItem('color-helper:saved-palettes');
             const data = raw ? JSON.parse(raw) : { palettes: [], recentColors: [] };
             const normalized = hex.toLowerCase();
-            data.recentColors = [normalized, ...data.recentColors.filter(c => c !== normalized)];
+            data.recentColors = [normalized, ...data.recentColors.filter((c: string) => c !== normalized)];
             if (data.recentColors.length > 20) data.recentColors = data.recentColors.slice(0, 20);
             localStorage.setItem('color-helper:saved-palettes', JSON.stringify(data));
           } catch(e) { /* silent */ }
         }
 
-        const colorInput = document.getElementById('bp-base');
-        const hexInput = document.getElementById('bp-hex');
-        const paletteEl = document.getElementById('bp-palette');
-        const a11yEl = document.getElementById('bp-a11y-results');
-        const cssPre = document.getElementById('bp-css');
-        const copyBtn = document.getElementById('bp-copy-css');
-        const dloadBtn = document.getElementById('bp-download');
-        const exportJsonBtn = document.getElementById('bp-export-json');
-        const exportTailwindBtn = document.getElementById('bp-export-tailwind');
-        const saveBtn = document.getElementById('bp-save-btn');
+        const colorInput = document.getElementById('bp-base') as HTMLInputElement;
+        const hexInput = document.getElementById('bp-hex') as HTMLInputElement;
+        const paletteEl = document.getElementById('bp-palette') as HTMLElement;
+        const a11yEl = document.getElementById('bp-a11y-results') as HTMLElement;
+        const cssPre = document.getElementById('bp-css') as HTMLElement;
+        const copyBtn = document.getElementById('bp-copy-css') as HTMLElement;
+        const dloadBtn = document.getElementById('bp-download') as HTMLElement;
+        const exportJsonBtn = document.getElementById('bp-export-json') as HTMLElement;
+        const exportTailwindBtn = document.getElementById('bp-export-tailwind') as HTMLElement;
+        const saveBtn = document.getElementById('bp-save-btn') as HTMLElement;
 
-        function hex2rgb(h) {
+        function hex2rgb(h: string): { r: number; g: number; b: number } | null {
           const c = h.replace('#','');
           if (c.length !== 6) return null;
           const n = parseInt(c, 16);
@@ -118,23 +118,23 @@ const breadcrumbs = [{ label: 'Brand Color Palette Generator' }];
           return { r: (n>>16)&255, g: (n>>8)&255, b: n&255 };
         }
 
-        function rgb2hex(r,g,b) {
+        function rgb2hex(r: number, g: number, b: number) {
           return '#' + [r,g,b].map(v => Math.round(Math.max(0,Math.min(255,v))).toString(16).padStart(2,'0')).join('');
         }
 
-        function lum(r,g,b) {
-          const f = c => { const v=c/255; return v<=0.04045 ? v/12.92 : Math.pow((v+0.055)/1.055,2.4); };
+        function lum(r: number, g: number, b: number) {
+          const f = (c: number) => { const v=c/255; return v<=0.04045 ? v/12.92 : Math.pow((v+0.055)/1.055,2.4); };
           return 0.2126*f(r) + 0.7152*f(g) + 0.0722*f(b);
         }
 
-        function ratio(h1, h2) {
+        function ratio(h1: string, h2: string) {
           const c1=hex2rgb(h1), c2=hex2rgb(h2);
           if (!c1||!c2) return 0;
           const l1=lum(c1.r,c1.g,c1.b), l2=lum(c2.r,c2.g,c2.b);
-          return Math.round((Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05)*100)/100;
+          return (Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05);
         }
 
-        function generatePalette(hex) {
+        function generatePalette(hex: string) {
           const rgb = hex2rgb(hex);
           if (!rgb) return null;
           const { r, g, b } = rgb;
@@ -159,7 +159,7 @@ const breadcrumbs = [{ label: 'Brand Color Palette Generator' }];
           // Update URL param
           setParam('base', stripped);
 
-          paletteEl.innerHTML = Object.entries(palette).map(([key, val]) =>
+          paletteEl.innerHTML = Object.entries(palette).map(([key, val]: [string, string]) =>
             `<div class="card" style="padding: 1rem; text-align: center;">
               <div style="width:100%;height:64px;border-radius:8px;background:${val};border:1px solid #e2e8f0;margin-bottom:0.5rem;"></div>
               <div style="font-size:0.75rem;font-weight:600;text-transform:capitalize;color:#64748b;">${key}</div>
@@ -178,7 +178,7 @@ const breadcrumbs = [{ label: 'Brand Color Palette Generator' }];
             const aa = r >= 4.5, aaLarge = r >= 3, aaa = r >= 7;
             return `<div class="card" style="padding: 1rem;">
               <div style="font-size:0.875rem;font-weight:600;margin-bottom:0.5rem;">${p.label}</div>
-              <div style="font-size:1.5rem;font-weight:700;margin-bottom:0.25rem;">${r}:1</div>
+              <div style="font-size:1.5rem;font-weight:700;margin-bottom:0.25rem;">${r.toFixed(2)}:1</div>
               <div style="display:flex;gap:0.375rem;flex-wrap:wrap;">
                 <span class="wcag-badge ${aa?'wcag-pass':'wcag-fail'}">AA ${aa?'PASS':'FAIL'}</span>
                 <span class="wcag-badge ${aaLarge?'wcag-pass':'wcag-fail'}">AA Large ${aaLarge?'PASS':'FAIL'}</span>

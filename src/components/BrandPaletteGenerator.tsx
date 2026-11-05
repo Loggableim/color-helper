@@ -421,7 +421,7 @@ export default function BrandPaletteGenerator() {
           {a11yResults.map((r) => (
             <div key={r.label} style={s.a11yCard}>
               <div style={s.a11yPairLabel}>{r.label}</div>
-              <div style={s.a11yRatio}>{r.ratio}:1</div>
+              <div style={s.a11yRatio}>{r.ratio.toFixed(2)}:1</div>
               <div style={s.a11yBadges}>
                 <span style={r.aa ? s.wcagPass : s.wcagFail}>
                   AA {r.aa ? 'PASS' : 'FAIL'}

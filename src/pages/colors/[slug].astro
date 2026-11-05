@@ -32,7 +32,7 @@ const { color } = Astro.props;
 
 // Hex→Slug-Lookup für interne Verlinkung der Palette-Swatches
 const colorByHex = new Map(colors.map(c => [c.hex.toLowerCase(), c.slug]));
-const getColorSlug = (hexCode) => colorByHex.get(hexCode.toLowerCase());
+const getColorSlug = (hexCode: string) => colorByHex.get(hexCode.toLowerCase());
 
 // Cyan/Aqua and Fuchsia/Magenta are CSS-spec synonyms with identical hex values.
 // To avoid duplicate content, set canonical URL to the primary page.
